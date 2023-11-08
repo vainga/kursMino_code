@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KursCode
+﻿namespace KursCode
 {
 
     class Program
