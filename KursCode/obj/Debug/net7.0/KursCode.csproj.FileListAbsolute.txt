@@ -1,0 +1,14 @@
+C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0\KursCode.exe
+C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0\KursCode.deps.json
+C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0\KursCode.runtimeconfig.json
+C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0\KursCode.dll
+C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0\KursCode.pdb
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\KursCode.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\KursCode.AssemblyInfoInputs.cache
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\KursCode.AssemblyInfo.cs
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\KursCode.csproj.CoreCompileInputs.cache
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\KursCode.dll
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\refint\KursCode.dll
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\KursCode.pdb
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\KursCode.genruntimeconfig.cache
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0\ref\KursCode.dll

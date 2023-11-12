@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "bVITgKjEMjGYAjNmSr++6TzUoVgJaWEe43n2nmI42vBBK72iJvtSz1mMWz0CANymgIPP+t0LuZXAbkzkPofcKg==",
+  "dgSpecHash": "ikKMXtiYvpb00SyUzNyx5XA9OblUWDzJVehIqMkFkcCqjkatDJ1Cab0onmcAQ6fjQciaqg3gg4I1+ljY+p8lxw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Vain\\Desktop\\KursCode\\KursCode\\KursCode.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Vain\\.nuget\\packages\\microsoft.data.sqlite\\7.0.13\\microsoft.data.sqlite.7.0.13.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.13\\microsoft.data.sqlite.core.7.0.13.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.4\\sqlitepclraw.bundle_e_sqlite3.2.1.4.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\sqlitepclraw.core\\2.1.4\\sqlitepclraw.core.2.1.4.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.4\\sqlitepclraw.lib.e_sqlite3.2.1.4.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.4\\sqlitepclraw.provider.e_sqlite3.2.1.4.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,4 +1,6 @@
-﻿namespace KursCode
+﻿using Clients;
+
+namespace KursCode
 {
 
     class Program
