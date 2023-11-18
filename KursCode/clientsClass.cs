@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Clients
@@ -68,7 +69,6 @@ namespace Clients
             }
         }
 
-        
-
+        public abstract void AddData(int userId);
     }
 }

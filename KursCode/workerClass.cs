@@ -1,4 +1,8 @@
-﻿namespace Clients
+﻿using KursCode;
+using Microsoft.Data.Sqlite;
+using System.Text.Json;
+
+namespace Clients
 {
     class workerClass: clientsClass
     {
@@ -32,6 +36,36 @@
             Console.Write("Опыт работы: ");         _Work_experience = int.Parse(Console.ReadLine());
             Console.Write("Желаемая зарплата: ");   _Salary_need = int.Parse(Console.ReadLine());
             base.EnterInformation();
+        }
+
+        private string ToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        private object FromJson(string json)
+        {
+            return JsonSerializer.Deserialize<corporationClass>(json);
+        }
+
+        public override void AddData(int userId)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
+
+            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            {
+                connection.Open();
+                string entityJson = this.ToJson();
+                string insertQuery = $"INSERT INTO workerTable (JSON_worker, UserId) VALUES ('{entityJson}', {userId})";
+                using (SqliteCommand insertCmd = new SqliteCommand(insertQuery, connection))
+                {
+                    insertCmd.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
         }
     }
 }

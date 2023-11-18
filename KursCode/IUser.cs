@@ -8,11 +8,10 @@ using Microsoft.Data.Sqlite;
 
 namespace KursCode
 {
-    internal interface IUser
+    internal interface IUser 
     {
         void EnterInformation();
-        string SerializeToJson();
-        User DeserializeFromJson(string json);
         void Registration();
+        int Enter();
     }
 }

@@ -1,4 +1,12 @@
-﻿namespace Clients
+﻿using KursCode;
+using Microsoft.Data.Sqlite;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
+
+
+namespace Clients
 {
     internal class corporationClass: clientsClass
     {
@@ -46,5 +54,35 @@
             base.EnterInformation();
         }
 
+        private string ToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        private object FromJson(string json)
+        {
+            return JsonSerializer.Deserialize<workerClass>(json);
+        }
+
+        public override void AddData(int userId)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
+
+
+            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            {
+                connection.Open();
+                string corpJson = this.ToJson();
+                string insertQuery = $"INSERT INTO corporationTable (JSON_corporation, UserId) VALUES ('{corpJson}', {userId})";
+                using (SqliteCommand insertCmd = new SqliteCommand(insertQuery, connection))
+                {
+                    insertCmd.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
     }
 }
