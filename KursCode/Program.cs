@@ -24,7 +24,7 @@ namespace KursCode
                 user.EnterInformation();
                 user.Registration();
             }
-            Console.WriteLine("\n1)Добавить корпорацию\n2)Добавить работника");
+            /*sConsole.WriteLine("\n1)Добавить корпорацию\n2)Добавить работника");
             x = int.Parse(Console.ReadLine());
             if (x == 1)
             {
@@ -35,6 +35,17 @@ namespace KursCode
             {
                 worker.EnterInformation();
                 worker.AddData(id);
+            }*/
+            
+            Console.WriteLine("\n1)Прочитать корпорации\n2)Прочитать работников");
+            x=int.Parse(Console.ReadLine());
+            if (x == 1)
+            {
+                corporation.WriteBase(corporation.ReadAllJsonFromDatabase(id));
+            }
+            else if( x == 2)
+            {
+
             }
         }
     }

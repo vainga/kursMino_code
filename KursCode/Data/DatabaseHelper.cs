@@ -18,30 +18,6 @@ namespace KursCode.Data
             connection = new SqliteConnection(connectionString);
         }
 
-        public void OpenConnection()
-        {
-            if (connection.State != System.Data.ConnectionState.Open)
-            {
-                connection.Open();
-            }
-        }
-
-        public void CloseConnection()
-        {
-            if (connection.State != System.Data.ConnectionState.Closed)
-            {
-                connection.Close();
-            }
-        }
-
-        public SqliteDataReader ExecuteReader(string query)
-        {
-            SqliteCommand cmd = new SqliteCommand(query);
-            return cmd.ExecuteReader();
-        }
-
-       //using (var createTableCommand = new SqliteCommand("CREATE TABLE IF NOT EXISTS Corporations (Id INTEGER PRIMARY KEY, Name TEXT, UserId INTEGER, FOREIGN KEY(UserId) REFERENCES Users(Id))"
-
         public static void CreateDatabase(string dbPath, string tableName, string columns)
         {
             if (!File.Exists(dbPath))
@@ -61,7 +37,6 @@ namespace KursCode.Data
             {
                 Console.WriteLine($"База данных по пути {dbPath} уже существует.");
             }
-
         }
     }
 }

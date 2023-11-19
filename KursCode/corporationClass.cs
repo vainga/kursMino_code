@@ -84,5 +84,47 @@ namespace Clients
                 connection.Close();
             }
         }
+
+        public List<string> ReadAllJsonFromDatabase(int userId)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
+            string query = "SELECT JSON_corporation FROM corporationTable;";
+
+
+            List<string> jsonStrings = new List<string>();
+
+            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            {
+                connection.Open();
+
+                using (SqliteCommand command = new SqliteCommand(query, connection))
+                {
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string jsonString = reader["JSON_corporation"].ToString();
+                            jsonStrings.Add(jsonString);
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return jsonStrings;
+        }
+
+        public void WriteBase(List<string> jsonStrings)
+        {
+            foreach(var jsonString in jsonStrings)
+            {
+                this.FromJson(jsonString);
+                Console.WriteLine(this.ToString());
+            }
+        }
     }
 }
