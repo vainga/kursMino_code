@@ -3,19 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Clients
 {
+    [Serializable]
     abstract class clientsClass
     {
-        private string _Post { get; set; }
-        private string _Email { get; set; }
-        private string _City { get; set; }
-        private string _Description { get; set; }
-        private bool _Distant { get; set; }
-        private List<string> _Personal_qualities { get; set; }
-        private List<string> _Skills { get; set; }
+        [JsonInclude]
+        [JsonPropertyName("_Post")]
+        public string _Post { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Email")]
+        public string _Email { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_City")]
+        public string _City { get;  private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Description")]
+        public string _Description { get;  private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Distant")]
+        public bool _Distant { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Personal_qualities")]
+        public List<string> _Personal_qualities { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Skills")]
+        public List<string> _Skills { get;  private set; }
 
         public clientsClass() 
         {
@@ -70,5 +86,6 @@ namespace Clients
         }
 
         public abstract void AddData(int userId);
+        public abstract List<string> ReadAllJsonFromDatabase(int userId);
     }
 }

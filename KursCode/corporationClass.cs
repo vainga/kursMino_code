@@ -8,13 +8,24 @@ using System.Xml.Linq;
 
 namespace Clients
 {
+    [Serializable]
     internal class corporationClass: clientsClass
     {
-        private string _CorporationName { get; set; }
-        private int _Work_experience_min { get; set; }
-        private int _Work_experience_max { get; set; }
-        private bool _Work_experience_need { get; set; }
-        private int _Salary { get; set; }
+        [JsonInclude]
+        [JsonPropertyName("_CorporationName")]
+        public string _CorporationName { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Work_experience_min")]
+        public int _Work_experience_min { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Work_experience_max")]
+        public int _Work_experience_max { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Work_experience_need")]
+        public bool _Work_experience_need { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Salary")]
+        public int _Salary { get; private set; }
 
         public corporationClass() : base("", "", "", "", false, new List<string>(), new List<string>())
         {
@@ -25,6 +36,7 @@ namespace Clients
             _Salary = 0;
         }
 
+        [JsonConstructor]
         private corporationClass(string corporationName, string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills, int work_experience_min, int work_experience_max, 
             bool work_experience_need, int salary)
             : base(post, email, city, description, distant, personal_qualities, skills)
@@ -59,9 +71,9 @@ namespace Clients
             return JsonSerializer.Serialize(this);
         }
 
-        private object FromJson(string json)
+        private corporationClass FromJson(string json)
         {
-            return JsonSerializer.Deserialize<workerClass>(json);
+            return JsonSerializer.Deserialize<corporationClass>(json);
         }
 
         public override void AddData(int userId)
@@ -85,7 +97,7 @@ namespace Clients
             }
         }
 
-        public List<string> ReadAllJsonFromDatabase(int userId)
+        public override List<string> ReadAllJsonFromDatabase(int userId)
         {
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
             string userFolderPath = Path.Combine(executablePath, "UserData");
@@ -122,8 +134,19 @@ namespace Clients
         {
             foreach(var jsonString in jsonStrings)
             {
-                this.FromJson(jsonString);
-                Console.WriteLine(this.ToString());
+                corporationClass corp = FromJson(jsonString);
+                Console.WriteLine($"Corporation: {corp._CorporationName}");
+                Console.WriteLine($"Work_experience_min: {corp._Work_experience_min}");
+                Console.WriteLine($"Work_experience_max: {corp._Work_experience_max}");
+                Console.WriteLine($"Salary: {corp._Salary}");
+                Console.WriteLine($"Post: {corp._Post}");
+                Console.WriteLine($"Email: {corp._Email}");
+                Console.WriteLine($"City: {corp._City}");
+                Console.WriteLine($"Description: {corp._Description}");
+                foreach (var personal_quality in corp._Personal_qualities)
+                    Console.WriteLine($"{personal_quality}");
+                foreach (var skill in corp._Skills)
+                    Console.WriteLine($"{skill}");
             }
         }
     }

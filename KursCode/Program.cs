@@ -1,4 +1,5 @@
 ﻿using Clients;
+using System.Text.Json;
 
 namespace KursCode
 {
@@ -9,6 +10,7 @@ namespace KursCode
         {
             User user = new User();
             corporationClass corporation = new corporationClass();
+            corporationClass corporation2 = new corporationClass();
             workerClass worker = new workerClass();
             int id = 1;
 
@@ -24,19 +26,20 @@ namespace KursCode
                 user.EnterInformation();
                 user.Registration();
             }
-            /*sConsole.WriteLine("\n1)Добавить корпорацию\n2)Добавить работника");
-            x = int.Parse(Console.ReadLine());
-            if (x == 1)
-            {
-                corporation.EnterInformation();
-                corporation.AddData(id);
-            }
-            else if (x == 2)
-            {
-                worker.EnterInformation();
+
+            /* Console.WriteLine("\n1)Добавить корпорацию\n2)Добавить работника");
+             x = int.Parse(Console.ReadLine());
+             if (x == 1)
+             {
+                 corporation.EnterInformation();
+                 corporation.AddData(id);
+             }
+             else if (x == 2)
+             {
+                 worker.EnterInformation();
                 worker.AddData(id);
-            }*/
-            
+             }*/
+
             Console.WriteLine("\n1)Прочитать корпорации\n2)Прочитать работников");
             x=int.Parse(Console.ReadLine());
             if (x == 1)

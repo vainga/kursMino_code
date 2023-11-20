@@ -1,15 +1,25 @@
 ﻿using KursCode;
 using Microsoft.Data.Sqlite;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Clients
 {
+    [Serializable]
     class workerClass: clientsClass
     {
-        private string _WorkerName { get; set; }
-        private string _Surname { get; set; }
-        private int _Work_experience { get; set; }
-        private int _Salary_need { get; set; }
+        [JsonInclude]
+        [JsonPropertyName("_WorkerName")]
+        public string _WorkerName { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Surname")]
+        public string _Surname { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Work_experience")]
+        public int _Work_experience { get;  private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Salary_need")]
+        public int _Salary_need { get;  private set; }
 
         public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>())
         {
@@ -43,9 +53,9 @@ namespace Clients
             return JsonSerializer.Serialize(this);
         }
 
-        private object FromJson(string json)
+        private workerClass FromJson(string json)
         {
-            return JsonSerializer.Deserialize<corporationClass>(json);
+            return JsonSerializer.Deserialize<workerClass>(json);
         }
 
         public override void AddData(int userId)
@@ -65,6 +75,58 @@ namespace Clients
                     insertCmd.ExecuteNonQuery();
                 }
                 connection.Close();
+            }
+        }
+
+        public override List<string> ReadAllJsonFromDatabase(int userId)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
+            string query = "SELECT JSON_worker FROM workerTable;";
+
+
+            List<string> jsonStrings = new List<string>();
+
+            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            {
+                connection.Open();
+
+                using (SqliteCommand command = new SqliteCommand(query, connection))
+                {
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string jsonString = reader["JSON_worker"].ToString();
+                            jsonStrings.Add(jsonString);
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return jsonStrings;
+        }
+
+        public void WriteBase(List<string> jsonStrings)
+        {
+            foreach (var jsonString in jsonStrings)
+            {
+                workerClass worker = FromJson(jsonString);
+                Console.WriteLine($"Name: {worker._WorkerName} {worker._Surname}");
+                Console.WriteLine($"Work_experience: {worker._Work_experience}");
+                Console.WriteLine($"Salary need: {worker._Salary_need}");
+                Console.WriteLine($"Post: {worker._Post}");
+                Console.WriteLine($"Email: {worker._Email}");
+                Console.WriteLine($"City: {worker._City}");
+                Console.WriteLine($"Description: {worker._Description}");
+                foreach (var personal_quality in worker._Personal_qualities)
+                    Console.WriteLine($"{personal_quality}");
+                foreach (var skill in worker._Skills)
+                    Console.WriteLine($"{skill}");
             }
         }
     }
