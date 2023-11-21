@@ -9,7 +9,7 @@ using System.Xml.Linq;
 namespace Clients
 {
     [Serializable]
-    internal class corporationClass: clientsClass
+    internal class corporationClass : clientsClass
     {
         [JsonInclude]
         [JsonPropertyName("_CorporationName")]
@@ -37,7 +37,7 @@ namespace Clients
         }
 
         [JsonConstructor]
-        private corporationClass(string corporationName, string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills, int work_experience_min, int work_experience_max, 
+        private corporationClass(string corporationName, string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills, int work_experience_min, int work_experience_max,
             bool work_experience_need, int salary)
             : base(post, email, city, description, distant, personal_qualities, skills)
         {
@@ -132,7 +132,7 @@ namespace Clients
 
         public void WriteBase(List<string> jsonStrings)
         {
-            foreach(var jsonString in jsonStrings)
+            foreach (var jsonString in jsonStrings)
             {
                 corporationClass corp = FromJson(jsonString);
                 Console.WriteLine($"Corporation: {corp._CorporationName}");
@@ -147,6 +147,49 @@ namespace Clients
                     Console.WriteLine($"{personal_quality}");
                 foreach (var skill in corp._Skills)
                     Console.WriteLine($"{skill}");
+            }
+        }
+
+        public override int GetId(int userId, string corporationJson)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
+
+            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            {
+                connection.Open();
+                using (SqliteCommand cmd = new SqliteCommand("SELECT JSON_corporation, Id FROM corporationTable WHERE JSON_corporation=@JSON_corporation", connection))
+                {
+                    cmd.Parameters.AddWithValue("@JSON_corporation", corporationJson);
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            return reader.GetInt32(reader.GetOrdinal("Id"));
+                    }
+                    connection.Close();
+                }
+            }
+            return -1;
+        }
+
+        public override void RemoveData(int userId, int itemIdToDelete)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
+
+            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            {
+                connection.Open();
+                using (SqliteCommand command = new SqliteCommand("DELETE FROM corporationTable WHERE Id = @ItemId", connection))
+                {
+                    command.Parameters.AddWithValue("@ItemId", itemIdToDelete);
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
             }
         }
     }

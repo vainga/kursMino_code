@@ -129,5 +129,48 @@ namespace Clients
                     Console.WriteLine($"{skill}");
             }
         }
+
+        public override int GetId(int userId, string workerJson)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
+
+            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            {
+                connection.Open();
+                using (SqliteCommand cmd = new SqliteCommand("SELECT JSON_worker, Id FROM workerTable WHERE JSON_worker=@JSON_worker", connection))
+                {
+                    cmd.Parameters.AddWithValue("@JSON_worker", workerJson);
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            return reader.GetInt32(reader.GetOrdinal("Id"));
+                    }
+                    connection.Close();
+                }
+            }
+            return -1;
+        }
+
+        public override void RemoveData(int userId, int itemIdToDelete)
+        {
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string userFolderPath = Path.Combine(executablePath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
+
+            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            {
+                connection.Open();
+                using (SqliteCommand command = new SqliteCommand("DELETE FROM workerTable WHERE Id = @ItemId", connection))
+                {
+                    command.Parameters.AddWithValue("@ItemId", itemIdToDelete);
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
     }
 }

@@ -87,5 +87,7 @@ namespace Clients
 
         public abstract void AddData(int userId);
         public abstract List<string> ReadAllJsonFromDatabase(int userId);
+        public abstract int GetId(int userId,string name);
+        public abstract void RemoveData(int userId, int itemIdToDelete);
     }
 }
