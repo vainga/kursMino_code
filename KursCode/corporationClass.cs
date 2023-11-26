@@ -47,7 +47,7 @@ namespace Clients
             _Work_experience_need = work_experience_need;
             _Salary = salary;
         }
-
+        //Перенести во ViewModel
         public void EnterInformation()
         {
             int x = 0;
