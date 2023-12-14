@@ -11,7 +11,7 @@ namespace KursCode
     internal interface IUser 
     {
         void EnterInformation();
-        void Registration();
+        int Registration();
         int Enter();
     }
 }

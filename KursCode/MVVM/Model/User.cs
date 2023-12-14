@@ -46,7 +46,7 @@ namespace KursCode
             return BCrypt.Net.BCrypt.HashPassword(password, salt);
         }
 
-        public bool IsLoginUnique(string login)
+        private bool IsLoginUnique(string login)
         {
             bool isUnique = false;
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -76,7 +76,7 @@ namespace KursCode
             return isUnique;
         }
 
-        public void Registration()
+        public int Registration()
         {
             int userId = 0;
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -99,7 +99,7 @@ namespace KursCode
                 if (!IsLoginUnique(_Login))
                 {
                     Console.WriteLine("Пользователь с таким логином уже существует.");
-                    return; // Выйти из метода, чтобы не продолжать регистрацию
+                    return -1;
                 }
                 else
                 {
@@ -123,6 +123,7 @@ namespace KursCode
                     //DatabaseHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT,  UserId INTEGER, FOREIGN KEY(UserId) REFERENCES Users(Id)");
                     DatabaseHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT,  UserId INTEGER");
                     connection.Close();
+                    return userId;
                 }
             }
         }

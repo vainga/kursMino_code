@@ -1,25 +1,143 @@
 ﻿<Window x:Class="KursCode.View.EnterWindow"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KursCode.View"
         mc:Ignorable="d"
-        Height="450" Width="400"
-        ResizeMode="NoResize"
-        >
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-    </Grid>
+        Height="700" Width="500"
+        ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" BorderBrush="#FF00EDFF" OpacityMask="#FF00EDFF" AllowsTransparency="True" Background="Transparent" MouseLeftButtonDown="drugWindow_LeftButtonDrag">
+    <Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" MouseLeftButtonDown="closeApp_MauseLeftButtonDrag" ToolTip="Закрыть" x:Name="gridContainer">
+                <Ellipse x:Name="closeEllipse" Height="17" Width="17">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Fill" Value="Red"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=gridContainer}" Value="True">
+                                    <Setter Property="Fill" Value="LightCoral"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=gridContainer}" Value="False">
+                                    <Setter Property="Fill" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
+                <Grid Width="8" Height="8" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="45"/>
+                    </Grid.RenderTransform>
+                    <Rectangle Width="8" Height="2" Fill="White" RadiusX="1" RadiusY="1" VerticalAlignment="Center"/>
+                    <Rectangle Width="2" Height="8" Fill="White" RadiusX="1" RadiusY="1" HorizontalAlignment="Center"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,32,0" MouseLeftButtonDown="collapseApp_MauseLeftButtonDrag" ToolTip="Свернуть" x:Name="collapseButtonContainer">
+                <Ellipse x:Name="collapseEllipse" Height="17" Width="17">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Fill" Value="Yellow"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=collapseButtonContainer}" Value="True">
+                                    <Setter Property="Fill" Value="LightBlue"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=collapseButtonContainer}" Value="False">
+                                    <Setter Property="Fill" Value="DarkBlue"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
+                <Grid Width="8" Height="8" RenderTransformOrigin="0.5,0.5">
+                    <Rectangle Width="8" Height="2" Fill="White" RadiusX="1" RadiusY="1" VerticalAlignment="Center"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <Border Width="250" Background="White" BorderBrush="Gray" BorderThickness="1.5" CornerRadius="10" Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,0,10,0">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1.5" Direction="270" Opacity="0.5"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Login:" Foreground="MidnightBlue" VerticalAlignment="Top" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,0,0,5" FontFamily="Arial Rounded MT Bold" />
+                        <TextBox  Foreground="MidnightBlue" FontWeight="UltraLight" Grid.Row="1" VerticalAlignment="Bottom" BorderBrush="Transparent" ToolTip="Логин"/>
+                        <Border Grid.Row="1" BorderBrush="Gray" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" Margin="0,5,0,0" CornerRadius="1"/>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Border Width="250" Background="White" BorderBrush="Gray" BorderThickness="1.5" CornerRadius="10" Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,0,10,0">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1.5" Direction="270" Opacity="0.5"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Password:" Foreground="MidnightBlue" VerticalAlignment="Top" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,0,0,5" FontFamily="Arial Rounded MT Bold" />
+                        <PasswordBox Foreground="MidnightBlue" FontWeight="UltraLight" Grid.Row="1" VerticalAlignment="Bottom" BorderBrush="Transparent" ToolTip="Пароль"/>
+                        <Border Grid.Row="1" BorderBrush="Gray" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" Margin="0,5,0,0" CornerRadius="1"/>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Button Grid.Row="5" Content="Войти" Width="250" Height="45" Foreground="White" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontFamily="Arial" FontWeight="Light" Margin="0,25,0,0">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <!-- "#FF2DDADA"L -->
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="20">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="SteelBlue"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="False">
+                                            <Setter TargetName="border" Property="Background" Value="DarkBlue"/>
+                                            <Setter Property="Cursor" Value="Arrow"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <TextBlock Grid.Row="5" Text="Нет аккаунта?" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="120,-25,0,5" FontFamily="Bahnschrift" FontWeight="UltraLight" FontSize="16" />
+            <TextBlock Grid.Row="5" Text="Зарегистрироваться" Foreground="MidnightBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="230,-25,0,5" FontFamily="Bahnschrift" FontWeight="UltraLight" FontSize="16" ToolTip="Зарегистрироваться">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="TextDecorations" Value="Underline"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="TextDecorations" Value="None"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </Border>
 </Window>
+    

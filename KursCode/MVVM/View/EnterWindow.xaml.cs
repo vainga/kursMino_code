@@ -24,5 +24,41 @@ public partial class EnterWindow : Window
         {
             InitializeComponent();
         }
+
+        private void drugWindow_LeftButtonDrag(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void closeApp_MauseLeftButtonDrag(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void collapseApp_MauseLeftButtonDrag(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }
