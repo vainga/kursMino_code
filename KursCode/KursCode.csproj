@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MVVM\ViewModel\" />
     <Folder Include="Images\" />
+    <Folder Include="MVVM\ViewModel\" />
     <Folder Include="Themes\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>

@@ -94,10 +94,9 @@
                     </Grid>
                 </Border>
             </Grid>
-            <Button Grid.Row="5" Content="Войти" Width="250" Height="45" Foreground="White" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontFamily="Arial" FontWeight="Light" Margin="0,25,0,0">
+            <Button Grid.Row="5" Content="Войти" Width="250" Height="45" Foreground="White" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontFamily="Arial" FontWeight="Light" Margin="0,25,0,0" Cursor="Arrow">
                 <Button.Style>
                     <Style TargetType="Button">
-                        <!-- "#FF2DDADA"L -->
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">

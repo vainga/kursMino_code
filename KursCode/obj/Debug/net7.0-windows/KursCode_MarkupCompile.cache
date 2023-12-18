@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 C:\Users\Vain\Desktop\KursCode\KursCode\App.xaml
-1-1555487322
+5674715844
 
-101544450187
+14477593351
 206341973594
-MVVM\View\EnterWindow.xaml;
+MVVM\View\EnterWindow.xaml;MVVM\View\MainWindow.xaml;MVVM\View\Pages\ClientsPage.xaml;MVVM\View\UserControls\ClientsUserControlMax.xaml;MVVM\View\UserControls\ClientsUserControlMini.xaml;
 
 False
 

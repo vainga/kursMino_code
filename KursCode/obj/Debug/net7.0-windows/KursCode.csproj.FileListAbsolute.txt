@@ -49,3 +49,11 @@ C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\KursCode.genrun
 C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\ref\KursCode.dll
 C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\App.g.cs
 C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\App.baml
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\MainWindow.g.cs
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\MainWindow.baml
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\Pages\ClientsPage.g.cs
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\UserControls\ClientsUserControlMax.g.cs
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\UserControls\ClientsUserControlMini.g.cs
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\Pages\ClientsPage.baml
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\UserControls\ClientsUserControlMax.baml
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\UserControls\ClientsUserControlMini.baml
