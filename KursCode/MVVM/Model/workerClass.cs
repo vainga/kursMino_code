@@ -14,7 +14,7 @@ namespace Clients
         [JsonPropertyName("_WorkerName")]
         public string _WorkerName { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Surname")]
+        [JsonPropertyName("_Surname")] //Нужно ли?
         public string _Surname { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Work_experience")]
