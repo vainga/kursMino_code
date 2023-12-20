@@ -56,38 +56,5 @@ namespace Clients
             _Skills = skills;
         }
 
-        public void EnterInformation()
-        {
-            int x=0;
-            Console.Write("Должность: ");   _Post = Console.ReadLine();
-            Console.Write("Email: ");       _Email = Console.ReadLine();
-            Console.Write("Город: ");       _City = Console.ReadLine();
-            Console.Write("Описание: ");    _Description = Console.ReadLine();
-            Console.WriteLine("Согласен ли он на дистанционную работу: ");
-            x=int.Parse(Console.ReadLine());
-            if(x==1)
-                _Distant = true;
-            else
-                 _Distant = false;
-            Console.Write("Введите количество личных качеств: ");
-            x = int.Parse(Console.ReadLine());
-            Console.WriteLine("Введите личные качества: ");
-            for(int i=0; i<x; i++) 
-            {
-                _Personal_qualities.Add(Console.ReadLine());
-            }
-            Console.Write("Введите количество навыков: ");
-            x = int.Parse(Console.ReadLine());
-            Console.WriteLine("Введите навыки: ");
-            for (int i = 0; i < x; i++)
-            {
-                _Skills.Add(Console.ReadLine());
-            }
-        }
-
-        public abstract void AddData(int userId);
-        public abstract List<string> ReadAllJsonFromDatabase(int userId);
-        public abstract int GetId(int userId,string name);
-        public abstract void RemoveData(int userId, int itemIdToDelete);
     }
 }

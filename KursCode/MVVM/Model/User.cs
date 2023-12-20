@@ -17,9 +17,12 @@ namespace KursCode
 {
     class User : IUser
     {
-        private int userId;
+        public int userId { get; private set; }
         private string _Login { get; set; }
         private string _Password { get; set; }
+
+        static string databasePath = Path.Combine(GetUserFolderPath(), "userdata.db");
+        DatabaseHelper dbHelper = new DatabaseHelper(databasePath);
 
         public User()
         {
@@ -34,10 +37,15 @@ namespace KursCode
             _Password = password;
         }
 
-        public void EnterInformation()
+        private static string GetUserFolderPath()
         {
-            Console.Write("Введите логин: "); _Login = Console.ReadLine();
-            Console.Write("Введите пароль: "); _Password = Console.ReadLine();
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string parentPath = Directory.GetParent(executablePath).FullName;
+            string dataFolderPath = Path.Combine(parentPath, "Data");
+            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
+            Directory.CreateDirectory(userFolderPath);
+
+            return userFolderPath;
         }
 
         private string HashPassword(string password)
@@ -46,83 +54,31 @@ namespace KursCode
             return BCrypt.Net.BCrypt.HashPassword(password, salt);
         }
 
-        private bool IsLoginUnique(string login)
-        {
-            bool isUnique = false;
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            Directory.CreateDirectory(userFolderPath);
-
-            using (var connection = new SqliteConnection($"Data Source={Path.Combine(userFolderPath, "userdata.db")}"))
-            {
-                connection.Open();
-
-                using (var checkLoginCommand = new SqliteCommand("SELECT COUNT(*) FROM Users WHERE Login = @Login", connection))
-                {
-                    checkLoginCommand.Parameters.AddWithValue("@Login", login);
-
-                    int result = Convert.ToInt32(checkLoginCommand.ExecuteScalar());
-                    if (result != 0)
-                    {
-                        return isUnique;
-                    }
-                    isUnique = (result == 0);
-                }
-
-                connection.Close();
-            }
-            return isUnique;
-        }
-
         public int Registration()
         {
             int userId = 0;
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            Directory.CreateDirectory(userFolderPath);
-
-
-            using (var connection = new SqliteConnection($"Data Source={Path.Combine(userFolderPath, "userdata.db")}"))
+            using(dbHelper)
             {
-                connection.Open();
-
-                using (var createTableCommand = new SqliteCommand("CREATE TABLE IF NOT EXISTS Users (Id INTEGER PRIMARY KEY,Login TEXT, Password TEXT)", connection))
-                {
-                    createTableCommand.ExecuteNonQuery();
-                }
-
+                dbHelper.CreateDatabase(databasePath, "Users", "Id INTEGER PRIMARY KEY, Login TEXT, Password TEXT");
                 string hashedPassword = HashPassword(_Password);
-                if (!IsLoginUnique(_Login))
+                if (!dbHelper.IsValueUnique("Users","Login",_Login))
                 {
                     Console.WriteLine("Пользователь с таким логином уже существует.");
                     return -1;
                 }
                 else
                 {
-                    using (var insertCommand = new SqliteCommand("INSERT INTO Users (Login, Password) VALUES (@Login, @Password); SELECT last_insert_rowid();", connection))
-                    {
-                        insertCommand.Parameters.AddWithValue("@Login", _Login);
-                        insertCommand.Parameters.AddWithValue("@Password", hashedPassword);
+                    userId = dbHelper.InsertData("Users", new[] { "Login", "Password" }, new object[] { _Login, hashedPassword });
 
-                        userId = Convert.ToInt32(insertCommand.ExecuteScalar());
-
-                    }
-
-                    string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+                    string userSpecificFolderPath = Path.Combine(GetUserFolderPath(), $"{userId}_ID_User");
                     Directory.CreateDirectory(userSpecificFolderPath);
 
-                    string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
-                    //DatabaseHelper.CreateDatabase(corporationDbPath, "corporationTable", "ID INTEGER PRIMARY KEY, JSON_corporation TEXT,UserId INTEGER,FOREIGN KEY(UserId) REFERENCES Users(Id)");
-                    DatabaseHelper.CreateDatabase(corporationDbPath, "corporationTable", "ID INTEGER PRIMARY KEY, JSON_corporation TEXT,UserId INTEGER");
+                    //string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
+                    //dbHelper.CreateDatabase(corporationDbPath, "corporationTable", "ID INTEGER PRIMARY KEY, JSON_corporation TEXT, UserId INTEGER");
 
-                    string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
-                    //DatabaseHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT,  UserId INTEGER, FOREIGN KEY(UserId) REFERENCES Users(Id)");
-                    DatabaseHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT,  UserId INTEGER");
-                    connection.Close();
+                    //string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
+                    //dbHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT, UserId INTEGER");
+
                     return userId;
                 }
             }
@@ -130,43 +86,29 @@ namespace KursCode
 
         public int Enter()
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            Directory.CreateDirectory(userFolderPath);
-
-            using (var connection = new SqliteConnection($"Data Source={Path.Combine(userFolderPath, "userdata.db")}"))
+            using (dbHelper)
             {
-                connection.Open();
-                using (SqliteCommand cmd = new SqliteCommand("SELECT Id, Password FROM Users WHERE Login=@Login", connection))
+                List<Dictionary<string, object>> searchResults = dbHelper.SearchData("Users", new[] { "Id", "Password" }, $"Login = '{_Login}'");
+
+                if (searchResults.Count > 0)
                 {
-                    cmd.Parameters.AddWithValue("@Login", _Login);
+                    string storedHashedPassword = searchResults[0]["Password"] as string;
+                    userId = Convert.ToInt32(searchResults[0]["Id"]);
 
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    if (BCrypt.Net.BCrypt.Verify(_Password, storedHashedPassword))
                     {
-                        if (reader.Read())
-                        {
-                            string storedHashedPassword = reader["Password"] as string;
-                            userId = reader.GetInt32(reader.GetOrdinal("Id"));
-
-                            if (BCrypt.Net.BCrypt.Verify(_Password, storedHashedPassword))
-                            {
-                                Console.WriteLine("Логин и пароль совпадают.");
-                                return userId;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Пароль не совпадет.");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Пользователь не найден.");
-                        }
+                        Console.WriteLine("Логин и пароль совпадают.");
+                        return userId;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Пароль не совпадает.");
                     }
                 }
-                connection.Close();
+                else
+                {
+                    Console.WriteLine("Пользователь не найден.");
+                }
             }
 
             return -1;

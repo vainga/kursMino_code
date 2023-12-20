@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KursCode.MVVM.View.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1100">
+             d:DesignHeight="1200" d:DesignWidth="1100">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -16,23 +16,72 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="20*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="DarkBlue" Text="Фамилия Имя Отчество" FontSize="40" Margin="45,0,0,0" FontWeight="DemiBold"></TextBlock>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="DarkBlue" Text="Фамилия Имя" FontSize="40" Margin="45,0,0,0" FontWeight="DemiBold"></TextBlock>
             </ScrollViewer>
             <Border Background="Gray" Grid.Row="0" VerticalAlignment="Bottom" Height="1" Margin="30,0,30,0"></Border>
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.4*"></RowDefinition>
+                        <RowDefinition Height="1.3*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+                        <RowDefinition Height="0*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+                        <RowDefinition Height="0*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+                        <RowDefinition Height="0*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+                        <RowDefinition Height="0*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Foreground="DarkBlue" Text="Общие сведения:" VerticalAlignment="Bottom" Margin="30,0,0,0" FontSize="20" FontWeight="DemiBold"></TextBlock>
+                    <TextBlock Grid.Row="0" Foreground="DarkBlue" Text="Личные сведения:" VerticalAlignment="Bottom" Margin="30,0,0,0" FontSize="20" FontWeight="DemiBold"></TextBlock>
                     <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="5.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Пол: " FontSize="18" Margin="0,0,3,0" FontWeight="DemiBold"></TextBlock>
+                        <ScrollViewer Grid.Column="1" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Мужской" FontSize="18" Margin="5,0,0,0"></TextBlock>
+                        </ScrollViewer>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Возраст: " FontSize="18" Margin="0,0,3,0" FontWeight="DemiBold"></TextBlock>
+                        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="18" FontSize="18" Margin="5,0,0,0"></TextBlock>
+                        </ScrollViewer>
+                        <TextBlock Grid.Column="0" Grid.Row="2" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Локация: " FontSize="18" Margin="0,0,2,0" FontWeight="DemiBold"></TextBlock>
+                        <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="г.Новосибирск " FontSize="18" Margin="5,0,0,0"></TextBlock>
+                        </ScrollViewer>
+                        <TextBlock Grid.Column="0" Grid.Row="3" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Образование: " FontSize="18" Margin="0,0,0,0" FontWeight="DemiBold"></TextBlock>
+                        <ScrollViewer Grid.Column="1" Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Новосибирский государственный технический университет" FontSize="18" Margin="5,0,0,0"></TextBlock>
+                        </ScrollViewer>
+                        <TextBlock Grid.Column="0" Grid.Row="4" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Гражданство: " FontSize="18" Margin="0,0,0,0" FontWeight="DemiBold"></TextBlock>
+                        <ScrollViewer Grid.Column="1" Grid.Row="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Российская Федерация" FontSize="18" Margin="5,0,0,0"></TextBlock>
+                        </ScrollViewer>
+                        <TextBlock Grid.Column="0" Grid.Row="5" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Опыт работы: " FontSize="18" Margin="0,0,0,0" FontWeight="DemiBold"></TextBlock>
+                        <ScrollViewer Grid.Column="1" Grid.Row="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="2" FontSize="18" Margin="5,0,0,0"></TextBlock>
+                        </ScrollViewer>
+                    </Grid>
+                    <TextBlock Grid.Row="3" Foreground="DarkBlue" Text="Пожелания:" VerticalAlignment="Bottom" Margin="30,0,0,0" FontSize="20" FontWeight="DemiBold"></TextBlock>
+                    <Grid Grid.Row="4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
@@ -44,29 +93,69 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="5.5*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Пол: " FontSize="18" Margin="0,0,3,0" FontWeight="DemiBold"></TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Занятость: " FontSize="18" Margin="0,0,3,0" FontWeight="DemiBold">
+                        </TextBlock>
                         <ScrollViewer Grid.Column="1" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Мужской" FontSize="18" Margin="5,0,0,0"></TextBlock>
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Полная" FontSize="18" Margin="5,0,0,0"></TextBlock>
                         </ScrollViewer>
-                        <TextBlock Grid.Column="0" Grid.Row="1" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Возраст: " FontSize="18" Margin="0,0,3,0" FontWeight="DemiBold"></TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="График работы: " FontSize="18" Margin="0,0,3,0" FontWeight="DemiBold">
+                        </TextBlock>
                         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="18" FontSize="18" Margin="5,0,0,0"></TextBlock>
-                        </ScrollViewer>
-                        <TextBlock Grid.Column="0" Grid.Row="2" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Локация: " FontSize="18" Margin="0,0,2,0" FontWeight="DemiBold"></TextBlock>
-                        <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="г.Новосибирск " FontSize="18" Margin="5,0,0,0"></TextBlock>
-                        </ScrollViewer>
-                        <TextBlock Grid.Column="0" Grid.Row="3" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Образование: " FontSize="18" Margin="10,0,0,0" FontWeight="DemiBold"></TextBlock>
-                        <ScrollViewer Grid.Column="1" Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Новосибирский государственный технический университет" FontSize="18" Margin="5,0,0,0"></TextBlock>
-                        </ScrollViewer>
-                        <TextBlock Grid.Column="0" Grid.Row="4" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Гражданство: " FontSize="18" Margin="10,0,0,0" FontWeight="DemiBold"></TextBlock>
-                        <ScrollViewer Grid.Column="1" Grid.Row="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Российская Федерация" FontSize="18" Margin="5,0,0,0"></TextBlock>
+                            <TextBlock Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Полный день" FontSize="18" Margin="5,0,0,0"></TextBlock>
                         </ScrollViewer>
                     </Grid>
+                    <TextBlock Grid.Row="6" Foreground="DarkBlue" Text="Навыки:" VerticalAlignment="Bottom" Margin="30,0,0,0" FontSize="20" FontWeight="DemiBold"></TextBlock>
+                    <ScrollViewer Grid.Row="7" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <Grid>
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                    </ScrollViewer>
+                    <TextBlock Grid.Row="9" Foreground="DarkBlue" Text="Личные качества:" VerticalAlignment="Bottom" Margin="30,0,0,0" FontSize="20" FontWeight="DemiBold"></TextBlock>
+                    <ScrollViewer Grid.Row="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </ScrollViewer>
+                    <TextBlock Grid.Row="12" Foreground="DarkBlue" Text="О человеке:" VerticalAlignment="Bottom" Margin="30,0,0,0" FontSize="20" FontWeight="DemiBold"></TextBlock>
                 </Grid>
             </ScrollViewer>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="9*"></ColumnDefinition>
+                    <ColumnDefinition Width="2.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1"></Button>
+            </Grid>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -95,20 +184,9 @@
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock Foreground="DarkBlue" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Зарплатные ожидания:" FontSize="18"></TextBlock>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="0.3*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" HorizontalAlignment="Right" VerticalAlignment="Center" Text="15000" FontSize="18" Margin="0,0,30,0"></TextBlock>
-                        </ScrollViewer>
-                        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" HorizontalAlignment="Center" VerticalAlignment="Center" Text="-" FontSize="18"></TextBlock>
-                        </ScrollViewer>
+                    <Grid Grid.Row="2" HorizontalAlignment="Center">
                         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <TextBlock Foreground="DarkBlue" HorizontalAlignment="Left" VerticalAlignment="Center" Text="30000" FontSize="18" Margin="30,0,0,0"></TextBlock>
+                            <TextBlock Foreground="DarkBlue" HorizontalAlignment="Left" VerticalAlignment="Center" Text="30000" FontSize="18" Margin="0,0,0,0"></TextBlock>
                         </ScrollViewer>
                     </Grid>
                 </Grid>

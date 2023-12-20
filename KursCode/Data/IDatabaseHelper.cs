@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
 
-
-namespace KursCode
+namespace KursCode.Data
 {
-    internal interface IUser 
+    interface IDatabaseHelper
     {
-        int Registration();
-        int Enter();
+        void CreateDatabase(string dbPath, string tableName, string columns);
+
     }
 }

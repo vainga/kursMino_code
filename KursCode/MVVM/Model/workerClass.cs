@@ -3,6 +3,7 @@ using Microsoft.Data.Sqlite;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
+using KursCode.Data;
 
 
 namespace Clients
@@ -23,12 +24,21 @@ namespace Clients
         [JsonPropertyName("_Salary_need")]
         public int _Salary_need { get;  private set; }
 
+        [JsonInclude]
+        [JsonPropertyName("_UserId")]
+        public static int _UserId { get; private set; }
+        public User user { get; set; }
+
+        DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
+
+
         public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>())
         {
             _WorkerName = "";
             _Surname = "";
             _Work_experience = 0;
             _Salary_need = 0;
+            _UserId = user.userId;
         }
 
         private workerClass(string workerName,string surname, string post, string email, string city, string description,bool distant, List<string> personal_qualities, List<string> skills, int work_experience, int salary, int salary_need) 
@@ -38,16 +48,19 @@ namespace Clients
             _Surname = surname;
             _Work_experience = work_experience;
             _Salary_need = salary_need;
+            _UserId = user.userId;
         }
 
-        public void EnterInformation()
+        private static string GetWorkerDBPath()
         {
-            Console.WriteLine("Введите информацию о соискателе: ");
-            Console.Write("Имя: ");                 _WorkerName = Console.ReadLine();
-            Console.Write("Фамлия: ");              _Surname = Console.ReadLine();
-            Console.Write("Опыт работы: ");         _Work_experience = int.Parse(Console.ReadLine());
-            Console.Write("Желаемая зарплата: ");   _Salary_need = int.Parse(Console.ReadLine());
-            base.EnterInformation();
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string parentPath = Directory.GetParent(executablePath).FullName;
+            string dataFolderPath = Path.Combine(parentPath, "Data");
+            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{_UserId}_ID_User");
+            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{_UserId}_ID_workersndata.db");
+
+            return workerDbPath;
         }
 
         private string ToJson()
@@ -60,126 +73,62 @@ namespace Clients
             return JsonSerializer.Deserialize<workerClass>(json);
         }
 
-        public override void AddData(int userId)
+        public  void AddData()
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
+            string corpJson = this.ToJson();
 
-            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            using (dbHelper)
             {
-                connection.Open();
-                string entityJson = this.ToJson();
-                string insertQuery = $"INSERT INTO workerTable (JSON_worker, UserId) VALUES ('{entityJson}', {userId})";
-                using (SqliteCommand insertCmd = new SqliteCommand(insertQuery, connection))
-                {
-                    insertCmd.ExecuteNonQuery();
-                }
-                connection.Close();
+                dbHelper.InsertData("workerTable", new[] { "JSON_worker", "UserId" }, new object[] { corpJson, _UserId });
             }
         }
 
-        public override List<string> ReadAllJsonFromDatabase(int userId)
+        public List<string> ReadAllJsonFromDatabase()
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
             string query = "SELECT JSON_worker FROM workerTable;";
 
+            List<string> jsonStrings;
 
-            List<string> jsonStrings = new List<string>();
-
-            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            using (dbHelper)
             {
-                connection.Open();
+                string condition = $"UserId = {_UserId}";
 
-                using (SqliteCommand command = new SqliteCommand(query, connection))
-                {
-                    using (SqliteDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string jsonString = reader["JSON_worker"].ToString();
-                            jsonStrings.Add(jsonString);
-                        }
-                    }
-                }
+                string[] columns = { "JSON_worker" };
 
-                connection.Close();
+                List<Dictionary<string, object>> results = dbHelper.SearchData("workerTable", columns, condition);
+
+                jsonStrings = results
+                    .Select(result => result.TryGetValue("JSON_worker", out object jsonValue) ? jsonValue.ToString() : null)
+                    .Where(jsonString => jsonString != null)
+                    .ToList();
             }
 
             return jsonStrings;
         }
 
-        public void WriteBase(List<string> jsonStrings)
+        public int GetId(string workerJson)
         {
-            foreach (var jsonString in jsonStrings)
-            {
-                workerClass worker = FromJson(jsonString);
-                Console.WriteLine($"Name: {worker._WorkerName} {worker._Surname}");
-                Console.WriteLine($"Work_experience: {worker._Work_experience}");
-                Console.WriteLine($"Salary need: {worker._Salary_need}");
-                Console.WriteLine($"Post: {worker._Post}");
-                Console.WriteLine($"Email: {worker._Email}");
-                Console.WriteLine($"City: {worker._City}");
-                Console.WriteLine($"Description: {worker._Description}");
-                foreach (var personal_quality in worker._Personal_qualities)
-                    Console.WriteLine($"{personal_quality}");
-                foreach (var skill in worker._Skills)
-                    Console.WriteLine($"{skill}");
-            }
-        }
+            string tableName = "workerTable";
+            string[] columns = { "JSON_worker", "Id" };
+            string condition = $"JSON_worker = {workerJson}";
 
-        public override int GetId(int userId, string workerJson)
-        {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
-
-            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            using (dbHelper)
             {
-                connection.Open();
-                using (SqliteCommand cmd = new SqliteCommand("SELECT JSON_worker, Id FROM workerTable WHERE JSON_worker=@JSON_worker", connection))
+                List<Dictionary<string, object>> searchResults = dbHelper.SearchData(tableName, columns, condition);
+                if (searchResults.Count > 0)
                 {
-                    cmd.Parameters.AddWithValue("@JSON_worker", workerJson);
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return reader.GetInt32(reader.GetOrdinal("Id"));
-                    }
-                    connection.Close();
+                    return Convert.ToInt32(searchResults[0]["Id"]);
                 }
             }
+
             return -1;
         }
 
-        public override void RemoveData(int userId, int itemIdToDelete)
+        public void RemoveData(int itemIdToDelete)
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
-
-            using (var connection = new SqliteConnection($"Data Source={workerDbPath}"))
+            using (dbHelper)
             {
-                connection.Open();
-                using (SqliteCommand command = new SqliteCommand("DELETE FROM workerTable WHERE Id = @ItemId", connection))
-                {
-                    command.Parameters.AddWithValue("@ItemId", itemIdToDelete);
-                    command.ExecuteNonQuery();
-                }
-                connection.Close();
+                dbHelper.RemoveData(itemIdToDelete);
             }
         }
     }

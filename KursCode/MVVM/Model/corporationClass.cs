@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using System.IO;
+using KursCode.Data;
 
 
 namespace Clients
@@ -28,6 +29,14 @@ namespace Clients
         [JsonPropertyName("_Salary")]
         public int _Salary { get; private set; }
 
+        [JsonInclude]
+        [JsonPropertyName("_UserId")]
+        public static int _UserId { get; private set; }
+        public User user { get; set; }
+
+        DatabaseHelper dbHelper = new DatabaseHelper(GetCorporationDBPath());
+
+
         public corporationClass() : base("", "", "", "", false, new List<string>(), new List<string>())
         {
             _CorporationName = "";
@@ -35,6 +44,7 @@ namespace Clients
             _Work_experience_max = 0;
             _Work_experience_need = false;
             _Salary = 0;
+            _UserId = user.userId;
         }
 
         [JsonConstructor]
@@ -47,24 +57,19 @@ namespace Clients
             _Work_experience_min = work_experience_min;
             _Work_experience_need = work_experience_need;
             _Salary = salary;
+            _UserId = user.userId;
         }
-        //Перенести во ViewModel
-        public void EnterInformation()
+
+        private static string GetCorporationDBPath()
         {
-            int x = 0;
-            Console.WriteLine("Введите информацию о работодателе: ");
-            Console.Write("Название: "); _CorporationName = Console.ReadLine();
-            Console.Write("Нужен ли опыт работы: "); x = int.Parse(Console.ReadLine());
-            if (x == 1)
-            {
-                _Work_experience_need = true;
-                Console.Write("Нижняя граница опыта работы: "); _Work_experience_min = int.Parse(Console.ReadLine());
-                Console.Write("Верхняя граница опыта работы: "); _Work_experience_max = int.Parse(Console.ReadLine());
-            }
-            else
-                _Work_experience_need = false;
-            Console.Write("Предлагаемая зарплата: "); _Salary = int.Parse(Console.ReadLine());
-            base.EnterInformation();
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string parentPath = Directory.GetParent(executablePath).FullName;
+            string dataFolderPath = Path.Combine(parentPath, "Data");
+            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{_UserId}_ID_User");
+            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{_UserId}_ID_corporationsdata.db");
+
+            return userSpecificFolderPath;
         }
 
         private string ToJson()
@@ -77,129 +82,66 @@ namespace Clients
             return JsonSerializer.Deserialize<corporationClass>(json);
         }
 
-        public override void AddData(int userId)
+        public void AddData()
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
+            string corpJson = this.ToJson();
 
-
-            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            using (dbHelper)
             {
-                connection.Open();
-                string corpJson = this.ToJson();
-                string insertQuery = $"INSERT INTO corporationTable (JSON_corporation, UserId) VALUES ('{corpJson}', {userId})";
-                using (SqliteCommand insertCmd = new SqliteCommand(insertQuery, connection))
-                {
-                    insertCmd.ExecuteNonQuery();
-                }
-                connection.Close();
+                dbHelper.InsertData("corporationTable", new[] { "JSON_corporation", "UserId" },new object[] { corpJson, _UserId});
             }
+
         }
 
-        public override List<string> ReadAllJsonFromDatabase(int userId)
+        public List<string> ReadAllJsonFromDatabase()
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
             string query = "SELECT JSON_corporation FROM corporationTable;";
 
+            List<string> jsonStrings;
 
-            List<string> jsonStrings = new List<string>();
-
-            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            using (dbHelper)
             {
-                connection.Open();
+                string condition = $"UserId = {_UserId}";
 
-                using (SqliteCommand command = new SqliteCommand(query, connection))
-                {
-                    using (SqliteDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string jsonString = reader["JSON_corporation"].ToString();
-                            jsonStrings.Add(jsonString);
-                        }
-                    }
-                }
+                string[] columns = { "JSON_corporation" };
 
-                connection.Close();
+                List<Dictionary<string, object>> results = dbHelper.SearchData("corporationTable", columns, condition);
+
+                jsonStrings = results
+                    .Select(result => result.TryGetValue("JSON_corporation", out object jsonValue) ? jsonValue.ToString() : null)
+                    .Where(jsonString => jsonString != null)
+                    .ToList();
             }
 
             return jsonStrings;
         }
 
-        public void WriteBase(List<string> jsonStrings)
+        public int GetId(string corporationJson)
         {
-            foreach (var jsonString in jsonStrings)
-            {
-                corporationClass corp = FromJson(jsonString);
-                Console.WriteLine($"Corporation: {corp._CorporationName}");
-                Console.WriteLine($"Work_experience_min: {corp._Work_experience_min}");
-                Console.WriteLine($"Work_experience_max: {corp._Work_experience_max}");
-                Console.WriteLine($"Salary: {corp._Salary}");
-                Console.WriteLine($"Post: {corp._Post}");
-                Console.WriteLine($"Email: {corp._Email}");
-                Console.WriteLine($"City: {corp._City}");
-                Console.WriteLine($"Description: {corp._Description}");
-                foreach (var personal_quality in corp._Personal_qualities)
-                    Console.WriteLine($"{personal_quality}");
-                foreach (var skill in corp._Skills)
-                    Console.WriteLine($"{skill}");
-            }
-        }
+            string tableName = "corporationTable";
+            string[] columns = { "JSON_corporation", "Id" };
+            string condition = $"JSON_corporation = @{corporationJson}";
 
-        public override int GetId(int userId, string corporationJson)
-        {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
-
-            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            using (dbHelper)
             {
-                connection.Open();
-                using (SqliteCommand cmd = new SqliteCommand("SELECT JSON_corporation, Id FROM corporationTable WHERE JSON_corporation=@JSON_corporation", connection))
+                List<Dictionary<string, object>> searchResults = dbHelper.SearchData(tableName, columns, condition);
+                if (searchResults.Count > 0)
                 {
-                    cmd.Parameters.AddWithValue("@JSON_corporation", corporationJson);
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return reader.GetInt32(reader.GetOrdinal("Id"));
-                    }
-                    connection.Close();
+                    return Convert.ToInt32(searchResults[0]["Id"]);
                 }
             }
+
             return -1;
         }
 
-        public override void RemoveData(int userId, int itemIdToDelete)
+        public void RemoveData(int itemIdToDelete)
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
-
-            using (var connection = new SqliteConnection($"Data Source={corporationDbPath}"))
+            using(dbHelper)
             {
-                connection.Open();
-                using (SqliteCommand command = new SqliteCommand("DELETE FROM corporationTable WHERE Id = @ItemId", connection))
-                {
-                    command.Parameters.AddWithValue("@ItemId", itemIdToDelete);
-                    command.ExecuteNonQuery();
-                }
-                connection.Close();
+                dbHelper.RemoveData(itemIdToDelete);
             }
         }
+
+
     }
 }
