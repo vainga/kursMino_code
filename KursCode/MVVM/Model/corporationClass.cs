@@ -32,7 +32,7 @@ namespace Clients
         [JsonInclude]
         [JsonPropertyName("_UserId")]
         public static int _UserId { get; private set; }
-        public User user { get; set; }
+        public IUser user { get; set; }
 
         DatabaseHelper dbHelper = new DatabaseHelper(GetCorporationDBPath());
 

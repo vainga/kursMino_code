@@ -9,7 +9,7 @@ using System.IO;
 
 namespace KursCode.Data
 {
-    public class DatabaseHelper : IDisposable
+    public class DatabaseHelper : IDatabaseHelper
     {
         private string connectionString;
         private bool disposed = false;

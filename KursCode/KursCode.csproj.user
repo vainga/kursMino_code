@@ -2,13 +2,19 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="MVVM\View\EnterWindow.xaml.cs">
+    <Compile Update="MVVM\View\Windows\Dialog\AddWorker.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MVVM\View\MainWindow.xaml.cs">
+    <Compile Update="MVVM\View\Windows\Main\EnterWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MVVM\View\Pages\ClientsPage.xaml.cs">
+    <Compile Update="MVVM\View\Windows\Main\MainWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MVVM\View\Pages\VacancyPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MVVM\View\Pages\WorkerssPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MVVM\View\UserControls\ClientsUserControlMax.xaml.cs">
@@ -19,13 +25,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="MVVM\View\EnterWindow.xaml">
+    <Page Update="MVVM\View\Windows\Dialog\AddWorker.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MVVM\View\MainWindow.xaml">
+    <Page Update="MVVM\View\Windows\Main\EnterWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MVVM\View\Pages\ClientsPage.xaml">
+    <Page Update="MVVM\View\Windows\Main\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MVVM\View\Pages\VacancyPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MVVM\View\Pages\WorkerssPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MVVM\View\UserControls\ClientsUserControlMax.xaml">

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 C:\Users\Vain\Desktop\KursCode\KursCode\App.xaml
-5674715844
+7-520857783
 
-17-192915000
+24-530085953
 206341973594
-MVVM\View\EnterWindow.xaml;MVVM\View\MainWindow.xaml;MVVM\View\Pages\ClientsPage.xaml;MVVM\View\UserControls\ClientsUserControlMax.xaml;MVVM\View\UserControls\ClientsUserControlMini.xaml;
+MVVM\View\Pages\VacancyPage.xaml;MVVM\View\Pages\WorkerssPage.xaml;MVVM\View\UserControls\ClientsUserControlMax.xaml;MVVM\View\UserControls\ClientsUserControlMini.xaml;MVVM\View\Windows\Dialog\AddWorker.xaml;MVVM\View\Windows\Main\EnterWindow.xaml;MVVM\View\Windows\Main\MainWindow.xaml;
 
 True
 
