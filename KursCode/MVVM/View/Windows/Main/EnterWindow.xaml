@@ -99,7 +99,7 @@
                     </Grid>
                 </Border>
             </Grid>
-            <Button Grid.Row="5" Content="Войти" Width="250" Height="45" Foreground="White" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontFamily="Arial" FontWeight="Light" Margin="0,25,0,0" Cursor="Arrow" Command="{Binding EnterCommand}">
+            <Button x:Name="EnterButton" Grid.Row="5" Content="{Binding ButtonContent}" Width="250" Height="45" Foreground="White" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="{Binding ButtonContentFontSize}" FontFamily="Arial" FontWeight="Light" Margin="0,25,0,0" Cursor="Arrow" Command="{Binding ButtonCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -124,10 +124,10 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <TextBlock Grid.Row="5" Text="Нет аккаунта?" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="120,-25,0,5" FontFamily="Bahnschrift" FontWeight="UltraLight" FontSize="16" />
-            <TextBlock Grid.Row="5" Text="Зарегистрироваться" Foreground="MidnightBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="230,-25,0,5" FontFamily="Bahnschrift" FontWeight="UltraLight" FontSize="16" ToolTip="Зарегистрироваться" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown">>
+            <TextBlock Grid.Row="5" Text="Нет аккаунта?" Visibility="{Binding SecondTextBlockVisibility}" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="120,-25,0,5" FontFamily="Bahnschrift" FontWeight="UltraLight" FontSize="16" />
+            <TextBlock Grid.Row="5" Text="{Binding TextBlockContent}" Foreground="MidnightBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="230,-25,0,5" FontFamily="Bahnschrift" FontWeight="UltraLight" FontSize="16" ToolTip="{Binding TextBlockContent}" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown">
                 <TextBlock.Style>
-                    <Style TargetType="TextBlock">
+                    <Style TargetType="{x:Type TextBlock}">
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="TextDecorations" Value="Underline"/>

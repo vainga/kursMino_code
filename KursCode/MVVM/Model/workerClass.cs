@@ -30,6 +30,8 @@ namespace Clients
         public IUser user { get; set; }
 
         DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
+        
+        public byte[] PdfFile { get; set; }
 
 
         public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>())
@@ -39,6 +41,7 @@ namespace Clients
             _Work_experience = 0;
             _Salary_need = 0;
             _UserId = user.userId;
+            PdfFile = null;
         }
 
         private workerClass(string workerName,string surname, string post, string email, string city, string description,bool distant, List<string> personal_qualities, List<string> skills, int work_experience, int salary, int salary_need) 

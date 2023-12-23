@@ -18,6 +18,22 @@ namespace KursCode.MVVM.ViewModel
     public class EnterViewModel: INotifyPropertyChanged
     {
         private User user;
+        private string _buttonContent = "Войти";
+        private string _textBlockContent = "Зарегистрироваться";
+        private Visibility _secondTextBlockVisibility = Visibility.Visible;
+        
+        private int defaultFontSize = 24;
+        public int ButtonContentFontSize
+        {
+            get { return ButtonContent == "Зарегистрироваться" ? 20 : defaultFontSize; }
+            set {
+                    if (defaultFontSize != value)
+                    {
+                        defaultFontSize = value;
+                        OnPropertyChanged(nameof(ButtonContentFontSize));
+                    }
+                }
+        }
 
         private string _password;
         public string Password
@@ -43,8 +59,74 @@ namespace KursCode.MVVM.ViewModel
                 } 
         }
 
+        public string ButtonContent
+        {
+            get { return _buttonContent; }
+            set
+            {
+                if (_buttonContent != value)
+                {
+                    _buttonContent = value;
+                    OnPropertyChanged(nameof(ButtonContent));
+                    OnPropertyChanged(nameof(SecondTextBlockVisibility));
+                    OnPropertyChanged(nameof(ButtonContentFontSize));
+                }
+            }
+        }
+
+        public string TextBlockContent
+        {
+            get { return _textBlockContent; }
+            set
+            {
+                if (_textBlockContent != value)
+                {
+                    _textBlockContent = value;
+                    OnPropertyChanged(nameof(TextBlockContent));
+                }
+            }
+        }
+
+        public Visibility SecondTextBlockVisibility
+        {
+            get { return ButtonContent == "Зарегистрироваться" ? Visibility.Collapsed : _secondTextBlockVisibility; }
+            set
+            {
+                if (_secondTextBlockVisibility != value)
+                {
+                    _secondTextBlockVisibility = value;
+                    OnPropertyChanged(nameof(SecondTextBlockVisibility));
+                }
+            }
+        }
+
+        private ICommand _buttonCommand;
         public ICommand RegisterCommand { get; }
         public ICommand EnterCommand { get; }
+
+        public ICommand ButtonCommand
+        {
+            get
+            {
+                if (_buttonCommand == null)
+                {
+                    _buttonCommand = new RelayCommand(ExecuteButtonCommand);
+                }
+                return _buttonCommand;
+            }
+        }
+
+        private void ExecuteButtonCommand()
+        {
+            if (ButtonContent == "Войти")
+            {
+                ExecuteLogin();
+            }
+            else if (ButtonContent == "Зарегистрироваться")
+            {
+                ExecuteRegister();
+            }
+        }
 
         public EnterViewModel()
         {
@@ -55,8 +137,19 @@ namespace KursCode.MVVM.ViewModel
 
         private void ExecuteRegister()
         {
-            bool registerResult = user.Registration(Login, Password);
-            
+            try
+            {
+                bool registerResult = user.Registration(Login, Password);
+                if (registerResult)
+                {
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private bool CanExecuteRegister()
@@ -81,6 +174,20 @@ namespace KursCode.MVVM.ViewModel
         private bool CanExecuteLogin()
         {
             return !string.IsNullOrEmpty(Login) && !string.IsNullOrEmpty(Password);
+        }
+
+        public void ExecuteTextBlockClick()
+        {
+            if (TextBlockContent == "Зарегистрироваться")
+            {
+                TextBlockContent = "Войти";
+                ButtonContent = "Зарегистрироваться";
+            }
+            else if (TextBlockContent == "Войти")
+            {
+                ButtonContent = "Войти";
+                TextBlockContent = "Зарегистрироваться";
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

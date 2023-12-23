@@ -19,8 +19,8 @@ namespace KursCode
     class User : IUser
     {
         public int userId { get; private set; }
-        //private string _Login { get; set; }
-        //private string _Password { get; set; }
+        private string _Login { get;  set; }
+        private string _Password { get; set; }
 
         static string databasePath = Path.Combine(GetUserFolderPath(), "userdata.db");
         IDatabaseHelper dbHelper = new DatabaseHelper(databasePath);
@@ -28,14 +28,14 @@ namespace KursCode
         public User()
         {
             userId = -1;
-            //_Login = "";
-            //_Password = "";
+            _Login = "";
+            _Password = "";
         }
 
         private User(string login, string password)
         {
-            //_Login = login;
-            //_Password = password;
+            _Login = login;
+            _Password = password;
         }
 
         private static string GetUserFolderPath()
@@ -58,30 +58,37 @@ namespace KursCode
         public bool Registration(string login, string password)
         {
             int userId = 0;
-            using(dbHelper)
+            try
             {
-                dbHelper.CreateDatabase(databasePath, "Users", "Id INTEGER PRIMARY KEY, Login TEXT, Password TEXT");
-                string hashedPassword = HashPassword(password);
-                if (!dbHelper.IsValueUnique("Users","Login", login))
+                using(dbHelper)
                 {
-                    Console.WriteLine("Пользователь с таким логином уже существует.");
-                    return false;
+                    dbHelper.CreateDatabase(databasePath, "Users", "Id INTEGER PRIMARY KEY, Login TEXT, Password TEXT");
+                    string hashedPassword = HashPassword(password);
+                    if (!dbHelper.IsValueUnique("Users","Login", login))
+                    {
+                        Console.WriteLine("Пользователь с таким логином уже существует.");
+                        return false;
+                    }
+                    else
+                    {
+                        userId = dbHelper.InsertData("Users", new[] { "Login", "Password" }, new object[] { login, hashedPassword });
+
+                        string userSpecificFolderPath = Path.Combine(GetUserFolderPath(), $"{userId}_ID_User");
+                        Directory.CreateDirectory(userSpecificFolderPath);
+
+                        //string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
+                        //dbHelper.CreateDatabase(corporationDbPath, "corporationTable", "ID INTEGER PRIMARY KEY, JSON_corporation TEXT, UserId INTEGER");
+
+                        //string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
+                        //dbHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT, UserId INTEGER");
+
+                        return true;
+                    }
                 }
-                else
-                {
-                    userId = dbHelper.InsertData("Users", new[] { "Login", "Password" }, new object[] { login, hashedPassword });
-
-                    string userSpecificFolderPath = Path.Combine(GetUserFolderPath(), $"{userId}_ID_User");
-                    Directory.CreateDirectory(userSpecificFolderPath);
-
-                    //string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
-                    //dbHelper.CreateDatabase(corporationDbPath, "corporationTable", "ID INTEGER PRIMARY KEY, JSON_corporation TEXT, UserId INTEGER");
-
-                    //string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
-                    //dbHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT, UserId INTEGER");
-
-                    return true;
-                }
+            }
+            catch(Exception ex)
+            { 
+                throw new ArgumentException("Ошибка регистрации", ex);
             }
         }
 

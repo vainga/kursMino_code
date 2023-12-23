@@ -23,6 +23,8 @@ namespace KursCode.View.Windows.Main
     /// 
 public partial class EnterWindow : Window
     {
+        bool isRegistration = false;
+
         public EnterWindow()
         {
             InitializeComponent();
@@ -73,11 +75,11 @@ public partial class EnterWindow : Window
             }
         }
 
-        private void TextBlock_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        public void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (DataContext is EnterViewModel viewModel)
+            if (sender is TextBlock textBlock && DataContext is EnterViewModel viewModel)
             {
-                viewModel.RegisterCommand.Execute(null);
+                viewModel.ExecuteTextBlockClick();
             }
         }
     }
