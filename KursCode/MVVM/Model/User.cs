@@ -66,9 +66,19 @@ namespace KursCode
                     throw new ArgumentException("Логин не может быть пустым.");
                 }
 
+                if (login.Contains(" "))
+                {
+                    throw new ArgumentException("Логин не может содержать пробелы.");
+                }
+
                 if (string.IsNullOrWhiteSpace(password))
                 {
                     throw new ArgumentException("Пароль не может быть пустым.");
+                }
+
+                if (password.Contains(" "))
+                {
+                    throw new ArgumentException("Пароль не может содержать пробелы.");
                 }
 
                 string userFolderPath = GetUserFolderPath();
@@ -81,6 +91,11 @@ namespace KursCode
                 {
                     string existingJsonData = File.ReadAllText(userDataFilePath);
                     existingUsers = JsonSerializer.Deserialize<List<User>>(existingJsonData);
+
+                    if (existingUsers.Any(u => u._Login == login))
+                    {
+                        throw new ArgumentException("Пользователь с таким логином уже существует.");
+                    }
 
                     nextUserId = existingUsers.Max(u => u.userId) + 1;
                 }
@@ -95,7 +110,6 @@ namespace KursCode
 
                 File.WriteAllText(userDataFilePath, updatedJsonData);
 
-                Console.WriteLine("Пользователь успешно зарегистрирован.");
                 return true;
             }
             catch (Exception ex)
@@ -103,7 +117,6 @@ namespace KursCode
                 throw new ArgumentException(ex.Message, ex);
             }
         }
-
 
         public bool Enter(string login, string password)
         {
@@ -119,25 +132,29 @@ namespace KursCode
                     throw new ArgumentException("Пароль не может быть пустым.");
                 }
 
-                string userFilePath = Path.Combine(GetUserFolderPath(), $"{login}_User.txt");
+                string userFolderPath = GetUserFolderPath();
+                string userDataFilePath = Path.Combine(userFolderPath, "usersdata.json");
 
-                if (!File.Exists(userFilePath))
+                if (!File.Exists(userDataFilePath))
                 {
                     throw new ArgumentException("Пользователь не найден.");
                 }
 
-                string[] userLines = File.ReadAllLines(userFilePath);
-                string storedHashedPassword = userLines[1].Substring("Password: ".Length).Trim();
+                string existingJsonData = File.ReadAllText(userDataFilePath);
+                List<User> existingUsers = JsonSerializer.Deserialize<List<User>>(existingJsonData);
 
-                if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
+                User user = existingUsers.FirstOrDefault(u => u._Login == login);
+
+                if (user != null)
                 {
-                    Console.WriteLine("Логин и пароль совпадают.");
-                    return true;
+                    if (BCrypt.Net.BCrypt.Verify(password, user._Password))
+                    {
+                        Console.WriteLine("Логин и пароль совпадают.");
+                        return true;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
             catch (Exception ex)
             {
