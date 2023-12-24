@@ -12,17 +12,18 @@ namespace KursCode
         public int userId { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Login")]
-        public string _Login { get; set; }
+        public string _Login { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Password")]
-        public string _Password { get; set; }
+        public string _Password { get; private set; }
 
         static string databasePath = Path.Combine(GetUserFolderPath(), "userdata.db");
-        DatabaseHelper dbHelper = new DatabaseHelper(databasePath);
+        //DatabaseHelper dbHelper = new DatabaseHelper(databasePath);
+        private const string FileName = "users.json";
 
         public User()
         {
-            userId = 1;
+            userId = -1;
             _Login = "";
             _Password = "";
         }
@@ -55,8 +56,6 @@ namespace KursCode
             return BCrypt.Net.BCrypt.HashPassword(password, salt);
         }
 
-        private const string FileName = "users.json";
-
         public bool Registration(string login, string password)
         {
             try
@@ -84,31 +83,22 @@ namespace KursCode
                 string userFolderPath = GetUserFolderPath();
                 string userDataFilePath = Path.Combine(userFolderPath, "usersdata.json");
 
-                List<User> existingUsers = new List<User>();
-                int nextUserId = 1; // Default starting userId
+                DatabaseHelper dbHelper = new DatabaseHelper(userDataFilePath);
 
-                if (File.Exists(userDataFilePath))
+                List<User> existingUsers = dbHelper.GetAllEntities<User>(userDataFilePath);
+
+                if (!dbHelper.IsValueUnique<User>(u => u._Login == login, existingUsers))
                 {
-                    string existingJsonData = File.ReadAllText(userDataFilePath);
-                    existingUsers = JsonSerializer.Deserialize<List<User>>(existingJsonData);
-
-                    if (existingUsers.Any(u => u._Login == login))
-                    {
-                        throw new ArgumentException("Пользователь с таким логином уже существует.");
-                    }
-
-                    nextUserId = existingUsers.Max(u => u.userId) + 1;
+                    throw new ArgumentException("Пользователь с таким логином уже существует.");
                 }
+
+                int nextUserId = dbHelper.GetNextEntityId<User>(u => u.userId, existingUsers);
 
                 userId = nextUserId;
                 _Login = login;
                 _Password = HashPassword(password);
 
-                existingUsers.Add(this);
-
-                string updatedJsonData = JsonSerializer.Serialize(existingUsers);
-
-                File.WriteAllText(userDataFilePath, updatedJsonData);
+                dbHelper.SaveEntityToFile<User>(this, existingUsers);
 
                 return true;
             }
@@ -135,13 +125,9 @@ namespace KursCode
                 string userFolderPath = GetUserFolderPath();
                 string userDataFilePath = Path.Combine(userFolderPath, "usersdata.json");
 
-                if (!File.Exists(userDataFilePath))
-                {
-                    throw new ArgumentException("Пользователь не найден.");
-                }
+                DatabaseHelper dbHelper = new DatabaseHelper(userDataFilePath);
 
-                string existingJsonData = File.ReadAllText(userDataFilePath);
-                List<User> existingUsers = JsonSerializer.Deserialize<List<User>>(existingJsonData);
+                List<User> existingUsers = dbHelper.GetAllEntities<User>(userDataFilePath);
 
                 User user = existingUsers.FirstOrDefault(u => u._Login == login);
 
@@ -149,8 +135,11 @@ namespace KursCode
                 {
                     if (BCrypt.Net.BCrypt.Verify(password, user._Password))
                     {
-                        Console.WriteLine("Логин и пароль совпадают.");
                         return true;
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Пароль введен неправильно.");
                     }
                 }
 
