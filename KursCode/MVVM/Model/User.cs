@@ -1,34 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KursCode.Data;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Data.Sqlite;
-using KursCode.Data;
-using BCrypt.Net;
-using Clients;
-using System.Net.Http.Json;
-using System.IO;
-using System.Security;
-using System.Configuration;
-using System.Runtime.ExceptionServices;
 
 namespace KursCode
 {
     class User : IUser
     {
+        [JsonInclude]
+        [JsonPropertyName("UserId")]
         public int userId { get; private set; }
-        private string _Login { get;  set; }
-        private string _Password { get; set; }
+        [JsonInclude]
+        [JsonPropertyName("Login")]
+        public string _Login { get; set; }
+        [JsonInclude]
+        [JsonPropertyName("Password")]
+        public string _Password { get; set; }
 
         static string databasePath = Path.Combine(GetUserFolderPath(), "userdata.db");
         DatabaseHelper dbHelper = new DatabaseHelper(databasePath);
 
         public User()
         {
-            userId = -1;
+            userId = 1;
             _Login = "";
             _Password = "";
         }
@@ -50,11 +44,18 @@ namespace KursCode
             return userFolderPath;
         }
 
+        private string ToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
         private string HashPassword(string password)
         {
             string salt = BCrypt.Net.BCrypt.GenerateSalt(6);
             return BCrypt.Net.BCrypt.HashPassword(password, salt);
         }
+
+        private const string FileName = "users.json";
 
         public bool Registration(string login, string password)
         {
@@ -65,36 +66,36 @@ namespace KursCode
                     throw new ArgumentException("Логин не может быть пустым.");
                 }
 
-                if (login.Contains(" "))
-                {
-                    throw new ArgumentException("Логин не может содержать пробелы.");
-                }
-
                 if (string.IsNullOrWhiteSpace(password))
                 {
                     throw new ArgumentException("Пароль не может быть пустым.");
                 }
 
-                if (password.Contains(" "))
+                string userFolderPath = GetUserFolderPath();
+                string userDataFilePath = Path.Combine(userFolderPath, "usersdata.json");
+
+                List<User> existingUsers = new List<User>();
+                int nextUserId = 1; // Default starting userId
+
+                if (File.Exists(userDataFilePath))
                 {
-                    throw new ArgumentException("Пароль не может содержать пробелы.");
+                    string existingJsonData = File.ReadAllText(userDataFilePath);
+                    existingUsers = JsonSerializer.Deserialize<List<User>>(existingJsonData);
+
+                    nextUserId = existingUsers.Max(u => u.userId) + 1;
                 }
 
-                string hashedPassword = HashPassword(password);
+                userId = nextUserId;
+                _Login = login;
+                _Password = HashPassword(password);
 
-                string userFilePath = Path.Combine(GetUserFolderPath(), $"{login}_User.txt");
+                existingUsers.Add(this);
 
-                if (File.Exists(userFilePath))
-                {
-                    return false; 
-                }
+                string updatedJsonData = JsonSerializer.Serialize(existingUsers);
 
-                using (StreamWriter writer = File.CreateText(userFilePath))
-                {
-                    writer.WriteLine($"Login: {login}");
-                    writer.WriteLine($"Password: {hashedPassword}");
-                }
+                File.WriteAllText(userDataFilePath, updatedJsonData);
 
+                Console.WriteLine("Пользователь успешно зарегистрирован.");
                 return true;
             }
             catch (Exception ex)
@@ -102,6 +103,7 @@ namespace KursCode
                 throw new ArgumentException(ex.Message, ex);
             }
         }
+
 
         public bool Enter(string login, string password)
         {

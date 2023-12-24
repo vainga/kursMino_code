@@ -141,7 +141,7 @@
                         <TextBlock Grid.Column="0" Text="Опыт работы:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,7,9,0"/>
                         <Border Grid.Column="1" Background="#FFF4FFFF" Height="40" VerticalAlignment="Top" CornerRadius="15">
                             <Grid>
-                                <TextBox materialDesign:HintAssist.Hint="5" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
+                                <TextBox materialDesign:HintAssist.Hint="5" Text="{Binding WorkExperience}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
                                 <Border Height="1" Background="Gray" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                             </Grid>
                         </Border>
@@ -156,7 +156,7 @@
                         <TextBlock Grid.Column="0" Text="Возраст:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,7,9,0"/>
                         <Border Grid.Column="1" Background="#FFF4FFFF" Height="40" VerticalAlignment="Top" CornerRadius="15">
                             <Grid>
-                                <TextBox materialDesign:HintAssist.Hint="18" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
+                                <TextBox materialDesign:HintAssist.Hint="18" Text="{Binding Age}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
                                 <Border Height="1" Background="Gray" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                             </Grid>
                         </Border>
@@ -170,9 +170,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Гражданство:" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150"/>
-                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue" >
-                                        <ComboBoxItem Content="Российская федерация"/>
-                                        <ComboBoxItem Content="Другое"/>
+                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue"  ItemsSource="{Binding AvailableCitizenships}" SelectedItem="{Binding SelectedCitizenship}">
                                     </ComboBox>
                                 </Grid>
                             </materialDesign:Card>

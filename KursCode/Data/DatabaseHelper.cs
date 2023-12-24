@@ -1,23 +1,63 @@
-﻿using Microsoft.Data.Sqlite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using System.IO;
+using System.Xml;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace KursCode.Data
 {
-    public class DatabaseHelper
+    public class JsonArray
+    {
+        private readonly List<JsonElement> elements;
+
+        public JsonArray(List<JsonElement> elements)
+        {
+            this.elements = elements;
+        }
+
+        public override string ToString()
+        {
+            var jsonArray = new JsonArray(elements);
+
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
+                {
+                    jsonArray.WriteTo(writer);
+                }
+
+                return Encoding.UTF8.GetString(stream.ToArray());
+            }
+        }
+
+        public void WriteTo(Utf8JsonWriter writer)
+        {
+            writer.WriteStartArray();
+
+            foreach (var element in elements)
+            {
+                element.WriteTo(writer);
+            }
+
+            writer.WriteEndArray();
+        }
+    }
+
+
+    public class DatabaseHelper : IDisposable
     {
         private bool disposed = false;
 
-        private readonly string dbPath;
+        private static string connectionString;
 
-        public DatabaseHelper(string dbPath)
+        public DatabaseHelper(string filePath)
         {
-            this.dbPath = dbPath;
+            connectionString = filePath;
         }
 
         public void Dispose()
@@ -38,143 +78,99 @@ namespace KursCode.Data
             }
         }
 
-        public void CreateDatabase(string dbPath, string tableName, string columns)
+        public void CreateJsonFile(string path, string filename, string[] keys)
         {
             try
             {
-                using (FileStream fileStream = File.Create(dbPath))
-                {
-                    using (StreamWriter writer = new StreamWriter(fileStream))
-                    {
-                        writer.WriteLine(columns);
-                    }
-                }
-            }
-            catch (IOException ioex)
-            {
-            }
-            catch (Exception ex)
-            {
-            }
-        }
+                var data = new { Keys = keys };
 
+                string jsonContent = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
 
-        public bool IsValueUnique(string tableName, string columnName, string value)
-        {
-            bool isUnique = false;
+                string fullPath = Path.Combine(path, filename);
 
-            try
-            {
-                string[] allLines = File.ReadAllLines(dbPath);
+                File.WriteAllText(fullPath, jsonContent);
 
-                int columnIndex = Array.IndexOf(allLines[0].Split(','), columnName);
-
-                isUnique = allLines.Skip(1).All(line => line.Split(',')[columnIndex] != value);
-            }
-            catch (IOException ioex)
-            {
+                Console.WriteLine($"JSON файл успешно создан по пути: {fullPath}");
             }
             catch (Exception ex)
             {
-            }
-
-            return isUnique;
-        }
-
-        public class CustomFileManager
-        {
-            private readonly string dbPath;
-
-            public CustomFileManager(string dbPath)
-            {
-                this.dbPath = dbPath;
-            }
-
-            public int InsertData(string tableName, string[] columns, object[] values)
-            {
-                int insertedId = 0;
-
-                try
-                {
-                    using (StreamWriter writer = File.AppendText(dbPath))
-                    {
-                        string dataLine = string.Join(",", values);
-                        writer.WriteLine(dataLine);
-
-                        insertedId = (int)writer.BaseStream.Length;
-                    }
-                }
-                catch (IOException ioex)
-                {
-
-                }
-                catch (Exception ex)
-                {
-
-                }
-                return insertedId;
+                Console.WriteLine($"Ошибка при создании JSON файла: {ex.Message}");
             }
         }
 
-        public List<Dictionary<string, object>> SearchData(string tableName, string[] columns, Func<string[], bool> condition)
-        {
-            List<Dictionary<string, object>> results = new List<Dictionary<string, object>>();
-
-            try
-            {
-                string[] allLines = File.ReadAllLines(dbPath);
-
-                int[] columnIndices = columns.Select(col => Array.IndexOf(allLines[0].Split(','), col)).ToArray();
-
-                foreach (string line in allLines.Skip(1))
-                {
-                    string[] values = line.Split(',');
-
-                    if (condition(values))
-                    {
-                        Dictionary<string, object> row = new Dictionary<string, object>();
-
-                        for (int i = 0; i < columns.Length; i++)
-                        {
-                            row[columns[i]] = values[columnIndices[i]];
-                        }
-
-                        results.Add(row);
-                    }
-                }
-            }
-            catch (IOException ioex)
-            {
-            }
-            catch (Exception ex)
-            {
-            }
-
-            return results;
-        }
-
-        public void RemoveData(int itemIdToDelete)
+        public void InsertJsonStringToFile(string fileName, string jsonStringToInsert)
         {
             try
             {
-                string[] allLines = File.ReadAllLines(dbPath).ToArray();
+                if (!File.Exists(fileName))
+                {
+                    Console.WriteLine($"Файл {fileName} не существует.");
+                    return;
+                }
 
-                int idColumnIndex = Array.IndexOf(allLines[0].Split(','), "Id");
+                string existingJson = File.ReadAllText(fileName);
 
-                IEnumerable<string> remainingLines = allLines
-                    .Where(line => line.Split(',')[idColumnIndex] != itemIdToDelete.ToString());
+                var jsonDocument = JsonDocument.Parse(existingJson).RootElement;
 
-                File.WriteAllLines(dbPath, remainingLines);
-            }
-            catch (IOException ioex)
-            {
+                var newJsonObject = JsonDocument.Parse(jsonStringToInsert).RootElement;
 
+                var jsonArray = jsonDocument.EnumerateArray().ToList();
+
+                jsonArray.Add(newJsonObject);
+
+                var updatedJsonArray = new JsonArray(jsonArray);
+
+                string updatedJsonString = updatedJsonArray.ToString();
+
+                File.WriteAllText(fileName, updatedJsonString);
+
+                Console.WriteLine("Строка успешно вставлена в JSON файл.");
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Произошла ошибка: {ex.Message}");
             }
         }
+
+        public bool IsValueUniqueForKey(string fileName, string keyToCheck, string valueToCheck)
+        {
+            try
+            {
+                if (!File.Exists(fileName))
+                {
+                    Console.WriteLine($"Файл {fileName} не существует.");
+                    return false;
+                }
+
+                string existingJson = File.ReadAllText(fileName);
+
+                var jsonDocument = JsonDocument.Parse(existingJson).RootElement;
+
+                if (!jsonDocument.EnumerateObject().Any(prop => prop.Name == keyToCheck))
+                {
+                    Console.WriteLine($"Ключ {keyToCheck} не существует в JSON файле.");
+                    return false;
+                }
+
+                var valuesForKey = jsonDocument.EnumerateObject()
+                    .Where(prop => prop.Name == keyToCheck)
+                    .SelectMany(prop => prop.Value.EnumerateArray())
+                    .Select(value => value.GetString()); // Используем GetString() для строк
+
+                if (valuesForKey.Contains(valueToCheck))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Произошла ошибка: {ex.Message}");
+                return false;
+            }
+        }
+
 
 
     }

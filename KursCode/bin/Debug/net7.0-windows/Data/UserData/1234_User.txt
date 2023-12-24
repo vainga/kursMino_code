@@ -1,2 +1,0 @@
-Login: 1234
-Password: $2a$06$jqLWdw2UlIsFQ2gcp2BTouZhJFzA8NkdclDNrWiLY0DufHr6V/ta2

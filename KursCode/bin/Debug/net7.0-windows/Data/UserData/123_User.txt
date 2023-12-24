@@ -1,2 +1,0 @@
-Login: 123
-Password: $2a$06$P1mc5haVlqRdncStpwhS6OX/wFo0FyMAauSYKmFQM5bWJEGkQSu3a
