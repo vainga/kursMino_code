@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using System.IO;
 using KursCode.Data;
-
+using KursCode.MVVM.Model;
 
 namespace Clients
 {
@@ -37,7 +37,7 @@ namespace Clients
         DatabaseHelper dbHelper = new DatabaseHelper(GetCorporationDBPath());
 
 
-        public corporationClass() : base("", "", "", "", false, new List<string>(), new List<string>())
+        public corporationClass() : base("", "", "", "", false, new List<string>(), new List<string>(), new ClientCitizenship(), new ClientEmployment(), new ClientShedule(), new ClientStatus())
         {
             _CorporationName = "";
             _Work_experience_min = 0;
@@ -48,9 +48,9 @@ namespace Clients
         }
 
         [JsonConstructor]
-        private corporationClass(string corporationName, string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills, int work_experience_min, int work_experience_max,
+        private corporationClass(string corporationName, string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills, ClientCitizenship citizenship, ClientEmployment employment, ClientShedule shedule, ClientStatus status, int work_experience_min, int work_experience_max,
             bool work_experience_need, int salary)
-            : base(post, email, city, description, distant, personal_qualities, skills)
+            : base(post, email, city, description, distant, personal_qualities, skills, citizenship, employment, shedule, status)
         {
             _CorporationName = corporationName;
             _Work_experience_max = work_experience_max;

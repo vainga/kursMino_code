@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using KursCode.MVVM.View;
 using System.ComponentModel;
+using KursCode.View.Windows.Main;
+using KursCode.MVVM.View.Windows.Main;
+using KursCode.MVVM.ViewModel;
 
 namespace KursCode
 {
@@ -15,6 +18,6 @@ namespace KursCode
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    { 
+    {
     }
 }

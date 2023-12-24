@@ -17,11 +17,16 @@ namespace KursCode.MVVM.ViewModel
 {
     public class EnterViewModel: INotifyPropertyChanged
     {
-        private User user;
+        private IUser user;
         private string _buttonContent = "Войти";
         private string _textBlockContent = "Зарегистрироваться";
         private Visibility _secondTextBlockVisibility = Visibility.Visible;
         
+        private string _errorMessageContent = "Ошибка регистрации!";
+        private Visibility _errorMessageVisibility = Visibility.Collapsed;
+
+        public event EventHandler SuccessfulLogin;
+
         private int defaultFontSize = 24;
         public int ButtonContentFontSize
         {
@@ -87,6 +92,32 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
+        public string ErrorMessageContent
+        {
+            get { return _errorMessageContent; }
+            set
+            {
+                if (_errorMessageContent != value)
+                {
+                    _errorMessageContent = value;
+                    OnPropertyChanged(nameof(ErrorMessageContent));
+                }
+            }
+        }
+
+        public Visibility ErrorMessageVisibility
+        {
+            get { return _errorMessageVisibility; }
+            set
+            {
+                if (_errorMessageVisibility != value)
+                {
+                    _errorMessageVisibility = value;
+                    OnPropertyChanged(nameof(ErrorMessageVisibility));
+                }
+            }
+        }
+
         public Visibility SecondTextBlockVisibility
         {
             get { return ButtonContent == "Зарегистрироваться" ? Visibility.Collapsed : _secondTextBlockVisibility; }
@@ -100,10 +131,14 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
+        private void OnSuccessfulLogin()
+        {
+            SuccessfulLogin?.Invoke(this, EventArgs.Empty);
+        }
+
         private ICommand _buttonCommand;
         public ICommand RegisterCommand { get; }
         public ICommand EnterCommand { get; }
-
         public ICommand ButtonCommand
         {
             get
@@ -144,11 +179,24 @@ namespace KursCode.MVVM.ViewModel
                 {
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
+                    OnSuccessfulLogin();
+                }
+                else 
+                {
+                    _errorMessageContent = "Пользователь с таким логином уже существует!";
+                    _errorMessageVisibility = Visibility.Visible;
+
+                    OnPropertyChanged(nameof(ErrorMessageContent));
+                    OnPropertyChanged(nameof(ErrorMessageVisibility));
                 }
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show(ex.Message);
+                _errorMessageContent = ex.Message;
+                _errorMessageVisibility = Visibility.Visible;
+
+                OnPropertyChanged(nameof(ErrorMessageContent));
+                OnPropertyChanged(nameof(ErrorMessageVisibility));
             }
         }
 
@@ -159,18 +207,40 @@ namespace KursCode.MVVM.ViewModel
 
         private void ExecuteLogin()
         {
-            bool EnterResult = user.Enter(Login, Password);
-            if(EnterResult)
+            try
             {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
+                bool EnterResult = user.Enter(Login, Password);
+                if(EnterResult)
+                {
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    OnSuccessfulLogin();
+                }
+                else
+                {
+                    _errorMessageContent = "Пароль введен неправильно!";
+                    _errorMessageVisibility = Visibility.Visible;
+
+                    OnPropertyChanged(nameof(ErrorMessageContent));
+                    OnPropertyChanged(nameof(ErrorMessageVisibility));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                _errorMessageContent = ex.Message;
+                _errorMessageVisibility = Visibility.Visible;
+
+                OnPropertyChanged(nameof(ErrorMessageContent));
+                OnPropertyChanged(nameof(ErrorMessageVisibility));
             }
         }
+
         public void CloseCurrentWindow()
         {
             var activeWindow = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
             activeWindow?.Close();
         }
+
         private bool CanExecuteLogin()
         {
             return !string.IsNullOrEmpty(Login) && !string.IsNullOrEmpty(Password);

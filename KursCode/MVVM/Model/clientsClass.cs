@@ -1,10 +1,12 @@
-﻿using System;
+﻿using KursCode.MVVM.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Clients
 {
@@ -19,10 +21,10 @@ namespace Clients
         public string _Email { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_City")]
-        public string _City { get;  private set; }
+        public string _City { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Description")]
-        public string _Description { get;  private set; }
+        public string _Description { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Distant")]
         public bool _Distant { get; private set; }
@@ -31,9 +33,21 @@ namespace Clients
         public List<string> _Personal_qualities { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Skills")]
-        public List<string> _Skills { get;  private set; }
+        public List<string> _Skills { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Citizenship")]
+        public ClientCitizenship _Citizenship { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Empoyment")]
+        public ClientEmployment _Employment { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Shedule")]
+        public ClientShedule _Shedule { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Shedule")]
+        public ClientStatus _Status { get; private set; }
 
-        public clientsClass() 
+        public clientsClass()
         {
             _Post = "";
             _Email = "";
@@ -42,10 +56,13 @@ namespace Clients
             _Distant = false;
             _Personal_qualities = new List<string>();
             _Skills = new List<string>();
-
+            _Citizenship = new ClientCitizenship();
+            _Employment = new ClientEmployment();
+            _Status = new ClientStatus();
+            _Shedule = new ClientShedule();
         }
 
-        public clientsClass(string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills)
+        public clientsClass(string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills, ClientCitizenship citizenship, ClientEmployment employment, ClientShedule shedule, ClientStatus status)
         {
             _Post = post;
             _Email = email;
@@ -54,7 +71,11 @@ namespace Clients
             _Distant = distant;
             _Personal_qualities = personal_qualities;
             _Skills = skills;
+            _Citizenship = citizenship;
+            _Employment = employment;
+            _Status = status;
+            _Shedule = shedule;
         }
-
+       
     }
 }

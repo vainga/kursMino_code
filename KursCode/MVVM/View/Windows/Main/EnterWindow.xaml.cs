@@ -1,4 +1,5 @@
-﻿using KursCode.MVVM.ViewModel;
+﻿using KursCode.MVVM.View.Windows.Main;
+using KursCode.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,19 @@ namespace KursCode.View.Windows.Main
 public partial class EnterWindow : Window
     {
         bool isRegistration = false;
+        private EnterViewModel viewModel;
 
         public EnterWindow()
         {
             InitializeComponent();
+            viewModel = new EnterViewModel();
+            viewModel.SuccessfulLogin += ViewModel_SuccessfulLogin;
+            DataContext = viewModel;
+        }
+
+        private void ViewModel_SuccessfulLogin(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void drugWindow_LeftButtonDrag(object sender, MouseButtonEventArgs e)

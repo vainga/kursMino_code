@@ -4,7 +4,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
 using KursCode.Data;
-
+using System.Windows.Controls;
+using KursCode.MVVM.Model;
 
 namespace Clients
 {
@@ -26,32 +27,37 @@ namespace Clients
 
         [JsonInclude]
         [JsonPropertyName("_UserId")]
-        public static int _UserId { get; private set; }
-        public IUser user { get; set; }
-
-        DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
+        public static int _UserId { get; private set; }   
         
-        public byte[] PdfFile { get; set; }
+        public byte[] _PdfFile { get; private set; }
+        public Image _WorkerPhoto { get; set; }
+
+        public IUser user { get; set; }
+        DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
 
 
-        public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>())
+        public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>(), new ClientCitizenship(), new ClientEmployment(),new ClientShedule(), new ClientStatus())
         {
             _WorkerName = "";
             _Surname = "";
             _Work_experience = 0;
             _Salary_need = 0;
             _UserId = user.userId;
-            PdfFile = null;
+            _PdfFile = null;
+            _WorkerPhoto = null;
         }
 
-        private workerClass(string workerName,string surname, string post, string email, string city, string description,bool distant, List<string> personal_qualities, List<string> skills, int work_experience, int salary, int salary_need) 
-            : base(post, email, city, description, distant, personal_qualities, skills)
+        private workerClass(string workerName,string surname, string post, string email, string city, string description,bool distant, List<string> personal_qualities, List<string> skills, ClientCitizenship citizenship, ClientEmployment employment, ClientShedule shedule, ClientStatus status, int work_experience, int salary, int salary_need, byte[] pdfFile, Image workerPhoto)
+        : base(post, email, city, description, distant, personal_qualities, skills, citizenship, employment, shedule, status)
+
         {
             _WorkerName = workerName;
             _Surname = surname;
             _Work_experience = work_experience;
             _Salary_need = salary_need;
             _UserId = user.userId;
+            _PdfFile = pdfFile;
+            _WorkerPhoto = workerPhoto;
         }
 
         private static string GetWorkerDBPath()
@@ -76,13 +82,21 @@ namespace Clients
             return JsonSerializer.Deserialize<workerClass>(json);
         }
 
-        public  void AddData()
+        public string ImageToBase64(string imagePath)
+        {
+            byte[] imageBytes = File.ReadAllBytes(imagePath);
+            string base64String = Convert.ToBase64String(imageBytes);
+            return base64String;
+        }
+
+        public void AddData()
         {
             string corpJson = this.ToJson();
 
-            using (dbHelper)
+            using (var dbHelper = new DatabaseHelper(GetWorkerDBPath()))
             {
-                dbHelper.InsertData("workerTable", new[] { "JSON_worker", "UserId" }, new object[] { corpJson, _UserId });
+                dbHelper.CreateDatabase(GetWorkerDBPath(), "workerTable", "JSON_worker TEXT, UserId INTEGER,Photo TEXT, PDF BLOB");
+                dbHelper.InsertData("workerTable", new[] { "JSON_worker", "UserId", "Photo", "PDF"}, new object[] { corpJson, _UserId });
             }
         }
 
@@ -134,5 +148,6 @@ namespace Clients
                 dbHelper.RemoveData(itemIdToDelete);
             }
         }
+
     }
 }

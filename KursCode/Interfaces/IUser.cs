@@ -11,5 +11,7 @@ namespace KursCode
     internal interface IUser 
     {
         int userId { get;}
+        bool Registration(string login, string password);
+        bool Enter(string login, string password);
     }
 }

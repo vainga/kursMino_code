@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="KursCode.MVVM.View.UserControls.ClientSkiil"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KursCode.MVVM.View.UserControls"
+             xmlns:vm="clr-namespace:KursCode.MVVM.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="90">
+    <UserControl.DataContext>
+        <vm:ClientSkillViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <materialDesign:Card Padding="10,2,10,2" Background="LightGray" UniformCornerRadius="6">
+            <TextBox x:Name="itemText" Text="{Binding Text}" materialDesign:HintAssist.Hint="{Binding HintText, RelativeSource={RelativeSource AncestorType=UserControl}}" BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

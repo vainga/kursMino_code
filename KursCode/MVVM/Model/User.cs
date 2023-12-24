@@ -12,7 +12,8 @@ using Clients;
 using System.Net.Http.Json;
 using System.IO;
 using System.Security;
-
+using System.Configuration;
+using System.Runtime.ExceptionServices;
 
 namespace KursCode
 {
@@ -57,69 +58,96 @@ namespace KursCode
 
         public bool Registration(string login, string password)
         {
-            int userId = 0;
             try
             {
-                using(dbHelper)
+                if (string.IsNullOrWhiteSpace(login))
+                {
+                    throw new ArgumentException("Логин не может быть пустым.");
+                }
+
+                if (login.Contains(" "))
+                {
+                    throw new ArgumentException("Логин не может содержать пробелы.");
+                }
+
+                if (string.IsNullOrWhiteSpace(password))
+                {
+                    throw new ArgumentException("Пароль не может быть пустым.");
+                }
+
+                if (password.Contains(" "))
+                {
+                    throw new ArgumentException("Пароль не может содержать пробелы.");
+                }
+
+                using (dbHelper)
                 {
                     dbHelper.CreateDatabase(databasePath, "Users", "Id INTEGER PRIMARY KEY, Login TEXT, Password TEXT");
                     string hashedPassword = HashPassword(password);
-                    if (!dbHelper.IsValueUnique("Users","Login", login))
+                    if (!dbHelper.IsValueUnique("Users", "Login", login))
                     {
-                        Console.WriteLine("Пользователь с таким логином уже существует.");
                         return false;
                     }
                     else
                     {
-                        userId = dbHelper.InsertData("Users", new[] { "Login", "Password" }, new object[] { login, hashedPassword });
+                        int userId = dbHelper.InsertData("Users", new[] { "Login", "Password" }, new object[] { login, hashedPassword });
 
                         string userSpecificFolderPath = Path.Combine(GetUserFolderPath(), $"{userId}_ID_User");
                         Directory.CreateDirectory(userSpecificFolderPath);
-
-                        //string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_corporationsdata.db");
-                        //dbHelper.CreateDatabase(corporationDbPath, "corporationTable", "ID INTEGER PRIMARY KEY, JSON_corporation TEXT, UserId INTEGER");
-
-                        //string workerDbPath = Path.Combine(userSpecificFolderPath, $"{userId}_ID_workersndata.db");
-                        //dbHelper.CreateDatabase(workerDbPath, "workerTable", "ID INTEGER PRIMARY KEY, JSON_worker TEXT, UserId INTEGER");
 
                         return true;
                     }
                 }
             }
-            catch(Exception ex)
-            { 
-                throw new ArgumentException("Ошибка регистрации", ex);
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message, ex);
             }
         }
 
         public bool Enter(string login, string password)
         {
-            using (dbHelper)
+            try
             {
-                List<Dictionary<string, object>> searchResults = dbHelper.SearchData("Users", new[] { "Id", "Password" }, $"Login = '{login}'");
-
-                if (searchResults.Count > 0)
+                if (string.IsNullOrWhiteSpace(login))
                 {
-                    string storedHashedPassword = searchResults[0]["Password"] as string;
-                    userId = Convert.ToInt32(searchResults[0]["Id"]);
+                    throw new ArgumentException("Логин не может быть пустым.");
+                }
 
-                    if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
+                if (string.IsNullOrWhiteSpace(password))
+                {
+                    throw new ArgumentException("Пароль не может быть пустым.");
+                }
+
+                using (dbHelper)
+                {
+                    List<Dictionary<string, object>> searchResults = dbHelper.SearchData("Users", new[] { "Id", "Password" }, $"Login = '{login}'");
+
+                    if (searchResults.Count > 0)
                     {
-                        Console.WriteLine("Логин и пароль совпадают.");
-                        return true;
+                        string storedHashedPassword = searchResults[0]["Password"] as string;
+                        userId = Convert.ToInt32(searchResults[0]["Id"]);
+
+                        if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
+                        {
+                            Console.WriteLine("Логин и пароль совпадают.");
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Пароль не совпадает.");
+                        throw new ArgumentException("Пользователь не найден.");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Пользователь не найден.");
-                }
             }
-
-            return false;
+            catch(Exception ex)
+            {
+                throw new ArgumentException(ex.Message, ex);
+            }
         }
     }
 }
