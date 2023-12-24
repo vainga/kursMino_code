@@ -1,4 +1,4 @@
-﻿using KursCode;
+﻿/*using KursCode;
 using Microsoft.Data.Sqlite;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -145,3 +145,4 @@ namespace Clients
 
     }
 }
+*/

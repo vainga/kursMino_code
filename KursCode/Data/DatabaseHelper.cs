@@ -9,14 +9,15 @@ using System.IO;
 
 namespace KursCode.Data
 {
-    public class DatabaseHelper : IDatabaseHelper
+    public class DatabaseHelper
     {
-        private string connectionString;
         private bool disposed = false;
 
-        public DatabaseHelper(string databasePath)
+        private readonly string dbPath;
+
+        public DatabaseHelper(string dbPath)
         {
-            connectionString = $"Data Source={databasePath}";
+            this.dbPath = dbPath;
         }
 
         public void Dispose()
@@ -41,129 +42,137 @@ namespace KursCode.Data
         {
             try
             {
-                using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
+                using (FileStream fileStream = File.Create(dbPath))
                 {
-                    connection.Open();
-
-                    //string columnsString = string.Join(", ", columns);
-                    string query = $"CREATE TABLE IF NOT EXISTS {tableName} ({columns})";
-
-                    using (SqliteCommand createTableCommand = new SqliteCommand(query, connection))
+                    using (StreamWriter writer = new StreamWriter(fileStream))
                     {
-                        createTableCommand.ExecuteNonQuery();
+                        writer.WriteLine(columns);
                     }
-
-                    connection.Close();
                 }
             }
-            catch(SqliteException sqlex)
+            catch (IOException ioex)
             {
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
             }
         }
+
 
         public bool IsValueUnique(string tableName, string columnName, string value)
         {
             bool isUnique = false;
 
-            using (SqliteConnection connection = new SqliteConnection(connectionString))
+            try
             {
-                connection.Open();
+                string[] allLines = File.ReadAllLines(dbPath);
 
-                string query = $"SELECT COUNT(*) FROM {tableName} WHERE {columnName} = @Value";
+                int columnIndex = Array.IndexOf(allLines[0].Split(','), columnName);
 
-                using (SqliteCommand checkValueCommand = new SqliteCommand(query, connection))
-                {
-                    checkValueCommand.Parameters.AddWithValue("@Value", value);
-
-                    int result = Convert.ToInt32(checkValueCommand.ExecuteScalar());
-                    isUnique = (result == 0);
-                }
-
-                connection.Close();
+                isUnique = allLines.Skip(1).All(line => line.Split(',')[columnIndex] != value);
+            }
+            catch (IOException ioex)
+            {
+            }
+            catch (Exception ex)
+            {
             }
 
             return isUnique;
         }
 
-        public int InsertData(string tableName, string[] columns, object[] values)
+        public class CustomFileManager
         {
-            int insertedId = 0;
+            private readonly string dbPath;
 
-            using (SqliteConnection connection = new SqliteConnection(connectionString))
+            public CustomFileManager(string dbPath)
             {
-                connection.Open();
-
-                string columnsString = string.Join(", ", columns);
-                string valuesString = string.Join(", ", columns.Select(c => $"@{c}"));
-
-                string query = $"INSERT INTO {tableName} ({columnsString}) VALUES ({valuesString}); SELECT last_insert_rowid();";
-
-                using (SqliteCommand insertCommand = new SqliteCommand(query, connection))
-                {
-                    for (int i = 0; i < columns.Length; i++)
-                    {
-                        insertCommand.Parameters.AddWithValue($"@{columns[i]}", values[i]);
-                    }
-
-                    insertedId = Convert.ToInt32(insertCommand.ExecuteScalar());
-                }
-
-                connection.Close();
+                this.dbPath = dbPath;
             }
 
-            return insertedId;
+            public int InsertData(string tableName, string[] columns, object[] values)
+            {
+                int insertedId = 0;
+
+                try
+                {
+                    using (StreamWriter writer = File.AppendText(dbPath))
+                    {
+                        string dataLine = string.Join(",", values);
+                        writer.WriteLine(dataLine);
+
+                        insertedId = (int)writer.BaseStream.Length;
+                    }
+                }
+                catch (IOException ioex)
+                {
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+                return insertedId;
+            }
         }
 
-        public List<Dictionary<string, object>> SearchData(string tableName, string[] columns, string condition)
+        public List<Dictionary<string, object>> SearchData(string tableName, string[] columns, Func<string[], bool> condition)
         {
             List<Dictionary<string, object>> results = new List<Dictionary<string, object>>();
 
-            using (SqliteConnection connection = new SqliteConnection(connectionString))
+            try
             {
-                connection.Open();
+                string[] allLines = File.ReadAllLines(dbPath);
 
-                string columnsString = string.Join(", ", columns);
-                string query = $"SELECT {columnsString} FROM {tableName} WHERE {condition}";
+                int[] columnIndices = columns.Select(col => Array.IndexOf(allLines[0].Split(','), col)).ToArray();
 
-                using (SqliteCommand searchCommand = new SqliteCommand(query, connection))
+                foreach (string line in allLines.Skip(1))
                 {
-                    using (SqliteDataReader reader = searchCommand.ExecuteReader())
+                    string[] values = line.Split(',');
+
+                    if (condition(values))
                     {
-                        while (reader.Read())
+                        Dictionary<string, object> row = new Dictionary<string, object>();
+
+                        for (int i = 0; i < columns.Length; i++)
                         {
-                            Dictionary<string, object> row = new Dictionary<string, object>();
-
-                            foreach (string column in columns)
-                            {
-                                row[column] = reader[column];
-                            }
-
-                            results.Add(row);
+                            row[columns[i]] = values[columnIndices[i]];
                         }
+
+                        results.Add(row);
                     }
                 }
-
-                connection.Close();
             }
+            catch (IOException ioex)
+            {
+            }
+            catch (Exception ex)
+            {
+            }
+
             return results;
         }
 
         public void RemoveData(int itemIdToDelete)
         {
-            using (SqliteConnection connection = new SqliteConnection(connectionString))
+            try
             {
-                connection.Open();
-                using (SqliteCommand command = new SqliteCommand("DELETE FROM corporationTable WHERE Id = @ItemId", connection))
-                {
-                    command.Parameters.AddWithValue("@ItemId", itemIdToDelete);
-                    command.ExecuteNonQuery();
-                }
-                connection.Close();
+                string[] allLines = File.ReadAllLines(dbPath).ToArray();
+
+                int idColumnIndex = Array.IndexOf(allLines[0].Split(','), "Id");
+
+                IEnumerable<string> remainingLines = allLines
+                    .Where(line => line.Split(',')[idColumnIndex] != itemIdToDelete.ToString());
+
+                File.WriteAllLines(dbPath, remainingLines);
+            }
+            catch (IOException ioex)
+            {
+
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 

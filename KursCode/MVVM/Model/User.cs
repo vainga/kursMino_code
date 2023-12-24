@@ -24,7 +24,7 @@ namespace KursCode
         private string _Password { get; set; }
 
         static string databasePath = Path.Combine(GetUserFolderPath(), "userdata.db");
-        IDatabaseHelper dbHelper = new DatabaseHelper(databasePath);
+        DatabaseHelper dbHelper = new DatabaseHelper(databasePath);
 
         public User()
         {
@@ -80,24 +80,22 @@ namespace KursCode
                     throw new ArgumentException("Пароль не может содержать пробелы.");
                 }
 
-                using (dbHelper)
+                string hashedPassword = HashPassword(password);
+
+                string userFilePath = Path.Combine(GetUserFolderPath(), $"{login}_User.txt");
+
+                if (File.Exists(userFilePath))
                 {
-                    dbHelper.CreateDatabase(databasePath, "Users", "Id INTEGER PRIMARY KEY, Login TEXT, Password TEXT");
-                    string hashedPassword = HashPassword(password);
-                    if (!dbHelper.IsValueUnique("Users", "Login", login))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        int userId = dbHelper.InsertData("Users", new[] { "Login", "Password" }, new object[] { login, hashedPassword });
-
-                        string userSpecificFolderPath = Path.Combine(GetUserFolderPath(), $"{userId}_ID_User");
-                        Directory.CreateDirectory(userSpecificFolderPath);
-
-                        return true;
-                    }
+                    return false; 
                 }
+
+                using (StreamWriter writer = File.CreateText(userFilePath))
+                {
+                    writer.WriteLine($"Login: {login}");
+                    writer.WriteLine($"Password: {hashedPassword}");
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -119,32 +117,27 @@ namespace KursCode
                     throw new ArgumentException("Пароль не может быть пустым.");
                 }
 
-                using (dbHelper)
+                string userFilePath = Path.Combine(GetUserFolderPath(), $"{login}_User.txt");
+
+                if (!File.Exists(userFilePath))
                 {
-                    List<Dictionary<string, object>> searchResults = dbHelper.SearchData("Users", new[] { "Id", "Password" }, $"Login = '{login}'");
+                    throw new ArgumentException("Пользователь не найден.");
+                }
 
-                    if (searchResults.Count > 0)
-                    {
-                        string storedHashedPassword = searchResults[0]["Password"] as string;
-                        userId = Convert.ToInt32(searchResults[0]["Id"]);
+                string[] userLines = File.ReadAllLines(userFilePath);
+                string storedHashedPassword = userLines[1].Substring("Password: ".Length).Trim();
 
-                        if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
-                        {
-                            Console.WriteLine("Логин и пароль совпадают.");
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Пользователь не найден.");
-                    }
+                if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
+                {
+                    Console.WriteLine("Логин и пароль совпадают.");
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new ArgumentException(ex.Message, ex);
             }
