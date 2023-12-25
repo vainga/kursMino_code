@@ -24,20 +24,12 @@ namespace KursCode.MVVM.ViewModel
             UserControlViewModels = new ObservableCollection<ClientSkillViewModel>();
             SelectPDFCommand = new RelayCommand(SelectPDF);
             OnPropertyChanged(nameof(SelectedPDFFilePath));
-            AvailableCitizenships = new ObservableCollection<ClientCitizenship>
-            {
-                ClientCitizenship.RussianFederation,
-                ClientCitizenship.Other
-            };
         }
 
         private BitmapImage _workerPhoto;
         private Visibility _selectedImageVisibility;
         private Visibility _photoIconVisibility;
         public ObservableCollection<ClientSkillViewModel> UserControlViewModels { get; set; }
-
-        private ClientCitizenship _selectedCitizenship;
-        private ObservableCollection<ClientCitizenship> _availableCitizenships;
 
         private string _workerName;
         public string WorkerName
@@ -244,32 +236,6 @@ namespace KursCode.MVVM.ViewModel
             {
                 string fileName = Path.GetFileName(openFileDialog.FileName);
                 SelectedPDFFilePath = fileName;
-            }
-        }
-
-        public ClientCitizenship SelectedCitizenship
-        {
-            get { return _selectedCitizenship; }
-            set
-            {
-                if (_selectedCitizenship != value)
-                {
-                    _selectedCitizenship = value;
-                    OnPropertyChanged(nameof(SelectedCitizenship));
-                }
-            }
-        }
-
-        public ObservableCollection<ClientCitizenship> AvailableCitizenships
-        {
-            get { return _availableCitizenships; }
-            set
-            {
-                if (_availableCitizenships != value)
-                {
-                    _availableCitizenships = value;
-                    OnPropertyChanged(nameof(AvailableCitizenships));
-                }
             }
         }
 

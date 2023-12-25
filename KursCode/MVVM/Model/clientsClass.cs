@@ -14,38 +14,61 @@ namespace Clients
     abstract class clientsClass
     {
         [JsonInclude]
-        [JsonPropertyName("_Post")]
+        [JsonPropertyName("Post")]
         public string _Post { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Email")]
+        [JsonPropertyName("Email")]
         public string _Email { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_City")]
+        [JsonPropertyName("City")]
         public string _City { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Description")]
+        [JsonPropertyName("Description")]
         public string _Description { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Distant")]
+        [JsonPropertyName("Distant")]
         public bool _Distant { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Personal_qualities")]
+        [JsonPropertyName("Personal_qualities")]
         public List<string> _Personal_qualities { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Skills")]
+        [JsonPropertyName("Skills")]
         public List<string> _Skills { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Citizenship")]
-        public ClientCitizenship _Citizenship { get; private set; }
+        [JsonPropertyName("Status")]
+        Dictionary<int, string> _Status = new Dictionary<int, string>
+        {
+            {1,"В работе" },
+            {2,"Назначено собеседование" },
+            {3,"Принят" },
+            {4,"Отклонен" }
+        };
         [JsonInclude]
-        [JsonPropertyName("_Empoyment")]
-        public ClientEmployment _Employment { get; private set; }
+        [JsonPropertyName("Sitizenship")]
+        Dictionary<int, string> _Sitizenship = new Dictionary<int, string>
+        {
+            {1,"Российская Федерация" },
+            {2,"Другое" }
+        };
         [JsonInclude]
-        [JsonPropertyName("_Shedule")]
-        public ClientShedule _Shedule { get; private set; }
+        [JsonPropertyName("Shedule")]
+        Dictionary<int, string> _Shedule = new Dictionary<int, string>
+        {
+            {1,"Полный день" },
+            {2,"Сменный график" },
+            {3,"Гибкий график" },
+            {4,"Удаленная работа" },
+            {5,"Вахтовый метод" }
+        };
         [JsonInclude]
-        [JsonPropertyName("_Shedule")]
-        public ClientStatus _Status { get; private set; }
+        [JsonPropertyName("Empoyment")]
+        Dictionary<int, string> _Empoyment = new Dictionary<int, string>
+        {
+            {1,"Полная" },
+            {2,"Частичная" },
+            {3,"Стажировка" }
+        };
+
 
         public clientsClass()
         {
@@ -56,13 +79,14 @@ namespace Clients
             _Distant = false;
             _Personal_qualities = new List<string>();
             _Skills = new List<string>();
-            _Citizenship = new ClientCitizenship();
-            _Employment = new ClientEmployment();
-            _Status = new ClientStatus();
-            _Shedule = new ClientShedule();
+            _Status = new Dictionary<int, string>();
+            _Sitizenship = new Dictionary<int, string>();
+            _Shedule = new Dictionary<int, string>();
+            _Empoyment = new Dictionary<int, string>();
+
         }
 
-        public clientsClass(string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills, ClientCitizenship citizenship, ClientEmployment employment, ClientShedule shedule, ClientStatus status)
+        public clientsClass(string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills,Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status)
         {
             _Post = post;
             _Email = email;
@@ -71,10 +95,10 @@ namespace Clients
             _Distant = distant;
             _Personal_qualities = personal_qualities;
             _Skills = skills;
-            _Citizenship = citizenship;
-            _Employment = employment;
             _Status = status;
-            _Shedule = shedule;
+            _Sitizenship = citizenship;
+            _Shedule= shedule;
+            _Empoyment= employment;
         }
        
     }

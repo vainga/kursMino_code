@@ -1,4 +1,4 @@
-﻿/*using KursCode;
+﻿using KursCode;
 using Microsoft.Data.Sqlite;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -36,7 +36,7 @@ namespace Clients
         DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
 
 
-        public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>(), new ClientCitizenship(), new ClientEmployment(),new ClientShedule(), new ClientStatus())
+        public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>(), new Dictionary<int, string>(), new Dictionary<int, string>(),new Dictionary<int, string>(), new Dictionary<int, string>())
         {
             _WorkerName = "";
             _Surname = "";
@@ -47,7 +47,7 @@ namespace Clients
             _WorkerPhoto = null;
         }
 
-        private workerClass(string workerName,string surname, string post, string email, string city, string description,bool distant, List<string> personal_qualities, List<string> skills, ClientCitizenship citizenship, ClientEmployment employment, ClientShedule shedule, ClientStatus status, int work_experience, int salary, int salary_need, byte[] pdfFile, Image workerPhoto)
+        private workerClass(string workerName,string surname, string post, string email, string city, string description,bool distant, List<string> personal_qualities, List<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status, int work_experience, int salary, int salary_need, byte[] pdfFile, Image workerPhoto)
         : base(post, email, city, description, distant, personal_qualities, skills, citizenship, employment, shedule, status)
 
         {
@@ -91,63 +91,32 @@ namespace Clients
 
         public void AddData()
         {
-            string corpJson = this.ToJson();
+            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath());
 
-            using (var dbHelper = new DatabaseHelper(GetWorkerDBPath()))
-            {
-                dbHelper.CreateDatabase(GetWorkerDBPath(), "workerTable", "JSON_worker TEXT, UserId INTEGER,Photo TEXT, PDF BLOB");
-                dbHelper.InsertData("workerTable", new[] { "JSON_worker", "UserId", "Photo", "PDF"}, new object[] { corpJson, _UserId });
-            }
+            int nextId = dbHelper.GetNextEntityId((string jsonString) => 0, jsonStrings);
+
+            dbHelper.SaveEntityToFile(ToJson(), jsonStrings);
         }
 
         public List<string> ReadAllJsonFromDatabase()
         {
-            string query = "SELECT JSON_worker FROM workerTable;";
-
-            List<string> jsonStrings;
-
-            using (dbHelper)
-            {
-                string condition = $"UserId = {_UserId}";
-
-                string[] columns = { "JSON_worker" };
-
-                List<Dictionary<string, object>> results = dbHelper.SearchData("workerTable", columns, condition);
-
-                jsonStrings = results
-                    .Select(result => result.TryGetValue("JSON_worker", out object jsonValue) ? jsonValue.ToString() : null)
-                    .Where(jsonString => jsonString != null)
-                    .ToList();
-            }
+            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath());
 
             return jsonStrings;
         }
 
         public int GetId(string workerJson)
         {
-            string tableName = "workerTable";
-            string[] columns = { "JSON_worker", "Id" };
-            string condition = $"JSON_worker = {workerJson}";
-
-            using (dbHelper)
-            {
-                List<Dictionary<string, object>> searchResults = dbHelper.SearchData(tableName, columns, condition);
-                if (searchResults.Count > 0)
-                {
-                    return Convert.ToInt32(searchResults[0]["Id"]);
-                }
-            }
-
-            return -1;
+            return dbHelper.GetNextEntityId((string jsonString) => 0, dbHelper.GetAllEntities<string>(GetWorkerDBPath()));
         }
 
         public void RemoveData(int itemIdToDelete)
         {
             using (dbHelper)
             {
-                dbHelper.RemoveData(itemIdToDelete);
+                dbHelper.RemoveEntity((string jsonString) => GetId(jsonString) == itemIdToDelete, dbHelper.GetAllEntities<string>(GetWorkerDBPath()));
             }
         }
 
     }
-}*/
+}

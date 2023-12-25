@@ -69,5 +69,17 @@ namespace KursCode.Data
             string updatedJsonData = JsonSerializer.Serialize(existingEntities);
             File.WriteAllText(connectionString, updatedJsonData);
         }
+
+        public void RemoveEntity<T>(Func<T, bool> predicate, List<T> existingEntities)
+        {
+            T entityToRemove = existingEntities.FirstOrDefault(predicate);
+
+            if (entityToRemove != null)
+            {
+                existingEntities.Remove(entityToRemove);
+                string updatedJsonData = JsonSerializer.Serialize(existingEntities);
+                File.WriteAllText(connectionString, updatedJsonData);
+            }
+        }
     }
 }

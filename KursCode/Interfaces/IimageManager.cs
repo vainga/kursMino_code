@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KursCode.MVVM.Model
+namespace KursCode.Interfaces
 {
-    public enum ClientStatus
+    internal class IimageManager
     {
-        Success,interviewScheduled,atWork,rejected
     }
 }
