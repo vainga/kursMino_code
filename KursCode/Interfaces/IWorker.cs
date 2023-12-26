@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace KursCode.Interfaces
 {
-    internal class IWorker
+    public interface IWorker : IClients
     {
+        string _WorkerName { get; }
+        string _Surname { get; }
+        string _Work_experience { get; }
+        int _Salary_need { get; }
+        int _UserId { get; } 
     }
 }

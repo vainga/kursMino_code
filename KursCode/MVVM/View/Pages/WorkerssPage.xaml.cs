@@ -21,14 +21,16 @@ namespace KursCode.MVVM.View.Pages
     /// </summary>
     public partial class WorkersPage : Page
     {
-        public WorkersPage()
+        private int _UserId { get; }
+        public WorkersPage(int userId)
         {
             InitializeComponent();
+            _UserId = userId;
         }
 
         private void add_button(object sender, RoutedEventArgs e)
         {
-            AddWorker worker = new AddWorker();
+            AddWorker worker = new AddWorker(_UserId);
             worker.ShowDialog();
         }
     }

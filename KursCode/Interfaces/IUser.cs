@@ -8,10 +8,12 @@ using Microsoft.Data.Sqlite;
 
 namespace KursCode
 {
-    internal interface IUser 
+    public interface IUser 
     {
         int userId { get;}
-        bool Registration(string login, string password);
-        bool Enter(string login, string password);
+        string _Login {  get; }
+        string _Password { get; }
+        bool Registration();
+        bool Enter();
     }
 }

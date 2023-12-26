@@ -20,9 +20,11 @@ namespace KursCode.MVVM.View.Pages
     /// </summary>
     public partial class VacancyPage : Page
     {
-        public VacancyPage()
+        private int _UserId { get; }
+        public VacancyPage(int userId)
         {
             InitializeComponent();
+            _UserId = userId;
         }
     }
 }

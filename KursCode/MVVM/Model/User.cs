@@ -1,4 +1,6 @@
-﻿using KursCode.Data;
+﻿using Clients;
+using KursCode.Data;
+using KursCode.Interfaces;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -12,7 +14,7 @@ namespace KursCode
         public int userId { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Login")]
-        public string _Login { get; private set; }
+        public string _Login {  get; private set; }
         [JsonInclude]
         [JsonPropertyName("Password")]
         public string _Password { get; private set; }
@@ -21,6 +23,15 @@ namespace KursCode
         //DatabaseHelper dbHelper = new DatabaseHelper(databasePath);
         private const string FileName = "users.json";
 
+        private workerClass _worker; 
+
+        public workerClass Worker
+        {
+            get { return _worker; }
+        }
+
+        public event EventHandler<int> AuthorizationCompleted;
+
         public User()
         {
             userId = -1;
@@ -28,7 +39,7 @@ namespace KursCode
             _Password = "";
         }
 
-        private User(string login, string password)
+        public User(string login, string password)
         {
             _Login = login;
             _Password = password;
@@ -56,26 +67,26 @@ namespace KursCode
             return BCrypt.Net.BCrypt.HashPassword(password, salt);
         }
 
-        public bool Registration(string login, string password)
+        public bool Registration()
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(login))
+                if (string.IsNullOrWhiteSpace(_Login))
                 {
                     throw new ArgumentException("Логин не может быть пустым.");
                 }
 
-                if (login.Contains(" "))
+                if (_Login.Contains(" "))
                 {
                     throw new ArgumentException("Логин не может содержать пробелы.");
                 }
 
-                if (string.IsNullOrWhiteSpace(password))
+                if (string.IsNullOrWhiteSpace(_Password))
                 {
                     throw new ArgumentException("Пароль не может быть пустым.");
                 }
 
-                if (password.Contains(" "))
+                if (_Password.Contains(" "))
                 {
                     throw new ArgumentException("Пароль не может содержать пробелы.");
                 }
@@ -87,7 +98,7 @@ namespace KursCode
 
                 List<User> existingUsers = dbHelper.GetAllEntities<User>(userDataFilePath);
 
-                if (!dbHelper.IsValueUnique<User>(u => u._Login == login, existingUsers))
+                if (!dbHelper.IsValueUnique<User>(u => u._Login == _Login, existingUsers))
                 {
                     throw new ArgumentException("Пользователь с таким логином уже существует.");
                 }
@@ -95,9 +106,8 @@ namespace KursCode
                 int nextUserId = dbHelper.GetNextEntityId<User>(u => u.userId, existingUsers);
 
                 userId = nextUserId;
-                _Login = login;
-                _Password = HashPassword(password);
-
+                _Password = HashPassword(_Password);
+                OnAuthorizationCompleted(userId);
                 dbHelper.SaveEntityToFile<User>(this, existingUsers);
 
                 return true;
@@ -108,16 +118,16 @@ namespace KursCode
             }
         }
 
-        public bool Enter(string login, string password)
+        public bool Enter()
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(login))
+                if (string.IsNullOrWhiteSpace(_Login))
                 {
                     throw new ArgumentException("Логин не может быть пустым.");
                 }
 
-                if (string.IsNullOrWhiteSpace(password))
+                if (string.IsNullOrWhiteSpace(_Password))
                 {
                     throw new ArgumentException("Пароль не может быть пустым.");
                 }
@@ -129,12 +139,14 @@ namespace KursCode
 
                 List<User> existingUsers = dbHelper.GetAllEntities<User>(userDataFilePath);
 
-                User user = existingUsers.FirstOrDefault(u => u._Login == login);
+                User user = existingUsers.FirstOrDefault(u => u._Login == _Login);
 
                 if (user != null)
                 {
-                    if (BCrypt.Net.BCrypt.Verify(password, user._Password))
+                    if (BCrypt.Net.BCrypt.Verify(_Password, user._Password))
                     {
+                        userId = user.userId;
+                        OnAuthorizationCompleted(userId);
                         return true;
                     }
                     else
@@ -153,6 +165,11 @@ namespace KursCode
             {
                 throw new ArgumentException(ex.Message, ex);
             }
+        }
+
+        protected virtual void OnAuthorizationCompleted(int userId)
+        {
+            AuthorizationCompleted?.Invoke(this, userId);
         }
     }
 }

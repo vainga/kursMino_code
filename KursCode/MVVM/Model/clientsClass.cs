@@ -1,6 +1,8 @@
-﻿using KursCode.MVVM.Model;
+﻿using KursCode.Interfaces;
+using KursCode.MVVM.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -11,7 +13,7 @@ using System.Windows.Controls;
 namespace Clients
 {
     [Serializable]
-    abstract class clientsClass
+    abstract class clientsClass : IClients
     {
         [JsonInclude]
         [JsonPropertyName("Post")]
@@ -25,18 +27,16 @@ namespace Clients
         [JsonInclude]
         [JsonPropertyName("Description")]
         public string _Description { get; private set; }
-        [JsonInclude]
-        [JsonPropertyName("Distant")]
-        public bool _Distant { get; private set; }
+
         [JsonInclude]
         [JsonPropertyName("Personal_qualities")]
-        public List<string> _Personal_qualities { get; private set; }
+        public ObservableCollection<string> _Personal_qualities { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Skills")]
-        public List<string> _Skills { get; private set; }
+        public ObservableCollection<string> _Skills { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Status")]
-        Dictionary<int, string> _Status = new Dictionary<int, string>
+        public Dictionary<int, string> _Status { get; private set; } = new Dictionary<int, string>
         {
             {1,"В работе" },
             {2,"Назначено собеседование" },
@@ -45,14 +45,14 @@ namespace Clients
         };
         [JsonInclude]
         [JsonPropertyName("Sitizenship")]
-        Dictionary<int, string> _Citizenship = new Dictionary<int, string>
+        public Dictionary<int, string> _Citizenship { get; private set; } = new Dictionary<int, string>
         {
             {1,"Российская Федерация" },
             {2,"Другое" }
         };
         [JsonInclude]
         [JsonPropertyName("Shedule")]
-        Dictionary<int, string> _Shedule = new Dictionary<int, string>
+        public Dictionary<int, string> _Shedule { get; private set; } = new Dictionary<int, string>
         {
             {1,"Полный день" },
             {2,"Сменный график" },
@@ -62,7 +62,7 @@ namespace Clients
         };
         [JsonInclude]
         [JsonPropertyName("Empoyment")]
-        Dictionary<int, string> _Empoyment = new Dictionary<int, string>
+        public Dictionary<int, string> _Empoyment { get; private set; } = new Dictionary<int, string>
         {
             {1,"Полная" },
             {2,"Частичная" },
@@ -76,9 +76,8 @@ namespace Clients
             _Email = "";
             _City = "";
             _Description = "";
-            _Distant = false;
-            _Personal_qualities = new List<string>();
-            _Skills = new List<string>();
+            _Personal_qualities = new ObservableCollection<string>();
+            _Skills = new ObservableCollection<string>();
             _Status = new Dictionary<int, string>();
             _Citizenship = new Dictionary<int, string>();
             _Shedule = new Dictionary<int, string>();
@@ -86,13 +85,12 @@ namespace Clients
 
         }
 
-        public clientsClass(string post, string email, string city, string description, bool distant, List<string> personal_qualities, List<string> skills,Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status)
+        public clientsClass(string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills,Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status)
         {
             _Post = post;
             _Email = email;
             _City = city;
             _Description = description;
-            _Distant = distant;
             _Personal_qualities = personal_qualities;
             _Skills = skills;
             _Status = status;

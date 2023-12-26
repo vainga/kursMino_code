@@ -65,7 +65,15 @@ namespace KursCode.Data
 
         public void SaveEntityToFile<T>(T entity, List<T> existingEntities)
         {
+
             existingEntities.Add(entity);
+            string directoryPath = Path.GetDirectoryName(connectionString);
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             string updatedJsonData = JsonSerializer.Serialize(existingEntities);
             File.WriteAllText(connectionString, updatedJsonData);
         }

@@ -17,49 +17,97 @@ using KursCode.MVVM.Model;
 using System.Text.RegularExpressions;
 using System.Numerics;
 using System.Windows.Controls;
+using Clients;
+using KursCode.Interfaces;
 
 namespace KursCode.MVVM.ViewModel
 {
     public class addWorkerViewModel : INotifyPropertyChanged
     {
+
         public addWorkerViewModel()
         {
             SelectPDFCommand = new RelayCommand(SelectPDF);
             OnPropertyChanged(nameof(SelectedPDFFilePath));
 
-            userInputValues = new ObservableCollection<string>();
-            textBoxList = new ObservableCollection<TextBox>();
+            textBoxListSkills = new ObservableCollection<TextBox>();
+            textBoxListQualities = new ObservableCollection<TextBox>();
             SaveCommand = new RelayCommand(Save);
+
+            worker = new workerClass();
         }
+
+        private int _userId;
+        public int UserId
+        {
+            get { return _userId; }
+            set { if(_userId != value) { _userId = value; OnPropertyChanged(nameof(UserId)); } }
+        }
+
+
+        private workerClass worker;
+
 
         private BitmapImage _workerPhoto;
         private Visibility _selectedImageVisibility;
         private Visibility _photoIconVisibility;
 
-        private ObservableCollection<string> userInputValues;
-        public ObservableCollection<string> UserInputValues
+        public ObservableCollection<string> Skills
         {
-            get { return userInputValues; }
+            get { return worker._Skills; }
             set
             {
-                if (userInputValues != value)
+                if (worker._Skills != value)
                 {
-                    userInputValues = value;
-                    OnPropertyChanged(nameof(UserInputValues));
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, value, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto);
+                    OnPropertyChanged(nameof(Skills));
                 }
             }
         }
 
-        private ObservableCollection<TextBox> textBoxList;
-        public ObservableCollection<TextBox> TextBoxList
+        
+        
+        //(string workerName, string surname, string post, string email, string city, string description, int userID, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, 
+        //    Dictionary<int, string> shedule, Dictionary<int, string> status, 
+        //    int work_experience, int salary, int salary_need, string pdfFile, string workerPhoto)
+
+        public ObservableCollection<string> Qualities
         {
-            get { return textBoxList; }
+            get { return worker._Personal_qualities; }
             set
             {
-                if (textBoxList != value)
+                if (worker._Personal_qualities != value)
                 {
-                    textBoxList = value;
-                    OnPropertyChanged(nameof(TextBoxList));
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, value, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber);
+                    OnPropertyChanged(nameof(Qualities));
+                }
+            }
+        }
+
+        private ObservableCollection<TextBox> textBoxListQualities;
+        public ObservableCollection<TextBox> TextBoxListQualities
+        {
+            get { return textBoxListQualities; }
+            set
+            {
+                if (textBoxListQualities != value)
+                {
+                    textBoxListQualities = value;
+                    OnPropertyChanged(nameof(TextBoxListQualities));
+                }
+            }
+        }
+
+        private ObservableCollection<TextBox> textBoxListSkills;
+        public ObservableCollection<TextBox> TextBoxListSkills
+        {
+            get { return textBoxListSkills; }
+            set
+            {
+                if (textBoxListSkills != value)
+                {
+                    textBoxListSkills = value;
+                    OnPropertyChanged(nameof(TextBoxListSkills));
                 }
             }
         }
@@ -67,133 +115,129 @@ namespace KursCode.MVVM.ViewModel
         public ICommand SaveCommand { get; private set; }
         private void Save()
         {
-            UserInputValues.Clear();
-            foreach (var textBox in textBoxList)
+            foreach (var textBox in textBoxListSkills)
             {
-                UserInputValues.Add(textBox.Text);
+                Skills.Add(textBox.Text);
             }
+            foreach(var textBox in textBoxListQualities)
+            {
+                Qualities.Add(textBox.Text);
+            }
+            worker.AddData();
         }
 
-        private string _workerName;
         public string WorkerName
         {
-            get { return _workerName; }
+            get { return worker._WorkerName; }
             set
             {
-                if (_workerName != value)
+                if (worker._WorkerName != value)
                 {
-                    _workerName = value;
+                    worker = new workerClass(value, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber,worker._Education);
                     OnPropertyChanged(nameof(WorkerName));
                 }
             }
         }
 
-        private string _workerSurname;
         public string WorkerSurname
         {
-            get { return _workerSurname; }
+            get { return worker._Surname; }
             set
             {
-                if (_workerSurname != value)
+                if (worker._Surname != value)
                 {
-                    _workerSurname = value;
+                    worker = new workerClass(worker._WorkerName, value, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education);
                     OnPropertyChanged(nameof(WorkerSurname));
                 }
             }
         }
 
-        private string _post;
         public string Post
         {
-            get { return _post; }
+            get { return worker._Post; }
             set
             {
-                if (_post != value)
+                if (worker._Post != value)
                 {
-                    _post = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, value, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education);
                     OnPropertyChanged(nameof(Post));
                 }
             }
         }
 
-        private string _location;
         public string Location
         {
-            get { return _location; }
+            get { return worker._City; }
             set
             {
-                if (_location != value)
+                if (worker._City != value)
                 {
-                    _location = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, value, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education);
                     OnPropertyChanged(nameof(Location));
                 }
             }
         }
 
-        private string _edaucation;
         public string Education
         {
-            get { return _edaucation; }
+            get { return worker._Education; }
             set
             {
-                if (_edaucation != value)
+                if (worker._Education != value)
                 {
-                    _edaucation = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, value);
                     OnPropertyChanged(nameof(Education));
                 }
             }
         }
 
-        private string _salary;
         public string Salary
         {
-            get { return _salary; }
+            get { return worker._Salary_need; }
             set
             {
-                if (_salary != value)
+                if (worker._Salary_need != value)
                 {
-                    _salary = FormatNumeric(value);
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, value, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education);
                     OnPropertyChanged(nameof(Salary));
                 }
             }
         }
 
-        private string _email;
         public string Email
         {
-            get { return _email; }
+            get { return worker._Email; }
             set
             {
-                if (_email != value)
+                if (worker._Email != value)
                 {
-                    _email = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, value, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education);
                     OnPropertyChanged(nameof(Email));
                 }
             }
         }
 
-        private string _description;
         public string Description
         {
-            get { return _description; }
+            get { return worker._Description; }
             set
             {
-                if (_description != value)
+                if (worker._Description != value)
                 {
-                    _description = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, value, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education);
                     OnPropertyChanged(nameof(Description));
                 }
             }
         }
 
-        private string _age;
         public string Age
         {
-            get { return _age; }
+            get { return worker.age; }
             set
             {
                 if (_age != value)
                 {
+                    worker = new workerClass(value, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education);
                     _age = FormatNumeric(value);
                     OnPropertyChanged(nameof(Age));
                     UpdateDisplayTextAge();
@@ -201,7 +245,6 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
-        private string _workExperience;
         public string WorkExperience
         {
             get { return _workExperience; }
@@ -226,6 +269,7 @@ namespace KursCode.MVVM.ViewModel
                 {
                     _selectedPDFFilePath = value;
                     OnPropertyChanged(nameof(SelectedPDFFilePath));
+                    ConvertPDFToBase64Async();
                 }
             }
         }
@@ -269,6 +313,42 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
+        private string ConvertImageToBase64(BitmapImage image)
+        {
+            if (image != null)
+            {
+                // Преобразовать BitmapImage в MemoryStream
+                MemoryStream memoryStream = new MemoryStream();
+                BitmapEncoder encoder = new PngBitmapEncoder(); // Используйте другой энкодер, если формат изображения отличается
+                encoder.Frames.Add(BitmapFrame.Create(image));
+                encoder.Save(memoryStream);
+
+                // Преобразовать MemoryStream в массив байт
+                byte[] imageBytes = memoryStream.ToArray();
+
+                // Преобразовать массив байт в строку Base64
+                string base64String = Convert.ToBase64String(imageBytes);
+
+                return base64String;
+            }
+
+            return null;
+        }
+
+        private string _base64StringImage;
+        public string Base64StringImage
+        {
+            get { return _base64StringImage; }
+            set
+            {
+                if (_base64StringImage != value)
+                {
+                    _base64StringImage = value;
+                    OnPropertyChanged(nameof(Base64StringImage));
+                }
+            }
+        }
+
         public void SelectImage()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -286,6 +366,9 @@ namespace KursCode.MVVM.ViewModel
 
                     SelectedImageVisibility = Visibility.Visible;
                     PhotoIconVisibility = Visibility.Collapsed;
+
+                        _base64StringImage = ConvertImageToBase64(bitmap);
+
                 }
                 catch (Exception ex)
                 {
@@ -321,6 +404,37 @@ namespace KursCode.MVVM.ViewModel
             {
                 string fileName = Path.GetFileName(openFileDialog.FileName);
                 SelectedPDFFilePath = fileName;
+            }
+        }
+
+        private string _base64String;
+        public string Base64String
+        {
+            get { return _base64String; }
+            set
+            {
+                if (_base64String != value)
+                {
+                    _base64String = value;
+                    OnPropertyChanged(nameof(Base64String));
+                }
+            }
+        }
+
+        private async void ConvertPDFToBase64Async()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(SelectedPDFFilePath) && File.Exists(SelectedPDFFilePath))
+                {
+                    byte[] pdfBytes = await File.ReadAllBytesAsync(SelectedPDFFilePath);
+                    string base64String = Convert.ToBase64String(pdfBytes);
+                    Base64String = base64String;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error converting PDF to Base64: {ex.Message}");
             }
         }
 

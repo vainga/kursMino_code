@@ -24,15 +24,20 @@ namespace KursCode.MVVM.View.Windows.Dialog
     {
 
         private addWorkerViewModel viewModel;
-
-        public AddWorker()
+        private int _UserId { get; }
+        
+        public AddWorker(int userId)
         {
             InitializeComponent();
-            DataContext = new addWorkerViewModel();
+            DataContext = viewModel;
 
             userInputValues = new List<string>();
             textBoxList = new List<TextBox>();
             viewModel = new addWorkerViewModel();
+
+            _UserId = userId;
+
+            viewModel.UserId = _UserId;
         }
 
         private List<ClientSkiil> userControls = new List<ClientSkiil>();
@@ -71,6 +76,10 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
 
             (QualitiesWrapPanel.Children[QualitiesWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
+            if(DataContext is addWorkerViewModel)
+            {
+                viewModel.TextBoxListQualities.Add(userControl.itemText);
+            }
         }
 
 
@@ -93,7 +102,7 @@ namespace KursCode.MVVM.View.Windows.Dialog
             (SkillsWrapPanel.Children[SkillsWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
             if (DataContext is addWorkerViewModel viewModel)
             {
-                viewModel.TextBoxList.Add(userControl.itemText);
+                viewModel.TextBoxListSkills.Add(userControl.itemText);
             }
         
         }

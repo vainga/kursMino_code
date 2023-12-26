@@ -6,6 +6,8 @@ using System.IO;
 using KursCode.Data;
 using System.Windows.Controls;
 using KursCode.MVVM.Model;
+using KursCode.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace Clients
 {
@@ -15,49 +17,71 @@ namespace Clients
         [JsonInclude]
         [JsonPropertyName("_WorkerName")]
         public string _WorkerName { get; private set; }
+        
         [JsonInclude]
         [JsonPropertyName("_Surname")] //Нужно ли?
         public string _Surname { get; private set; }
+        
         [JsonInclude]
         [JsonPropertyName("_Work_experience")]
-        public int _Work_experience { get;  private set; }
+        public string _Work_experience { get;  private set; }
+        
         [JsonInclude]
         [JsonPropertyName("_Salary_need")]
-        public int _Salary_need { get;  private set; }
+        public string _Salary_need { get;  private set; }
 
         [JsonInclude]
         [JsonPropertyName("_UserId")]
-        public static int _UserId { get; private set; }   
+        public static int _UserId { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("_PDF")]
+        public string _PdfFile { get; private set; }
+        //public byte[] _PdfFile { get; private set; }
         
-        public byte[] _PdfFile { get; private set; }
-        public Image _WorkerPhoto { get; set; }
+        [JsonInclude]
+        [JsonPropertyName("_Photo")]
+        public string _WorkerPhoto { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("PhoneNumber")]
+        public string _PhoneNumber { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Education")]
+        public string _Education { get; set; }
 
         public IUser user { get; set; }
+
         DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
 
-
-        public workerClass() : base("", "", "", "", false, new List<string>(), new List<string>(), new Dictionary<int, string>(), new Dictionary<int, string>(),new Dictionary<int, string>(), new Dictionary<int, string>())
+        public workerClass() : base("", "", "", "", new ObservableCollection<string>(), new ObservableCollection<string>(), new Dictionary<int, string>(), new Dictionary<int, string>(),new Dictionary<int, string>(), new Dictionary<int, string>())
         {
+            user = new User();
             _WorkerName = "";
             _Surname = "";
-            _Work_experience = 0;
-            _Salary_need = 0;
-            _UserId = user.userId;
-            _PdfFile = null;
-            _WorkerPhoto = null;
+            _Work_experience = "";
+            _Salary_need ="";
+            _UserId = -1;
+            _PdfFile = "";
+            _WorkerPhoto = "";
+            _PhoneNumber = "";
+            _Education = "";
         }
 
-        private workerClass(string workerName,string surname, string post, string email, string city, string description,bool distant, List<string> personal_qualities, List<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status, int work_experience, int salary, int salary_need, byte[] pdfFile, Image workerPhoto)
-        : base(post, email, city, description, distant, personal_qualities, skills, citizenship, employment, shedule, status)
+        public workerClass(string workerName,string surname, string post, string email, string city, string description, int userID ,ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status, string work_experience, string salary_need, string pdfFile, string workerPhoto, string phoneNumber, string education)
+        : base(post, email, city, description, personal_qualities, skills, citizenship, employment, shedule, status)
 
         {
             _WorkerName = workerName;
             _Surname = surname;
             _Work_experience = work_experience;
             _Salary_need = salary_need;
-            _UserId = user.userId;
+            _UserId = userID;
             _PdfFile = pdfFile;
             _WorkerPhoto = workerPhoto;
+            _PhoneNumber = phoneNumber;
+            _Education = education;
         }
 
         private static string GetWorkerDBPath()
@@ -66,11 +90,11 @@ namespace Clients
             string parentPath = Directory.GetParent(executablePath).FullName;
             string dataFolderPath = Path.Combine(parentPath, "Data");
             string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{_UserId}_ID_User");
-            string workerDbPath = Path.Combine(userSpecificFolderPath, $"{_UserId}_ID_workersndata.db");
-
+            string workerDbPath = Path.Combine(userFolderPath, $"{_UserId}_ID_User");
+            Directory.CreateDirectory(workerDbPath);
             return workerDbPath;
         }
+
 
         private string ToJson()
         {
@@ -91,10 +115,11 @@ namespace Clients
 
         public void AddData()
         {
+            string workerFolderPath = GetWorkerDBPath();
+            string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
+            DatabaseHelper dbHelper = new DatabaseHelper(workerDataFilePath);
             List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath());
-
             int nextId = dbHelper.GetNextEntityId((string jsonString) => 0, jsonStrings);
-
             dbHelper.SaveEntityToFile(ToJson(), jsonStrings);
         }
 

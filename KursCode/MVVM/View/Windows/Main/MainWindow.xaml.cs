@@ -20,9 +20,11 @@ namespace KursCode.MVVM.View.Windows.Main
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private int _UserId { get; }
+        public MainWindow(int userId)
         {
             InitializeComponent();
+            _UserId = userId;
         }
 
         private Page currentPage;
@@ -86,7 +88,7 @@ namespace KursCode.MVVM.View.Windows.Main
         {
             if (!(mainFrame.Content is WorkersPage))
             {
-                currentPage = new WorkersPage();
+                currentPage = new WorkersPage(_UserId);
                 mainFrame.Navigate(currentPage);
             }
         }
@@ -95,7 +97,7 @@ namespace KursCode.MVVM.View.Windows.Main
         {
             if (!(mainFrame.Content is VacancyPage))
             {
-                currentPage = new VacancyPage();
+                currentPage = new VacancyPage(_UserId);
                 mainFrame.Navigate(currentPage);
             }
         }

@@ -17,7 +17,6 @@ namespace KursCode.MVVM.ViewModel
 {
     public class EnterViewModel: INotifyPropertyChanged
     {
-        private IUser user;
         private string _buttonContent = "Войти";
         private string _textBlockContent = "Зарегистрироваться";
         private Visibility _secondTextBlockVisibility = Visibility.Visible;
@@ -26,6 +25,18 @@ namespace KursCode.MVVM.ViewModel
         private Visibility _errorMessageVisibility = Visibility.Collapsed;
 
         public event EventHandler SuccessfulLogin;
+
+        private IUser _user;
+
+        public IUser Users
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                OnPropertyChanged(nameof(Users));
+            }
+        }
 
         private int defaultFontSize = 24;
         public int ButtonContentFontSize
@@ -40,25 +51,23 @@ namespace KursCode.MVVM.ViewModel
                 }
         }
 
-        private string _password;
         public string Password
         {
-            get { return _password; } 
+            get { return Users._Password; } 
             set {
-                    if (_password != value)
-                    {
-                        _password = value;
-                        OnPropertyChanged(nameof(Password));
-                    }
+                if (Users._Password != value)
+                {
+                    Users = new User(Users._Login,value);
+                    OnPropertyChanged(nameof(Password));
+                }
                 }
         }
 
-        private string _login;
-        public string Login {  get { return _login; }
+        public string Login {  get { return Users._Login; }
             set {
-                    if (_login != value)
+                    if (Users._Login != value)
                     {
-                        _login = value;
+                        Users = new User(value, Users._Password);
                         OnPropertyChanged(nameof(Login));
                     }
                 } 
@@ -165,7 +174,7 @@ namespace KursCode.MVVM.ViewModel
 
         public EnterViewModel()
         {
-            user = new User();
+            Users = new User("","");
             RegisterCommand = new RelayCommand(ExecuteRegister, CanExecuteRegister);
             EnterCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
         }
@@ -174,10 +183,10 @@ namespace KursCode.MVVM.ViewModel
         {
             try
             {
-                bool registerResult = user.Registration(Login, Password);
+                bool registerResult = Users.Registration();
                 if (registerResult)
                 {
-                    MainWindow mainWindow = new MainWindow();
+                    MainWindow mainWindow = new MainWindow(_user.userId);
                     mainWindow.Show();
                     OnSuccessfulLogin();
                 }
@@ -208,10 +217,10 @@ namespace KursCode.MVVM.ViewModel
         {
             try
             {
-                bool EnterResult = user.Enter(Login, Password);
+                bool EnterResult = Users.Enter();
                 if(EnterResult)
                 {
-                    MainWindow mainWindow = new MainWindow();
+                    MainWindow mainWindow = new MainWindow(_user.userId);
                     mainWindow.Show();
                     OnSuccessfulLogin();
                 }
