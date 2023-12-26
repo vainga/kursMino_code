@@ -51,6 +51,10 @@ namespace Clients
         [JsonPropertyName("Education")]
         public string _Education { get; set; }
 
+        [JsonInclude]
+        [JsonPropertyName("Age")]
+        public string _Age { get; set; }
+
         public IUser user { get; set; }
 
         DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
@@ -67,9 +71,10 @@ namespace Clients
             _WorkerPhoto = "";
             _PhoneNumber = "";
             _Education = "";
+            _Age = "";
         }
 
-        public workerClass(string workerName,string surname, string post, string email, string city, string description, int userID ,ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status, string work_experience, string salary_need, string pdfFile, string workerPhoto, string phoneNumber, string education)
+        public workerClass(string workerName,string surname, string post, string email, string city, string description, int userID ,ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status, string work_experience, string salary_need, string pdfFile, string workerPhoto, string phoneNumber, string education, string age)
         : base(post, email, city, description, personal_qualities, skills, citizenship, employment, shedule, status)
 
         {
@@ -82,6 +87,7 @@ namespace Clients
             _WorkerPhoto = workerPhoto;
             _PhoneNumber = phoneNumber;
             _Education = education;
+            _Age = age;
         }
 
         private static string GetWorkerDBPath()

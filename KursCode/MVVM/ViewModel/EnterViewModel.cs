@@ -1,26 +1,33 @@
-﻿using KursCode.MVVM.View.Windows.Main;
+﻿using Clients;
+using KursCode.MVVM.View.Windows.Main;
 using KursCode.View;
 using KursCode.WindowServices;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 namespace KursCode.MVVM.ViewModel
 {
-    public class EnterViewModel: INotifyPropertyChanged
+    public class EnterViewModel : INotifyPropertyChanged
     {
         private string _buttonContent = "Войти";
         private string _textBlockContent = "Зарегистрироваться";
         private Visibility _secondTextBlockVisibility = Visibility.Visible;
-        
+
         private string _errorMessageContent = "Ошибка регистрации!";
         private Visibility _errorMessageVisibility = Visibility.Collapsed;
 
@@ -42,35 +49,40 @@ namespace KursCode.MVVM.ViewModel
         public int ButtonContentFontSize
         {
             get { return ButtonContent == "Зарегистрироваться" ? 20 : defaultFontSize; }
-            set {
-                    if (defaultFontSize != value)
-                    {
-                        defaultFontSize = value;
-                        OnPropertyChanged(nameof(ButtonContentFontSize));
-                    }
+            set
+            {
+                if (defaultFontSize != value)
+                {
+                    defaultFontSize = value;
+                    OnPropertyChanged(nameof(ButtonContentFontSize));
                 }
+            }
         }
 
         public string Password
         {
-            get { return Users._Password; } 
-            set {
+            get { return Users._Password; }
+            set
+            {
                 if (Users._Password != value)
                 {
-                    Users = new User(Users._Login,value);
+                    Users = new User(Users._Login, value);
                     OnPropertyChanged(nameof(Password));
                 }
-                }
+            }
         }
 
-        public string Login {  get { return Users._Login; }
-            set {
-                    if (Users._Login != value)
-                    {
-                        Users = new User(value, Users._Password);
-                        OnPropertyChanged(nameof(Login));
-                    }
-                } 
+        public string Login
+        {
+            get { return Users._Login; }
+            set
+            {
+                if (Users._Login != value)
+                {
+                    Users = new User(value, Users._Password);
+                    OnPropertyChanged(nameof(Login));
+                }
+            }
         }
 
         public string ButtonContent
@@ -174,7 +186,7 @@ namespace KursCode.MVVM.ViewModel
 
         public EnterViewModel()
         {
-            Users = new User("","");
+            Users = new User("", "");
             RegisterCommand = new RelayCommand(ExecuteRegister, CanExecuteRegister);
             EnterCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
         }
@@ -190,7 +202,7 @@ namespace KursCode.MVVM.ViewModel
                     mainWindow.Show();
                     OnSuccessfulLogin();
                 }
-                else 
+                else
                 {
                     _errorMessageVisibility = Visibility.Visible;
 
@@ -218,7 +230,7 @@ namespace KursCode.MVVM.ViewModel
             try
             {
                 bool EnterResult = Users.Enter();
-                if(EnterResult)
+                if (EnterResult)
                 {
                     MainWindow mainWindow = new MainWindow(_user.userId);
                     mainWindow.Show();
