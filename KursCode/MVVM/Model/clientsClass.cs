@@ -36,39 +36,16 @@ namespace Clients
         public ObservableCollection<string> _Skills { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Status")]
-        public Dictionary<int, string> _Status { get; private set; } = new Dictionary<int, string>
-        {
-            {1,"В работе" },
-            {2,"Назначено собеседование" },
-            {3,"Принят" },
-            {4,"Отклонен" }
-        };
+        public string _Status { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Sitizenship")]
-        public Dictionary<int, string> _Citizenship { get; private set; } = new Dictionary<int, string>
-        {
-            {1,"Российская Федерация" },
-            {2,"Другое" }
-        };
+        public string _Citizenship { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Shedule")]
-        public Dictionary<int, string> _Shedule { get; private set; } = new Dictionary<int, string>
-        {
-            {1,"Полный день" },
-            {2,"Сменный график" },
-            {3,"Гибкий график" },
-            {4,"Удаленная работа" },
-            {5,"Вахтовый метод" }
-        };
+        public string _Shedule { get; private set; }
         [JsonInclude]
         [JsonPropertyName("Empoyment")]
-        public Dictionary<int, string> _Empoyment { get; private set; } = new Dictionary<int, string>
-        {
-            {1,"Полная" },
-            {2,"Частичная" },
-            {3,"Стажировка" }
-        };
-
+        public string _Empoyment { get; private set; }
 
         public clientsClass()
         {
@@ -78,14 +55,14 @@ namespace Clients
             _Description = "";
             _Personal_qualities = new ObservableCollection<string>();
             _Skills = new ObservableCollection<string>();
-            _Status = new Dictionary<int, string>();
-            _Citizenship = new Dictionary<int, string>();
-            _Shedule = new Dictionary<int, string>();
-            _Empoyment = new Dictionary<int, string>();
+            _Status = "";
+            _Citizenship = "";
+            _Shedule = "";
+            _Empoyment = "";
 
         }
 
-        public clientsClass(string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills,Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status)
+        public clientsClass(string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills,string citizenship, string employment, string shedule, string status)
         {
             _Post = post;
             _Email = email;

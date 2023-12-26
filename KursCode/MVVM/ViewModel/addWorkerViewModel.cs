@@ -19,6 +19,7 @@ using System.Numerics;
 using System.Windows.Controls;
 using Clients;
 using KursCode.Interfaces;
+using System.Xml.Linq;
 
 namespace KursCode.MVVM.ViewModel
 {
@@ -37,11 +38,16 @@ namespace KursCode.MVVM.ViewModel
             worker = new workerClass();
         }
 
-        private int _userId;
+        static private int _userId;
         public int UserId
         {
             get { return _userId; }
-            set { if (_userId != value) { _userId = value; OnPropertyChanged(nameof(UserId)); } }
+            set 
+            { if (_userId != value) 
+                {
+                    _userId = value;
+                } 
+            }
         }
 
 
@@ -65,12 +71,6 @@ namespace KursCode.MVVM.ViewModel
                 }
             }
         }
-
-
-
-        //(string workerName, string surname, string post, string email, string city, string description, int userID, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, 
-        //    Dictionary<int, string> shedule, Dictionary<int, string> status, 
-        //    int work_experience, int salary, int salary_need, string pdfFile, string workerPhoto)
 
         public ObservableCollection<string> Qualities
         {
@@ -124,7 +124,7 @@ namespace KursCode.MVVM.ViewModel
             {
                 Qualities.Add(textBox.Text);
             }
-            worker.AddData();
+            worker.AddData(_userId);
         }
 
         public string WorkerName
@@ -192,6 +192,7 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
+        public string _salary;
         public string Salary
         {
             get { return worker._Salary_need; }
@@ -199,7 +200,8 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._Salary_need != value)
                 {
-                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
+                    _salary = FormatNumeric(value);
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, _salary, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(Salary));
                 }
             }
@@ -273,7 +275,6 @@ namespace KursCode.MVVM.ViewModel
                 {
                     _selectedPDFFilePath = value;
                     OnPropertyChanged(nameof(SelectedPDFFilePath));
-                    ConvertPDFToBase64Async();
                 }
             }
         }
@@ -339,15 +340,14 @@ namespace KursCode.MVVM.ViewModel
             return null;
         }
 
-        private string _base64StringImage;
         public string Base64StringImage
         {
-            get { return _base64StringImage; }
+            get { return worker._WorkerPhoto; }
             set
             {
-                if (_base64StringImage != value)
+                if (worker._WorkerPhoto != value)
                 {
-                    _base64StringImage = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, value, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(Base64StringImage));
                 }
             }
@@ -371,7 +371,7 @@ namespace KursCode.MVVM.ViewModel
                     SelectedImageVisibility = Visibility.Visible;
                     PhotoIconVisibility = Visibility.Collapsed;
 
-                    _base64StringImage = ConvertImageToBase64(bitmap);
+                    worker._WorkerPhoto = ConvertImageToBase64(bitmap);
 
                 }
                 catch (Exception ex)
@@ -406,39 +406,47 @@ namespace KursCode.MVVM.ViewModel
 
             if (openFileDialog.ShowDialog() == true)
             {
-                string fileName = Path.GetFileName(openFileDialog.FileName);
-                SelectedPDFFilePath = fileName;
+                string fileName = openFileDialog.FileName;
+
+                try
+                {
+                    byte[] pdfBytes = File.ReadAllBytes(fileName);
+                    string base64String = Convert.ToBase64String(pdfBytes);
+                    
+                    fileName = Path.GetFileName(openFileDialog.FileName);
+                    SelectedPDFFilePath = fileName;
+                    worker._PdfFile = base64String;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Ошибка при чтении файла: {ex.Message}");
+                }
             }
         }
 
-        private string _base64String;
+        //                SelectedPDFFilePath = fileName;
+        //worker._PdfFile = base64String;
+        //            SelectedPDFFilePath = fileName;
+        //string fileName = Path.GetFileName(openFileDialog.FileName);
+
+
         public string Base64String
         {
-            get { return _base64String; }
+            get { return worker._PdfFile; }
             set
             {
-                if (_base64String != value)
+                try
                 {
-                    _base64String = value;
-                    OnPropertyChanged(nameof(Base64String));
+                    if (worker._PdfFile != value)
+                    {
+                        worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, value, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
+                        OnPropertyChanged(nameof(Base64String));
+                    }
                 }
-            }
-        }
-
-        private async void ConvertPDFToBase64Async()
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(SelectedPDFFilePath) && File.Exists(SelectedPDFFilePath))
+                catch (Exception ex)
                 {
-                    byte[] pdfBytes = await File.ReadAllBytesAsync(SelectedPDFFilePath);
-                    string base64String = Convert.ToBase64String(pdfBytes);
-                    Base64String = base64String;
+                    MessageBox.Show($"Error loading pdf: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error converting PDF to Base64: {ex.Message}");
             }
         }
 
@@ -478,57 +486,55 @@ namespace KursCode.MVVM.ViewModel
             get { return _Empoyment; }
         }
 
-        private string _selectedCitizenship;
         public string SelectedCitizenship
         {
-            get { return _selectedCitizenship; }
+            get { return worker._Citizenship; }
             set
             {
-                if (_selectedCitizenship != value)
+                if (worker._Citizenship != value)
                 {
-                    _selectedCitizenship = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, value, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(SelectedCitizenship));
                 }
             }
         }
 
-        private string _selectedShedule;
         public string SelectedShedule
         {
-            get { return _selectedShedule; }
+            get { return worker._Shedule; }
             set
             {
-                if (_selectedShedule != value)
+                if (worker._Shedule != value)
                 {
-                    _selectedShedule = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, value, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(SelectedShedule));
                 }
             }
         }
 
-        private string _selectedEmpoyment;
         public string SelectedEmpoyment
         {
-            get { return _selectedEmpoyment; }
+            get { return worker._Empoyment; }
             set
             {
-                if (_selectedEmpoyment != value)
+                if (worker._Empoyment != value)
                 {
-                    _selectedEmpoyment = value;
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, value, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(SelectedEmpoyment));
                 }
             }
         }
 
-        private string _phoneNumber;
+        public string _phoneNumber;
         public string PhoneNumber
         {
-            get { return _phoneNumber; }
+            get { return worker._PhoneNumber; }
             set
             {
-                if (_phoneNumber != value)
+                if (worker._PhoneNumber != value)
                 {
-                    _phoneNumber = FormatPhoneNumber(value);
+                    _phoneNumber=FormatPhoneNumber(value);
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, _phoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(PhoneNumber));
                 }
             }

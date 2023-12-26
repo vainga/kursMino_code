@@ -36,7 +36,7 @@ namespace Clients
 
         [JsonInclude]
         [JsonPropertyName("_PDF")]
-        public string _PdfFile { get; private set; }
+        public string _PdfFile { get; set; }
         //public byte[] _PdfFile { get; private set; }
         
         [JsonInclude]
@@ -57,9 +57,9 @@ namespace Clients
 
         public IUser user { get; set; }
 
-        DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath());
+        DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath(_UserId));
 
-        public workerClass() : base("", "", "", "", new ObservableCollection<string>(), new ObservableCollection<string>(), new Dictionary<int, string>(), new Dictionary<int, string>(),new Dictionary<int, string>(), new Dictionary<int, string>())
+        public workerClass() : base("", "", "", "", new ObservableCollection<string>(), new ObservableCollection<string>(), "", "","", "")
         {
             user = new User();
             _WorkerName = "";
@@ -74,7 +74,7 @@ namespace Clients
             _Age = "";
         }
 
-        public workerClass(string workerName,string surname, string post, string email, string city, string description, int userID ,ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, Dictionary<int, string> citizenship, Dictionary<int, string> employment, Dictionary<int, string> shedule, Dictionary<int, string> status, string work_experience, string salary_need, string pdfFile, string workerPhoto, string phoneNumber, string education, string age)
+        public workerClass(string workerName,string surname, string post, string email, string city, string description, int userID ,ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status, string work_experience, string salary_need, string pdfFile, string workerPhoto, string phoneNumber, string education, string age)
         : base(post, email, city, description, personal_qualities, skills, citizenship, employment, shedule, status)
 
         {
@@ -90,13 +90,13 @@ namespace Clients
             _Age = age;
         }
 
-        private static string GetWorkerDBPath()
+        private static string GetWorkerDBPath(int userid)
         {
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
             string parentPath = Directory.GetParent(executablePath).FullName;
             string dataFolderPath = Path.Combine(parentPath, "Data");
             string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string workerDbPath = Path.Combine(userFolderPath, $"{_UserId}_ID_User");
+            string workerDbPath = Path.Combine(userFolderPath, $"{userid}_ID_User");
             Directory.CreateDirectory(workerDbPath);
             return workerDbPath;
         }
@@ -119,33 +119,33 @@ namespace Clients
             return base64String;
         }
 
-        public void AddData()
+        public void AddData(int userid)
         {
-            string workerFolderPath = GetWorkerDBPath();
+            string workerFolderPath = GetWorkerDBPath(userid);
             string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
             DatabaseHelper dbHelper = new DatabaseHelper(workerDataFilePath);
-            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath());
+            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath(userid));
             int nextId = dbHelper.GetNextEntityId((string jsonString) => 0, jsonStrings);
             dbHelper.SaveEntityToFile(ToJson(), jsonStrings);
         }
 
-        public List<string> ReadAllJsonFromDatabase()
+        public List<string> ReadAllJsonFromDatabase(int userid)
         {
-            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath());
+            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath(userid));
 
             return jsonStrings;
         }
 
-        public int GetId(string workerJson)
+        public int GetId(string workerJson,int userid)
         {
-            return dbHelper.GetNextEntityId((string jsonString) => 0, dbHelper.GetAllEntities<string>(GetWorkerDBPath()));
+            return dbHelper.GetNextEntityId((string jsonString) => 0, dbHelper.GetAllEntities<string>(GetWorkerDBPath(userid)));
         }
 
-        public void RemoveData(int itemIdToDelete)
+        public void RemoveData(int itemIdToDelete,int userid)
         {
             using (dbHelper)
             {
-                dbHelper.RemoveEntity((string jsonString) => GetId(jsonString) == itemIdToDelete, dbHelper.GetAllEntities<string>(GetWorkerDBPath()));
+                dbHelper.RemoveEntity((string jsonString) => GetId(jsonString, userid) == itemIdToDelete, dbHelper.GetAllEntities<string>(GetWorkerDBPath(userid)));
             }
         }
 
