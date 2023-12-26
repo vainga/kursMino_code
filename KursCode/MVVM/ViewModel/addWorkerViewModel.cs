@@ -113,6 +113,7 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
+
         public ICommand SaveCommand { get; private set; }
         private void Save()
         {
@@ -124,7 +125,26 @@ namespace KursCode.MVVM.ViewModel
             {
                 Qualities.Add(textBox.Text);
             }
-            worker.AddData(_userId);
+            if (string.IsNullOrWhiteSpace(worker._WorkerName) ||
+                string.IsNullOrWhiteSpace(worker._Surname) ||
+                string.IsNullOrWhiteSpace(worker._Post) ||
+                string.IsNullOrWhiteSpace(worker._Email) ||
+                string.IsNullOrWhiteSpace(worker._City) ||
+                string.IsNullOrWhiteSpace(worker._Description) ||
+                worker._Skills == null || worker._Skills.Count == 0 ||
+                worker._Citizenship == null ||
+                worker._Empoyment == null ||
+                worker._Shedule == null ||
+                worker._Personal_qualities == null || worker._Personal_qualities.Count == 0)
+            {
+                // Вывод MessageBox, сообщающего о незаполненных обязательных полях
+                MessageBox.Show("Заполните все обязательные поля (кроме фото и pdf).", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return; // Прерываем выполнение метода, так как не все обязательные поля заполнены
+            }
+            else
+            {
+                worker.AddData(_userId);
+            }
         }
 
         public string WorkerName

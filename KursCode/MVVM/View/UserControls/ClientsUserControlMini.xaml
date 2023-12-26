@@ -12,9 +12,24 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="0.5*"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBlock Foreground="DarkBlue" Text="Фамилия Имя Отчество" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="DemiBold" Margin="-45,0,0,0"></TextBlock>
-            <Border Background="Gray" Height="0.2" Grid.Row="0" VerticalAlignment="Bottom" Margin="5,0,5,0"></Border>
-            <Ellipse Fill="LightGray" Grid.Row="0" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"></Ellipse>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" Foreground="DarkBlue" Text="Фамилия" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="DemiBold" Margin="0,0,0,0"></TextBlock>
+                <TextBlock Grid.Column="2" Foreground="DarkBlue" Text="Имя" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="DemiBold" Margin="3,0,0,0"></TextBlock>
+                <Border Background="Gray" Height="0.2" Grid.Row="0" VerticalAlignment="Bottom" Margin="5,0,5,0"></Border>
+                <Ellipse Width="40" Height="40" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                    <Ellipse.Fill>
+                        <ImageBrush />
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Grid>
+            <Border Background="DarkGray" BorderThickness="2" Grid.Row="1" Margin="10,0,10,0" CornerRadius="10" Padding="2">
+                <TextBlock Text="Текст" Foreground="DimGray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
         </Grid>
     </Border>
 </UserControl>

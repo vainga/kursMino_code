@@ -1,4 +1,5 @@
-﻿using KursCode.MVVM.View.Windows.Dialog;
+﻿using KursCode.MVVM.View.UserControls;
+using KursCode.MVVM.View.Windows.Dialog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,18 @@ namespace KursCode.MVVM.View.Pages
         private void add_button(object sender, RoutedEventArgs e)
         {
             AddWorker worker = new AddWorker(_UserId);
+            worker.Closed += WorkerClosed;
             worker.ShowDialog();
+        }
+        private void WorkerClosed(object sender, EventArgs e)
+        {
+            // Код, который будет выполняться при закрытии AddWorker
+
+            // Создаем новый UserControl
+            ClientsUserControlMini newUserControl = new ClientsUserControlMini();
+            Thickness margin = new Thickness(0, 0, 0, 15);
+            newUserControl.Margin = margin;
+            miniWorkers.Children.Add(newUserControl);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
 
             (QualitiesWrapPanel.Children[QualitiesWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
-            if(DataContext is addWorkerViewModel)
+            if(DataContext is addWorkerViewModel viewModel)
             {
                 viewModel.TextBoxListQualities.Add(userControl.itemText);
             }
@@ -115,6 +115,9 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
         }
 
-
+         private void last_button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

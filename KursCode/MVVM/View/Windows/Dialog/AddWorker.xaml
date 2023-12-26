@@ -107,13 +107,6 @@
                     <TextBlock Text="Личные навыки:" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,0,0,0"></TextBlock>
 
                         <WrapPanel x:Name="SkillsWrapPanel" Grid.Row="1" VerticalAlignment="Top">
-                            <ItemsControl ItemsSource="{Binding Skills}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <uc:ClientSkiil/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
                             <Button CommandParameter="QualityButton" Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="42" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,15,0,0" materialDesign:ButtonAssist.CornerRadius="90" Click="addSkillButton_Click">
                                 <materialDesign:PackIcon Kind="Plus" Foreground="White" Width="30" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Button>
@@ -248,7 +241,7 @@
                                 <materialDesign:PackIcon Grid.Column="0" Kind="FileOutline" Foreground="White" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Grid>
                         </Button>
-                        <Button Grid.Row="17" Background="Green" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10,20,10" materialDesign:ButtonAssist.CornerRadius="90" Command="{Binding SaveCommand}">
+                        <Button Grid.Row="17" Background="Green" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10,20,10" materialDesign:ButtonAssist.CornerRadius="90" Click="last_button_Click" Command="{Binding SaveCommand}">
                             <materialDesign:PackIcon Kind="Done" Foreground="White" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Button>
                     </Grid>

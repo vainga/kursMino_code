@@ -15,7 +15,7 @@ namespace KursCode.Data
     {
         private bool disposed = false;
 
-        private static string connectionString;
+        private string connectionString;
 
         public DatabaseHelper(string filePath)
         {
@@ -46,8 +46,20 @@ namespace KursCode.Data
 
             if (File.Exists(filePath))
             {
-                string existingJsonData = File.ReadAllText(filePath);
-                existingEntities = JsonSerializer.Deserialize<List<T>>(existingJsonData);
+                try
+                {
+                    string existingJsonData = File.ReadAllText(filePath);
+                    Console.WriteLine($"Debug: Existing JSON Data - {existingJsonData}");
+
+                    if (!string.IsNullOrEmpty(existingJsonData))
+                    {
+                        existingEntities = JsonSerializer.Deserialize<List<T>>(existingJsonData);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error during deserialization: {ex.Message}");
+                }
             }
 
             return existingEntities;
@@ -89,5 +101,20 @@ namespace KursCode.Data
                 File.WriteAllText(connectionString, updatedJsonData);
             }
         }
+
+        public void SaveEntitiesToFile<T>(List<T> objectsList)
+        {
+            // Преобразуйте список в JSON
+            string json = JsonSerializer.Serialize(objectsList, new JsonSerializerOptions { WriteIndented = true });
+
+            // Откройте файл в режиме добавления (append) и добавьте новые данные в конец файла
+            using (StreamWriter sw = File.AppendText(connectionString))
+            {
+                sw.WriteLine(json);
+            }
+        }
+
+
+
     }
 }

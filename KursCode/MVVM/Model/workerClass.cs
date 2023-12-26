@@ -124,9 +124,23 @@ namespace Clients
             string workerFolderPath = GetWorkerDBPath(userid);
             string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
             DatabaseHelper dbHelper = new DatabaseHelper(workerDataFilePath);
-            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetWorkerDBPath(userid));
-            int nextId = dbHelper.GetNextEntityId((string jsonString) => 0, jsonStrings);
-            dbHelper.SaveEntityToFile(ToJson(), jsonStrings);
+
+            // Проверка наличия файла
+            if (!File.Exists(workerDataFilePath))
+            {
+                File.WriteAllText(workerDataFilePath, "[]");
+            }
+
+            List<workerClass> jsonObjects = dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
+
+            // Создайте новый объект workerClass
+            workerClass newWorker = this;
+
+            // Добавьте новый объект к существующему списку
+            jsonObjects.Add(newWorker);
+
+            // Сохраните обновленный список в файл
+            dbHelper.SaveEntitiesToFile<workerClass>(jsonObjects);
         }
 
         public List<string> ReadAllJsonFromDatabase(int userid)
