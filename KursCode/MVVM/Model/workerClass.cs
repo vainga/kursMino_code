@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 namespace Clients
 {
     [Serializable]
-    class workerClass: clientsClass
+    public class workerClass: clientsClass
     {
         [JsonInclude]
         [JsonPropertyName("_WorkerName")]
@@ -125,7 +125,6 @@ namespace Clients
             string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
             DatabaseHelper dbHelper = new DatabaseHelper(workerDataFilePath);
 
-            // Проверка наличия файла
             if (!File.Exists(workerDataFilePath))
             {
                 File.WriteAllText(workerDataFilePath, "[]");
@@ -133,14 +132,8 @@ namespace Clients
 
             List<workerClass> jsonObjects = dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
 
-            // Создайте новый объект workerClass
-            workerClass newWorker = this;
 
-            // Добавьте новый объект к существующему списку
-            jsonObjects.Add(newWorker);
-
-            // Сохраните обновленный список в файл
-            dbHelper.SaveEntitiesToFile<workerClass>(jsonObjects);
+            dbHelper.SaveEntityToFile<workerClass>(this, jsonObjects);
         }
 
         public List<string> ReadAllJsonFromDatabase(int userid)

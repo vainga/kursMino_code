@@ -50,7 +50,6 @@ namespace KursCode.Data
                 {
                     string existingJsonData = File.ReadAllText(filePath);
                     Console.WriteLine($"Debug: Existing JSON Data - {existingJsonData}");
-
                     if (!string.IsNullOrEmpty(existingJsonData))
                     {
                         existingEntities = JsonSerializer.Deserialize<List<T>>(existingJsonData);

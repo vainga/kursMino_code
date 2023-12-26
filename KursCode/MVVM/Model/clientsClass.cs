@@ -13,7 +13,7 @@ using System.Windows.Controls;
 namespace Clients
 {
     [Serializable]
-    abstract class clientsClass : IClients
+    public abstract class clientsClass : IClients
     {
         [JsonInclude]
         [JsonPropertyName("Post")]

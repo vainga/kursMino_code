@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Clients;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace KursCode.MVVM.View.UserControls
         public ClientsUserControlMini()
         {
             InitializeComponent();
+        }
+
+        public void SetData(workerClass data)
+        {
+            this.Surname.Text = data._Surname;
+            this.Name.Text = data._WorkerName;
+            this.Post.Text = data._Post;
         }
     }
 }
