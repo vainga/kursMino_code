@@ -22,11 +22,20 @@ namespace KursCode.MVVM.View.Windows.Dialog
     /// </summary>
     public partial class AddWorker : Window
     {
+
+        private addWorkerViewModel viewModel;
+
         public AddWorker()
         {
             InitializeComponent();
             DataContext = new addWorkerViewModel();
+
+            userInputValues = new List<string>();
+            textBoxList = new List<TextBox>();
+            viewModel = new addWorkerViewModel();
         }
+
+        private List<ClientSkiil> userControls = new List<ClientSkiil>();
 
         private void drugWindow_LeftButtonDrag(object sender, MouseButtonEventArgs e)
         {
@@ -64,13 +73,17 @@ namespace KursCode.MVVM.View.Windows.Dialog
             (QualitiesWrapPanel.Children[QualitiesWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
         }
 
+
+        private List<string> userInputValues;
+        private List<TextBox> textBoxList;
         private void addSkillButton_Click(object sender, RoutedEventArgs e)
         {
+
+
             ClientSkiil userControl = new ClientSkiil();
             userControl.VerticalAlignment = VerticalAlignment.Top;
             userControl.Margin = new Thickness(10, 15, 0, 0);
             SkillsWrapPanel.Children.Insert(SkillsWrapPanel.Children.Count - 1, userControl);
-
             double totalWidth = 0;
             foreach (UIElement element in SkillsWrapPanel.Children)
             {
@@ -78,6 +91,11 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
 
             (SkillsWrapPanel.Children[SkillsWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
+            if (DataContext is addWorkerViewModel viewModel)
+            {
+                viewModel.TextBoxList.Add(userControl.itemText);
+            }
+        
         }
 
         private void ImageBorder_MouseLeftButtonDown(object sender, RoutedEventArgs e)
@@ -87,6 +105,7 @@ namespace KursCode.MVVM.View.Windows.Dialog
                 viewModel.SelectImage();
             }
         }
+
 
     }
 }

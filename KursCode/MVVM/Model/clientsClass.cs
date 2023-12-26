@@ -45,7 +45,7 @@ namespace Clients
         };
         [JsonInclude]
         [JsonPropertyName("Sitizenship")]
-        Dictionary<int, string> _Sitizenship = new Dictionary<int, string>
+        Dictionary<int, string> _Citizenship = new Dictionary<int, string>
         {
             {1,"Российская Федерация" },
             {2,"Другое" }
@@ -80,7 +80,7 @@ namespace Clients
             _Personal_qualities = new List<string>();
             _Skills = new List<string>();
             _Status = new Dictionary<int, string>();
-            _Sitizenship = new Dictionary<int, string>();
+            _Citizenship = new Dictionary<int, string>();
             _Shedule = new Dictionary<int, string>();
             _Empoyment = new Dictionary<int, string>();
 
@@ -96,7 +96,7 @@ namespace Clients
             _Personal_qualities = personal_qualities;
             _Skills = skills;
             _Status = status;
-            _Sitizenship = citizenship;
+            _Citizenship = citizenship;
             _Shedule= shedule;
             _Empoyment= employment;
         }

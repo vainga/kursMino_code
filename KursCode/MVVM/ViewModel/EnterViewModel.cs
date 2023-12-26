@@ -183,7 +183,6 @@ namespace KursCode.MVVM.ViewModel
                 }
                 else 
                 {
-                    _errorMessageContent = "Пользователь с таким логином уже существует!";
                     _errorMessageVisibility = Visibility.Visible;
 
                     OnPropertyChanged(nameof(ErrorMessageContent));
@@ -218,7 +217,6 @@ namespace KursCode.MVVM.ViewModel
                 }
                 else
                 {
-                    _errorMessageContent = "Пароль введен неправильно!";
                     _errorMessageVisibility = Visibility.Visible;
 
                     OnPropertyChanged(nameof(ErrorMessageContent));

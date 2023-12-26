@@ -4,7 +4,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KursCode.MVVM.View.UserControls"
+        xmlns:uc="clr-namespace:KursCode.MVVM.View.UserControls"
         xmlns:vm="clr-namespace:KursCode.MVVM.ViewModel"
         mc:Ignorable="d"
          Height="800" Width="700"
@@ -105,24 +105,28 @@
                         <RowDefinition Height="0*"></RowDefinition>
                         </Grid.RowDefinitions>
                     <TextBlock Text="Личные навыки:" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,0,0,0"></TextBlock>
-                        <WrapPanel x:Name="SkillsWrapPanel" Grid.Row="1" VerticalAlignment="Top" >
-                            <ItemsControl ItemsSource="{Binding UserControls}">
+
+                        <WrapPanel x:Name="SkillsWrapPanel" Grid.Row="1" VerticalAlignment="Top">
+                            <ItemsControl ItemsSource="{Binding Skills}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <local:ClientSkiil/>
+                                        <uc:ClientSkiil/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <Button Command="{Binding ButtonCommand}" CommandParameter="QualityButton" Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="42" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,0" materialDesign:ButtonAssist.CornerRadius="90" Click="addSkillButton_Click">
+                            <Button CommandParameter="QualityButton" Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="42" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,15,0,0" materialDesign:ButtonAssist.CornerRadius="90" Click="addSkillButton_Click">
+                                <materialDesign:PackIcon Kind="Plus" Foreground="White" Width="30" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Button>
+                        </WrapPanel>
+
+                        <TextBlock Text="Личные качества:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,20,0,0"></TextBlock>
+                        
+                    <WrapPanel x:Name="QualitiesWrapPanel"  Grid.Row="3" VerticalAlignment="Top" >
+                            <Button Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="42" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,15,0,0" materialDesign:ButtonAssist.CornerRadius="90"  Click="addQualityButton_Click">
                             <materialDesign:PackIcon Kind="Plus" Foreground="White" Width="30" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                    </WrapPanel>
-                    <TextBlock Text="Личные качества:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,20,0,0"></TextBlock>
-                        <WrapPanel x:Name="QualitiesWrapPanel" Grid.Row="3" VerticalAlignment="Top" >
-                            <Button Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="42" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,0" materialDesign:ButtonAssist.CornerRadius="90"  Click="addQualityButton_Click">
-                            <materialDesign:PackIcon Kind="Plus" Foreground="White" Width="30" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                    </WrapPanel>
+                            </Button>
+                         </WrapPanel>
+                    
                     <TextBlock Text="Личные сведения:" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,20,0,0"></TextBlock>
                     <TextBlock Grid.Row="5" Text="Локация:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,5,0,0"></TextBlock>
                     <materialDesign:Card Grid.Row="5" Grid.Column="1" Padding="2,4,2,4" Margin="15,26,15,0" Background="White" UniformCornerRadius="6" Width="390" HorizontalAlignment="Left">
@@ -141,11 +145,11 @@
                         <TextBlock Grid.Column="0" Text="Опыт работы:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,7,9,0"/>
                         <Border Grid.Column="1" Background="#FFF4FFFF" Height="40" VerticalAlignment="Top" CornerRadius="15">
                             <Grid>
-                                <TextBox materialDesign:HintAssist.Hint="5" Text="{Binding WorkExperience}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
+                                    <TextBox materialDesign:HintAssist.Hint="5" Text="{Binding WorkExperience, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
                                 <Border Height="1" Background="Gray" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                             </Grid>
                         </Border>
-                        <TextBlock Grid.Column="2" Text="лет" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="9,7,0,0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding YearTextWE}" Visibility="Visible" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="9,7,0,0"/>
                     </Grid>
                     <Grid Grid.Row="8" Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
@@ -156,11 +160,11 @@
                         <TextBlock Grid.Column="0" Text="Возраст:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,7,9,0"/>
                         <Border Grid.Column="1" Background="#FFF4FFFF" Height="40" VerticalAlignment="Top" CornerRadius="15">
                             <Grid>
-                                <TextBox materialDesign:HintAssist.Hint="18" Text="{Binding Age}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
+                                    <TextBox materialDesign:HintAssist.Hint="18" Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
                                 <Border Height="1" Background="Gray" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                             </Grid>
                         </Border>
-                        <TextBlock Grid.Column="2" Text="лет" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="9,7,0,0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding YearTextAge}" Visibility="Visible" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="9,7,0,0"/>
                     </Grid>
                         <Grid Grid.Row="9">
                             <materialDesign:Card Background="White" Padding="5" Margin="10,10,0,20" VerticalAlignment="Center" HorizontalAlignment="Left" UniformCornerRadius="10">
@@ -170,7 +174,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Гражданство:" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150"/>
-                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue"  ItemsSource="{Binding AvailableCitizenships}" SelectedItem="{Binding SelectedCitizenship}">
+                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue"  ItemsSource="{Binding Citizenship.Values}" SelectedValue="{Binding SelectedCitizenship}">
                                     </ComboBox>
                                 </Grid>
                             </materialDesign:Card>
@@ -185,7 +189,7 @@
                             <TextBlock Grid.Column="0" Text="Зарплатные ожидания:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,7,9,0"/>
                             <Border Grid.Column="1" Background="#FFF4FFFF" Height="40" VerticalAlignment="Top" CornerRadius="15">
                                 <Grid>
-                                    <TextBox materialDesign:HintAssist.Hint="30000" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
+                                    <TextBox materialDesign:HintAssist.Hint="30000" Text="{Binding Salary, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
                                     <Border Height="1" Background="Gray" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                                 </Grid>
                             </Border>
@@ -204,10 +208,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Занятость:" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150"/>
-                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue" >
-                                        <ComboBoxItem Content="Полная"/>
-                                        <ComboBoxItem Content="Частичная"/>
-                                        <ComboBoxItem Content="Стажировка"/>
+                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue" ItemsSource="{Binding Empoyment.Values}" SelectedValue="{Binding SelectedEmpoyment}">
                                     </ComboBox>
                                 </Grid>
                             </materialDesign:Card>
@@ -219,11 +220,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="График работы:" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150"/>
-                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue" >
-                                        <ComboBoxItem Content="Полный день"/>
-                                        <ComboBoxItem Content="Сменный график"/>
-                                        <ComboBoxItem Content="Гибкий график"/>
-                                        <ComboBoxItem Content="Удаленная работа"/>
+                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="Blue"  ItemsSource="{Binding Shedule.Values}" SelectedValue="{Binding SelectedShedule}">
                                     </ComboBox>
                                 </Grid>
                             </materialDesign:Card>
@@ -231,15 +228,15 @@
                         <TextBlock Text="Контакты:" Grid.Row="13" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,0,0,0"></TextBlock>
                         <TextBlock Grid.Row="14" Text="Телефон:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,5,0,0"></TextBlock>
                         <materialDesign:Card Grid.Row="14" Grid.Column="1" Padding="2,4,2,4" Margin="15,26,15,0" Background="White" UniformCornerRadius="6" Width="170" HorizontalAlignment="Left">
-                            <TextBox materialDesign:HintAssist.Hint="+7-960-962-17-61" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
+                            <TextBox materialDesign:HintAssist.Hint="+7-960-962-17-61" Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
                         <TextBlock Grid.Row="14" Text="Электронная почнта:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="200,5,25,0"></TextBlock>
                         <materialDesign:Card Grid.Row="14" Grid.Column="1" Padding="2,4,2,4" Margin="200,26,15,0" Background="White" UniformCornerRadius="6" Width="170" HorizontalAlignment="Left">
-                            <TextBox materialDesign:HintAssist.Hint="worker@mail.ru" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
+                            <TextBox materialDesign:HintAssist.Hint="worker@mail.ru" Text="{Binding Email}" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
                         <TextBlock Text="Описание:" Grid.Row="15" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,0,0,0"></TextBlock>
                         <materialDesign:Card Grid.Row="16" Background="White" Padding="6" Margin="15,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" UniformCornerRadius="8" BorderThickness="0">
-                            <RichTextBox Foreground="Black" FontSize="15" Height="100" Width="620" BorderThickness="0"></RichTextBox>
+                            <TextBox Text="{Binding Description}" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="50" Width="630" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
                         <Button Grid.Row="17" Background="#696969" Style="{StaticResource MaterialDesignFlatButton}" Width="Auto" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10,80,10" materialDesign:ButtonAssist.CornerRadius="8" Command="{Binding SelectPDFCommand}">
                             <Grid>
@@ -251,7 +248,7 @@
                                 <materialDesign:PackIcon Grid.Column="0" Kind="FileOutline" Foreground="White" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Grid>
                         </Button>
-                        <Button Grid.Row="17" Background="Green" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10,20,10" materialDesign:ButtonAssist.CornerRadius="90">
+                        <Button Grid.Row="17" Background="Green" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10,20,10" materialDesign:ButtonAssist.CornerRadius="90" Command="{Binding SaveCommand}">
                             <materialDesign:PackIcon Kind="Done" Foreground="White" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Button>
                     </Grid>

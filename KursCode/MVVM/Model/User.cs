@@ -142,6 +142,10 @@ namespace KursCode
                         throw new ArgumentException("Пароль введен неправильно.");
                     }
                 }
+                else
+                {
+                    throw new ArgumentException("Пользователь не существует.");
+                }
 
                 return false;
             }

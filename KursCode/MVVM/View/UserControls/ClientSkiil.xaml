@@ -13,7 +13,7 @@
     </UserControl.DataContext>
     <Grid>
         <materialDesign:Card Padding="10,2,10,2" Background="LightGray" UniformCornerRadius="6">
-            <TextBox x:Name="itemText" Text="{Binding Text}" materialDesign:HintAssist.Hint="{Binding HintText, RelativeSource={RelativeSource AncestorType=UserControl}}" BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
+            <TextBox x:Name="itemText" materialDesign:HintAssist.Hint="Текст" BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
         </materialDesign:Card>
     </Grid>
 </UserControl>

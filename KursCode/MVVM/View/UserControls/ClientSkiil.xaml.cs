@@ -29,5 +29,10 @@ namespace KursCode.MVVM.View.UserControls
             InitializeComponent();
             DataContext = viewModel;
         }
+
+        public string GetText()
+        {
+            return itemText.Text;
+        }
     }
 }

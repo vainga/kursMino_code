@@ -27,44 +27,6 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
-        public string HintText
-        {
-            get { return hintText; }
-            set
-            {
-                if (hintText != value)
-                {
-                    hintText = value;
-                    OnPropertyChanged(nameof(HintText));
-                }
-            }
-        }
-
-        public ICommand HintCommand { get; }
-
-        public ClientSkillViewModel()
-        {
-            QualityButtonCommand = new RelayCommand(() => ChangeHintText("QualityButton"));
-            SkillButtonCommand = new RelayCommand(() => ChangeHintText("SkillButton"));
-        }
-
-        public ICommand QualityButtonCommand { get; }
-        public ICommand SkillButtonCommand { get; }
-
-        private void ChangeHintText(string buttonName)
-        {
-            lastButtonName = buttonName;
-
-            if (buttonName == "QualityButton")
-            {
-                HintText = "Качество";
-            }
-            else if (buttonName == "SkillButton")
-            {
-                HintText = "Навык";
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
