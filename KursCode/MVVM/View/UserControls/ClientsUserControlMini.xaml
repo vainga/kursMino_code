@@ -7,6 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="300">
     <Border Background="White" x:Name="mainBorder" CornerRadius="15" BorderBrush="Black" BorderThickness="3">
+        <!--<Border.Effect>
+            <DropShadowEffect Color="Gray" Opacity="0.2" ShadowDepth="1" Direction="315" BlurRadius="2"/>
+        </Border.Effect>-->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>

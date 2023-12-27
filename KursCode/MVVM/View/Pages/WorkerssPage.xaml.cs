@@ -2,8 +2,10 @@
 using KursCode.Data;
 using KursCode.MVVM.View.UserControls;
 using KursCode.MVVM.View.Windows.Dialog;
+using KursCode.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,83 +31,53 @@ namespace KursCode.MVVM.View.Pages
         private int _UserId { get; }
         private DatabaseHelper dbHelper;
         private WorkersPage workersPage;
+        private WorkersPageViewModel _viewModel;
 
         public WorkersPage(int userId)
         {
             InitializeComponent();
             _UserId = userId;
-            dbHelper = new DatabaseHelper(GetWorkerDBPath(userId));
-            LoadDataFromJson();
+            _viewModel = new WorkersPageViewModel();
+            _viewModel.UserId = userId;
+            _viewModel.PropertyChanged += ViewModel_PropertyChanged; // Подписка на событие изменения свойства
+            LoadDataAndMiniWorkers();
+            LoadMiniWorkers();
         }
 
-        private static string GetWorkerDBPath(int userid)
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string workerDbPath = Path.Combine(userFolderPath, $"{userid}_ID_User");
-            Directory.CreateDirectory(workerDbPath);
-            return workerDbPath;
+            if (e.PropertyName == nameof(_viewModel.MiniWorkers))
+            {
+                LoadMiniWorkers();
+            }
         }
 
+        private void LoadDataAndMiniWorkers()
+        {
+            _viewModel.LoadDataFromJson();
+            LoadMiniWorkers();
+        }
 
         private void add_button(object sender, RoutedEventArgs e)
         {
             AddWorker worker = new AddWorker(_UserId);
-            worker.Closed += WorkerClosed;
             worker.ShowDialog();
+            _viewModel.UpdateMiniWorkers();
         }
-
-        private void LoadDataFromJson()
+        private void LoadMiniWorkers()
         {
-            string workerFolderPath = GetWorkerDBPath(_UserId);
-            string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
-            List<workerClass> dataList = dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
+            miniWorkers.Children.Clear();
 
-            foreach (var data in dataList)
+            foreach (var userControlMini in _viewModel.MiniWorkers)
             {
-                ClientsUserControlMini userControlMini = new ClientsUserControlMini();
-                userControlMini.SetData(data);
-
-                userControlMini.VerticalAlignment = VerticalAlignment.Top;
-                Thickness margin = new Thickness(10, 0, 10, 15);
-                userControlMini.Margin = margin;
-
-                userControlMini.MouseEnter += DynamicUserControl_MouseEnter;
-                userControlMini.MouseLeave += DynamicUserControl_MouseLeave;
-                userControlMini.MouseDown += DynamicUserControl_MouseDown;
+                if (userControlMini.Parent != null)
+                {
+                    var parentPanel = (Panel)userControlMini.Parent;
+                    parentPanel.Children.Remove(userControlMini);
+                }
 
                 miniWorkers.Children.Add(userControlMini);
             }
         }
-
-        private void DynamicUserControl_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ClientsUserControlMini clickedControl = (ClientsUserControlMini)sender;
-
-            if (currentSelectedControl != null && currentSelectedControl != clickedControl)
-            {
-                currentSelectedControl.mainBorder.BorderBrush = Brushes.Black;
-            }
-
-            currentSelectedControl = clickedControl;
-            currentSelectedControl.mainBorder.BorderBrush = Brushes.Blue;
-        }
-
-        private void DynamicUserControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ((ClientsUserControlMini)sender).SetDarkBackground();
-        }
-
-        private void DynamicUserControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ((ClientsUserControlMini)sender).RestoreBackground();
-        }
-
-        private void WorkerClosed(object sender, EventArgs e)
-        {
-        }
-
     }
 }

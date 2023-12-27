@@ -9,7 +9,7 @@
         Height="700" Width="500"
         ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" BorderBrush="#FF00EDFF" OpacityMask="#FF00EDFF" AllowsTransparency="True" Background="Transparent" MouseLeftButtonDown="drugWindow_LeftButtonDrag" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
-        <vm:EnterViewModel/>
+        vm:EnterViewModel/>
     </Window.DataContext> 
     <Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
         <Grid>

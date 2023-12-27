@@ -25,7 +25,6 @@ namespace KursCode.MVVM.ViewModel
 {
     public class addWorkerViewModel : INotifyPropertyChanged
     {
-
         public addWorkerViewModel()
         {
             SelectPDFCommand = new RelayCommand(SelectPDF);
@@ -34,7 +33,6 @@ namespace KursCode.MVVM.ViewModel
             textBoxListSkills = new ObservableCollection<TextBox>();
             textBoxListQualities = new ObservableCollection<TextBox>();
             SaveCommand = new RelayCommand(Save);
-
             worker = new workerClass();
         }
 
