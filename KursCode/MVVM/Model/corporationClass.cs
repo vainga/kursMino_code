@@ -19,16 +19,18 @@ namespace Clients
         public string _CorporationName { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Work_experience_min")]
-        public int _Work_experience_min { get; private set; }
+        public string _Work_experience_min { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Work_experience_max")]
-        public int _Work_experience_max { get; private set; }
-        [JsonInclude]
-        [JsonPropertyName("_Work_experience_need")]
-        public bool _Work_experience_need { get; private set; }
+        public string _Work_experience_max { get; private set; }
+        
         [JsonInclude]
         [JsonPropertyName("_Salary")]
-        public int _Salary { get; private set; }
+        public string _Salary_min { get; private set; }
+        [JsonInclude]
+        [JsonPropertyName("_Salary")]
+        public string _Salary_max { get; private set; }
+
 
         [JsonInclude]
         [JsonPropertyName("_UserId")]
@@ -58,10 +60,10 @@ namespace Clients
         public corporationClass() : base("", "", "", "", new ObservableCollection<string>(), new ObservableCollection<string>(), "", "", "", "")
         {
             _CorporationName = "";
-            _Work_experience_min = 0;
-            _Work_experience_max = 0;
-            _Work_experience_need = false;
-            _Salary = 0;
+            _Work_experience_min = "";
+            _Work_experience_max = "";
+            _Salary_min = "";
+            _Salary_max = "";
             _UserId = user.userId;
             _Phone_number = "";
             _Education = "";
@@ -70,15 +72,15 @@ namespace Clients
         }
 
         [JsonConstructor]
-        public corporationClass(string corporationName, string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status, int work_experience_min, int work_experience_max,
-            bool work_experience_need, int salary, string phone_number, string education, string age, string pdf)
+        public corporationClass(string corporationName, string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status, string work_experience_min, string work_experience_max,
+            bool work_experience_need, string salary_min, string salary_max, string phone_number, string education, string age, string pdf)
             : base(post, email, city, description, personal_qualities, skills, citizenship, employment, shedule, status)
         {
             _CorporationName = corporationName;
             _Work_experience_max = work_experience_max;
             _Work_experience_min = work_experience_min;
-            _Work_experience_need = work_experience_need;
-            _Salary = salary;
+            _Salary_min = salary_min;
+            _Salary_max = salary_max;
             _UserId = user.userId;
             _Phone_number = phone_number;
             _Education = education;

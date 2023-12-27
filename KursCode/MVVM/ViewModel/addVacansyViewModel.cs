@@ -69,7 +69,7 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (corporation._Skills != value)
                 {
-                    corporation = new corporationClass(corporation._CorporationName,corporation._Post,corporation._Email,corporation._City,corporation._Description,)
+                    corporation = new corporationClass(corporation._CorporationName,corporation._Post,corporation._Email,corporation._City,corporation._Description,corporation._Personal_qualities,corporation._Skills,corporation._Work_experience_min)
                     OnPropertyChanged(nameof(Skills));
                 }
             }
