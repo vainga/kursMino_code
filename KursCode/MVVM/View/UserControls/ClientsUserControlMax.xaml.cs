@@ -126,6 +126,11 @@ namespace KursCode.MVVM.View.UserControls
             }
         }
 
+        public void SetData(corporationClass corpData)
+        {
+            Surname.Text = corpData._CorporationName;
+        }
+
         public void ClearData()
         {
             Surname.Text = "";

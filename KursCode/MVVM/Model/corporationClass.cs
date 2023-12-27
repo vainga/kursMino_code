@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 namespace Clients
 {
     [Serializable]
-    internal class corporationClass : clientsClass
+    public class corporationClass : clientsClass
     {
         [JsonInclude]
         [JsonPropertyName("_CorporationName")]
