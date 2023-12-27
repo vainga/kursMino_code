@@ -20,7 +20,14 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="DarkBlue" Text="Фамилия Имя" FontSize="40" Margin="45,0,0,0" FontWeight="DemiBold"></TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Bottom" Foreground="DarkBlue" Text="Фамилия" FontSize="40" Margin="45,0,0,0" FontWeight="DemiBold"></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="1" VerticalAlignment="Bottom" Foreground="DarkBlue" Text="Имя" FontSize="40" Margin="10,0,0,0" FontWeight="DemiBold"></TextBlock>
+                </Grid>
             </ScrollViewer>
             <Border Background="Gray" Grid.Row="0" VerticalAlignment="Bottom" Height="1" Margin="30,0,30,0"></Border>
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

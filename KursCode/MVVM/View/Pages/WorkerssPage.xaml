@@ -30,11 +30,11 @@
                     <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,10,0"/>
                 </StackPanel>
             </ScrollViewer>
-            <Button Background="White" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="90" Margin="20,0,0,10" Click="add_button">
+            <Button Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="90" Margin="20,0,0,10" Click="add_button">
                 <Button.Effect>
                     <DropShadowEffect ShadowDepth="3" Direction="270" Opacity="0.3"/>
                 </Button.Effect>
-                <materialDesign:PackIcon Kind="Plus" Foreground="DarkBlue" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <materialDesign:PackIcon Kind="Plus" Foreground="White" Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
         </Grid>
     </Grid>
