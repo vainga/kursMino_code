@@ -8,40 +8,33 @@
       mc:Ignorable="d" 
             d:DesignHeight="800" d:DesignWidth="1500"
       Title="VacancyPage">
-    <Grid Background="#90e0ef">
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="3.8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="0.15*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="0.12*"></RowDefinition>
             </Grid.RowDefinitions>
             <Border BorderBrush="Gray" Grid.Column="0" Grid.Row="0"  Grid.RowSpan="3" HorizontalAlignment="Right" BorderThickness="2" Width="2"/>
-            <TextBlock x:Name="textBoxMain" Text="Вакансии" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,40,100,0" Foreground="DarkBlue" FontSize="36" FontFamily="Corbel" FontWeight="Light"/>
-            <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,10,0">
-                <Border Width="297" Background="White" BorderBrush="Gray" BorderThickness="1.5" CornerRadius="15" Padding="10" HorizontalAlignment="Center" Margin="5,30,0,0">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="1.5" Direction="270" Opacity="0.5"/>
-                    </Border.Effect>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBox Text="Поиск..."  FontSize="15" Foreground="MidnightBlue" FontWeight="UltraLight" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" BorderBrush="Transparent" Width="300" ToolTip="Поиск"/>
-                        <materialDesign:PackIcon Kind="Magnify" VerticalAlignment="Center" Grid.Row="1"  Width="20" Height="20" Foreground="Gray" HorizontalAlignment="Right" Margin="5"/>
-                    </Grid>
-                </Border>
-            </Grid>
-            <Button Background="White" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="90" Margin="20,0,0,10">
+            <TextBlock x:Name="textBoxMain" Text="Вакансии:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,40,100,0" Foreground="DarkBlue" FontSize="36" FontFamily="Corbel" FontWeight="Normal"/>
+            <ScrollViewer Grid.Row="1" Grid.RowSpan="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <StackPanel x:Name="miniWorkers" Orientation="Vertical">
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,10,0"/>
+                </StackPanel>
+            </ScrollViewer>
+            <Button Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="50" Height="50" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="90" Margin="20,0,0,10" Click="add_Button">
                 <Button.Effect>
                     <DropShadowEffect ShadowDepth="3" Direction="270" Opacity="0.3"/>
                 </Button.Effect>
-                <materialDesign:PackIcon Kind="Plus" Foreground="DarkBlue" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <materialDesign:PackIcon Kind="Plus" Foreground="White" Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
         </Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Column="1">
+            <Grid x:Name="maxWorker"></Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

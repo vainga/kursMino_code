@@ -19,13 +19,15 @@ namespace KursCode.MVVM.ViewModel
 {
     public class WorkersPageViewModel : INotifyPropertyChanged
     {
-        private ClientsUserControlMini _currentSelectedControl;
+
+        private List<workerClass> workerDataList = new List<workerClass>();
         private ObservableCollection<ClientsUserControlMini> _miniWorkers;
         private DatabaseHelper _dbHelper;
 
         public WorkersPageViewModel()
         {
             _dbHelper = new DatabaseHelper(GetWorkerDBPath(_userId));
+            _clientsUserControlMax = new ClientsUserControlMax();
             LoadDataFromJson();
         }
 
@@ -40,6 +42,20 @@ namespace KursCode.MVVM.ViewModel
                 }
             }
 
+        }
+
+        private Visibility _borderVisibility;
+        public Visibility BorderVisibility
+        {
+            get { return _borderVisibility; }
+            set
+            {
+                if (_borderVisibility != value)
+                {
+                    _borderVisibility = value;
+                    OnPropertyChanged(nameof(BorderVisibility));
+                }
+            }
         }
 
         public ObservableCollection<ClientsUserControlMini> MiniWorkers
@@ -83,8 +99,35 @@ namespace KursCode.MVVM.ViewModel
                 userControlMini.MouseEnter += DynamicUserControl_MouseEnter;
                 userControlMini.MouseLeave += DynamicUserControl_MouseLeave;
                 userControlMini.MouseDown += DynamicUserControl_MouseDown;
-
+                
+                workerDataList.Add(data);
                 MiniWorkers.Add(userControlMini);
+            }
+        }
+
+        private ClientsUserControlMini _selectedMiniWorker;
+        public ClientsUserControlMini SelectedMiniWorker
+        {
+            get { return _selectedMiniWorker; }
+            set
+            {
+                _selectedMiniWorker = value;
+                OnPropertyChanged(nameof(SelectedMiniWorker));
+            }
+        }
+
+        private ClientsUserControlMax _clientsUserControlMax; // Direct reference to ClientsUserControlMax
+
+        public ClientsUserControlMax _ClientsUserControlMax
+        {
+            get { return _clientsUserControlMax; }
+            set
+            {
+                if (_clientsUserControlMax != value)
+                {
+                    _clientsUserControlMax = value;
+                    OnPropertyChanged(nameof(ClientsUserControlMax));
+                }
             }
         }
 
@@ -92,13 +135,23 @@ namespace KursCode.MVVM.ViewModel
         {
             var clickedControl = (ClientsUserControlMini)sender;
 
-            if (_currentSelectedControl != null && _currentSelectedControl != clickedControl)
+            if (_selectedMiniWorker != null && _selectedMiniWorker != clickedControl)
             {
-                _currentSelectedControl.mainBorder.BorderBrush = Brushes.Black;
+                _selectedMiniWorker.mainBorder.BorderBrush = Brushes.Black;
             }
 
-            _currentSelectedControl = clickedControl;
-            _currentSelectedControl.mainBorder.BorderBrush = Brushes.Blue;
+            _selectedMiniWorker = clickedControl;
+            _selectedMiniWorker.mainBorder.BorderBrush = Brushes.Blue;
+
+
+            _clientsUserControlMax.ClearData();
+
+            var matchingWorkerData = workerDataList.FirstOrDefault(data =>
+            data._Surname == _selectedMiniWorker.Surname.Text &&
+            data._WorkerName == _selectedMiniWorker.Name.Text &&
+            data._Post == _selectedMiniWorker.Post.Text);
+
+            _clientsUserControlMax.SetData(matchingWorkerData);
         }
 
         private void DynamicUserControl_MouseEnter(object sender, MouseEventArgs e)

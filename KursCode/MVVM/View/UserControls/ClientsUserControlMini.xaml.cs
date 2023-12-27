@@ -32,6 +32,17 @@ namespace KursCode.MVVM.View.UserControls
             InitializeComponent();
         }
 
+        private workerClass _workerData;
+        public workerClass WorkerData
+        {
+            get { return _workerData; }
+            set { if(_workerData != value)
+                    _workerData = value;
+            }
+        }
+
+
+
         private Bitmap ConvertImage(string base64String)
         {
             try
@@ -77,9 +88,8 @@ namespace KursCode.MVVM.View.UserControls
             }
             catch (Exception ex)
             {
-                // Handle the exception or log the error
                 Console.WriteLine($"Error converting bitmap to ImageBrush: {ex.Message}");
-                return null; // or throw an exception, return a default ImageBrush, etc.
+                return null; 
             }
         }
 
@@ -109,6 +119,7 @@ namespace KursCode.MVVM.View.UserControls
                 }
 
                 this.Photo.ImageSource = imageBrush.ImageSource;
+                _workerData = data;
             }
             else
             {
@@ -116,7 +127,9 @@ namespace KursCode.MVVM.View.UserControls
             }
         }
 
-        public workerClass Data{ get; private set; }
-
+        public workerClass GetData()
+        {
+            return _workerData;
+        }
     }
 }

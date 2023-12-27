@@ -38,6 +38,8 @@ namespace KursCode.MVVM.View.Windows.Dialog
             _UserId = userId;
 
             viewModel.UserId = _UserId;
+            viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
+
         }
 
         private List<ClientSkiil> userControls = new List<ClientSkiil>();
@@ -115,9 +117,14 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
         }
 
-         private void last_button_Click(object sender, RoutedEventArgs e)
+        private void ViewModel_SaveSuccessful(object sender, EventArgs e)
         {
-            Close();
+            Close(); 
+        }
+
+        private void last_button_Click(object sender, RoutedEventArgs e)
+        {
+   
         }
     }
 }

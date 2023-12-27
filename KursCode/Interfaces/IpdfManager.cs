@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace KursCode.Interfaces
 {
-    internal class IpdfManager
+    public interface IpdfManager
     {
+        public void SelectPDF(string PDF_fileName, string pdfBase64);
     }
 }

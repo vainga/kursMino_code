@@ -20,11 +20,14 @@ using System.Windows.Controls;
 using Clients;
 using KursCode.Interfaces;
 using System.Xml.Linq;
+using KursCode.MVVM.Model.Managers;
 
 namespace KursCode.MVVM.ViewModel
 {
-    public class addWorkerViewModel : INotifyPropertyChanged
+    public class addWorkerViewModel : baseViewModel
     {
+        
+        
         public addWorkerViewModel()
         {
             SelectPDFCommand = new RelayCommand(SelectPDF);
@@ -35,6 +38,10 @@ namespace KursCode.MVVM.ViewModel
             SaveCommand = new RelayCommand(Save);
             worker = new workerClass();
         }
+
+        IimageManager imageManager = new imageManager();
+        IpdfManager pdfManager = new pdfManager();
+        iviewModelFormatManager formatManager = new viewFormatManager();
 
         static private int _userId;
         public int UserId
@@ -50,11 +57,22 @@ namespace KursCode.MVVM.ViewModel
 
 
         private workerClass worker;
-
-
         private BitmapImage _workerPhoto;
         private Visibility _selectedImageVisibility;
         private Visibility _photoIconVisibility;
+        private Visibility _errorMessageVisibility = Visibility.Collapsed;
+        public Visibility ErrorMessageVisibility
+        {
+            get { return _errorMessageVisibility; }
+            set
+            {
+                if (_errorMessageVisibility != value)
+                {
+                    _errorMessageVisibility = value;
+                    OnPropertyChanged(nameof(ErrorMessageVisibility));
+                }
+            }
+        }
 
         public ObservableCollection<string> Skills
         {
@@ -111,40 +129,71 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
-
-        public ICommand SaveCommand { get; private set; }
-        private void Save()
+        public string ErrorMessageContent
         {
-            foreach (var textBox in textBoxListSkills)
+            get { return _errorMessageContent; }
+            set
             {
-                Skills.Add(textBox.Text);
-            }
-            foreach (var textBox in textBoxListQualities)
-            {
-                Qualities.Add(textBox.Text);
-            }
-            if (string.IsNullOrWhiteSpace(worker._WorkerName) ||
-                string.IsNullOrWhiteSpace(worker._Surname) ||
-                string.IsNullOrWhiteSpace(worker._Post) ||
-                string.IsNullOrWhiteSpace(worker._Email) ||
-                string.IsNullOrWhiteSpace(worker._City) ||
-                string.IsNullOrWhiteSpace(worker._Description) ||
-                worker._Skills == null || worker._Skills.Count == 0 ||
-                worker._Citizenship == null ||
-                worker._Empoyment == null ||
-                worker._Shedule == null ||
-                worker._Personal_qualities == null || worker._Personal_qualities.Count == 0)
-            {
-                // Вывод MessageBox, сообщающего о незаполненных обязательных полях
-                MessageBox.Show("Заполните все обязательные поля (кроме фото и pdf).", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // Прерываем выполнение метода, так как не все обязательные поля заполнены
-            }
-            else
-            {
-                worker.AddData(_userId);
+                if (_errorMessageContent != value)
+                {
+                    _errorMessageContent = value;
+                    OnPropertyChanged(nameof(ErrorMessageContent));
+                }
             }
         }
 
+        public event EventHandler SaveSuccessful;
+        protected virtual void OnSaveSuccessful()
+        {
+            SaveSuccessful?.Invoke(this, EventArgs.Empty);
+        }
+        private string _errorMessageContent = "Ошибка!";
+        public ICommand SaveCommand { get; private set; }
+        private void Save()
+        {
+            try
+            {
+                foreach (var textBox in textBoxListSkills)
+                {
+                    Skills.Add(textBox.Text);
+                }
+                foreach (var textBox in textBoxListQualities)
+                {
+                    Qualities.Add(textBox.Text);
+                }
+                if (string.IsNullOrWhiteSpace(worker._WorkerName) ||
+                    string.IsNullOrWhiteSpace(worker._Surname) ||
+                    string.IsNullOrWhiteSpace(worker._Post) ||
+                    string.IsNullOrWhiteSpace(worker._Email) ||
+                    string.IsNullOrWhiteSpace(worker._City) ||
+                    string.IsNullOrWhiteSpace(worker._Description) ||
+                    worker._Skills == null || worker._Skills.Count == 0 ||
+                    worker._Citizenship == null ||
+                    worker._Empoyment == null ||
+                    worker._Shedule == null ||
+                    worker._Personal_qualities == null || worker._Personal_qualities.Count == 0)
+                {
+                    _errorMessageVisibility = Visibility.Visible;
+                    _errorMessageContent = "Все поля(кроме фотографии и pdf) должны быть заполнены!";
+                    OnPropertyChanged(nameof(ErrorMessageContent));
+                    OnPropertyChanged(nameof(ErrorMessageVisibility));
+                }
+                else
+                {
+                    OnSaveSuccessful();
+                    worker.AddData(_userId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorMessageVisibility = Visibility.Visible;
+                _errorMessageContent = ex.Message;
+                OnPropertyChanged(nameof(ErrorMessageContent));
+                OnPropertyChanged(nameof(ErrorMessageVisibility));
+            }
+        }
+
+        private string _workerName;
         public string WorkerName
         {
             get { return worker._WorkerName; }
@@ -152,7 +201,8 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._WorkerName != value)
                 {
-                    worker = new workerClass(value, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
+                    _workerName = formatManager.FormatLetter(value);
+                    worker = new workerClass(_workerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(WorkerName));
                 }
             }
@@ -165,7 +215,7 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._Surname != value)
                 {
-                    worker = new workerClass(worker._WorkerName, value, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
+                    worker = new workerClass(worker._WorkerName, formatManager.FormatLetter(value), worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(WorkerSurname));
                 }
             }
@@ -218,7 +268,7 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._Salary_need != value)
                 {
-                    _salary = FormatNumeric(value);
+                    _salary = formatManager.FormatNumeric(value);
                     worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, _salary, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(Salary));
                 }
@@ -232,7 +282,7 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._Email != value)
                 {
-                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, value, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
+                    worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, formatManager.RemoveSpaces(value), worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(Email));
                 }
             }
@@ -259,7 +309,7 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._Age != value)
                 {
-                    _age = FormatNumeric(value);
+                    _age = formatManager.FormatNumeric(value);
                     worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, _age);                   
                     OnPropertyChanged(nameof(Age));
                     UpdateDisplayTextAge();
@@ -275,7 +325,7 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._Work_experience != value)
                 {
-                    _workExperience = FormatNumeric(value);
+                    _workExperience = formatManager.FormatNumeric(value);
                     worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, _workExperience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, worker._PhoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(WorkExperience));
                     UpdateDisplayTextWE();
@@ -334,29 +384,7 @@ namespace KursCode.MVVM.ViewModel
                     OnPropertyChanged(nameof(PhotoIconVisibility));
                 }
             }
-        }
-
-        private string ConvertImageToBase64(BitmapImage image)
-        {
-            if (image != null)
-            {
-                // Преобразовать BitmapImage в MemoryStream
-                MemoryStream memoryStream = new MemoryStream();
-                BitmapEncoder encoder = new PngBitmapEncoder(); // Используйте другой энкодер, если формат изображения отличается
-                encoder.Frames.Add(BitmapFrame.Create(image));
-                encoder.Save(memoryStream);
-
-                // Преобразовать MemoryStream в массив байт
-                byte[] imageBytes = memoryStream.ToArray();
-
-                // Преобразовать массив байт в строку Base64
-                string base64String = Convert.ToBase64String(imageBytes);
-
-                return base64String;
-            }
-
-            return null;
-        }
+        }       
 
         public string Base64StringImage
         {
@@ -371,31 +399,18 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
+
         public void SelectImage()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            try
             {
-                Filter = "Image Files (*.png;*.jpg;*.jpeg;*.gif;*.bmp)|*.png;*.jpg;*.jpeg;*.gif;*.bmp|All files (*.*)|*.*",
-                Title = "Select an Image"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                try
-                {
-                    BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
-                    WorkerPhoto = bitmap;
-
+                    imageManager.SelectImage(WorkerPhoto,worker._WorkerPhoto);
                     SelectedImageVisibility = Visibility.Visible;
                     PhotoIconVisibility = Visibility.Collapsed;
-
-                    worker._WorkerPhoto = ConvertImageToBase64(bitmap);
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading image: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ошибка IMAGE!");
             }
         }
 
@@ -416,29 +431,13 @@ namespace KursCode.MVVM.ViewModel
 
         public void SelectPDF()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            try
             {
-                Filter = "PDF Files (*.pdf)|*.pdf|All files (*.*)|*.*",
-                Title = "Выберите PDF файл"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
+                pdfManager.SelectPDF(SelectedPDFFilePath, worker._PdfFile);
+            }
+            catch(Exception ex ) 
             {
-                string fileName = openFileDialog.FileName;
-
-                try
-                {
-                    byte[] pdfBytes = File.ReadAllBytes(fileName);
-                    string base64String = Convert.ToBase64String(pdfBytes);
-                    
-                    fileName = Path.GetFileName(openFileDialog.FileName);
-                    SelectedPDFFilePath = fileName;
-                    worker._PdfFile = base64String;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка при чтении файла: {ex.Message}");
-                }
+                MessageBox.Show("Ошибка PDF!");
             }
         }
 
@@ -551,43 +550,12 @@ namespace KursCode.MVVM.ViewModel
             {
                 if (worker._PhoneNumber != value)
                 {
-                    _phoneNumber=FormatPhoneNumber(value);
+                    _phoneNumber= formatManager.FormatPhoneNumber(value);
                     worker = new workerClass(worker._WorkerName, worker._Surname, worker._Post, worker._Email, worker._City, worker._Description, _userId, worker._Personal_qualities, worker._Skills, worker._Citizenship, worker._Empoyment, worker._Shedule, null, worker._Work_experience, worker._Salary_need, worker._PdfFile, worker._WorkerPhoto, _phoneNumber, worker._Education, worker._Age);
                     OnPropertyChanged(nameof(PhoneNumber));
                 }
             }
         }
-
-        private string FormatNumeric(string input)
-        {
-            string digitsOnly = Regex.Replace(input, "[^0-9]", "");
-
-            return digitsOnly;
-        }
-
-
-        private string FormatPhoneNumber(string input)
-        {
-            string digitsOnly = Regex.Replace(input, "[^0-9]", "");
-
-            if (digitsOnly.Length > 0)
-            {
-                if (digitsOnly.Length <= 11)
-                {
-                    digitsOnly = "+7" + digitsOnly.Substring(1);
-                    return Regex.Replace(digitsOnly, @"(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})", "$1-$2-$3-$4-$5");
-                }
-                else
-                {
-                    digitsOnly = digitsOnly.Substring(0, 11);
-                    return FormatPhoneNumber(digitsOnly);
-                }
-            }
-
-            return string.Empty;
-        }
-
-
 
         private string _yearTextAge = "лет";
         public string YearTextAge
@@ -633,7 +601,6 @@ namespace KursCode.MVVM.ViewModel
             }
             else
             {
-                //YearTextWE = "Некорректный ввод";
             }
         }
 
@@ -653,15 +620,7 @@ namespace KursCode.MVVM.ViewModel
             }
             else
             {
-                //YearTextAge = "Некорректный ввод";
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

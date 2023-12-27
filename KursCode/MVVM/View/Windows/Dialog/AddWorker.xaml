@@ -62,12 +62,12 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="Имя" Grid.Row="0" FontSize="18" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,7,0,0"></TextBlock>
                         <materialDesign:Card Padding="6" Margin="0,30,15,0" Background="White" UniformCornerRadius="6" VerticalAlignment="Bottom">
-                            <TextBox materialDesign:HintAssist.Hint="Иван" Text="{Binding WorkerName}" BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Bottom" BorderBrush="DarkGray"/>
+                                <TextBox materialDesign:HintAssist.Hint="Иван" Text="{Binding WorkerName, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Bottom" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
 
                         <TextBlock Grid.Row="1" Text="Фамилия" FontSize="16" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,5,0,0"></TextBlock>
                         <materialDesign:Card Grid.Row="1" Grid.Column="1" Padding="6" Margin="0,30,15,0" Background="White" UniformCornerRadius="6" VerticalAlignment="Bottom">
-                            <TextBox materialDesign:HintAssist.Hint="Иванов" Text="{Binding WorkerSurname}"  BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Bottom" BorderBrush="DarkGray"/>
+                                <TextBox materialDesign:HintAssist.Hint="Иванов" Text="{Binding WorkerSurname, UpdateSourceTrigger=PropertyChanged}"  BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Bottom" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
 
                         <TextBlock Grid.Row="2" Text="Должность" FontSize="16" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,5,0,0"></TextBlock>
@@ -224,13 +224,15 @@
                             <TextBox materialDesign:HintAssist.Hint="+7-960-962-17-61" Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
                         <TextBlock Grid.Row="14" Text="Электронная почнта:" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="200,5,25,0"></TextBlock>
+                        <TextBlock Text="Email error text" FontSize="20" Foreground="Red" Grid.Column="1" Grid.Row="14" Margin="200,-20,15,0" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBlock>
                         <materialDesign:Card Grid.Row="14" Grid.Column="1" Padding="2,4,2,4" Margin="200,26,15,0" Background="White" UniformCornerRadius="6" Width="170" HorizontalAlignment="Left">
-                            <TextBox materialDesign:HintAssist.Hint="worker@mail.ru" Text="{Binding Email}" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
+                            <TextBox materialDesign:HintAssist.Hint="worker@mail.ru" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="30" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
                         <TextBlock Text="Описание:" Grid.Row="15" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,0,0,0"></TextBlock>
                         <materialDesign:Card Grid.Row="16" Background="White" Padding="6" Margin="15,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" UniformCornerRadius="8" BorderThickness="0">
                             <TextBox Text="{Binding Description}" FontSize="15" BorderThickness="0" Padding="6" Margin="10,0,0,0" Background="{x:Null}" Foreground="Black" VerticalAlignment="Top" Height="50" Width="630" BorderBrush="DarkGray"/>
                         </materialDesign:Card>
+                        <TextBlock Text="{Binding ErrorMessageContent}" x:Name="errorText" FontSize="15" Foreground="Red" Grid.Column="1" Grid.Row="17" Visibility="{Binding ErrorMessageVisibility}" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
                         <Button Grid.Row="17" Background="#696969" Style="{StaticResource MaterialDesignFlatButton}" Width="Auto" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10,80,10" materialDesign:ButtonAssist.CornerRadius="8" Command="{Binding SelectPDFCommand}">
                             <Grid>
                                 <Grid.ColumnDefinitions>

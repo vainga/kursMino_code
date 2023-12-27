@@ -21,16 +21,13 @@ using System.Windows.Navigation;
 
 namespace KursCode.MVVM.View.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для WorkersPage.xaml
-    /// </summary>
     public partial class WorkersPage : Page
     {
 
         private ClientsUserControlMini currentSelectedControl;
+        private ClientsUserControlMax clientsUserControlMax;
+
         private int _UserId { get; }
-        private DatabaseHelper dbHelper;
-        private WorkersPage workersPage;
         private WorkersPageViewModel _viewModel;
 
         public WorkersPage(int userId)
@@ -42,6 +39,8 @@ namespace KursCode.MVVM.View.Pages
             _viewModel.PropertyChanged += ViewModel_PropertyChanged; // Подписка на событие изменения свойства
             LoadDataAndMiniWorkers();
             LoadMiniWorkers();
+            maxWorker.Visibility = Visibility.Collapsed;
+            clientsUserControlMax = new ClientsUserControlMax();
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -51,6 +50,8 @@ namespace KursCode.MVVM.View.Pages
                 LoadMiniWorkers();
             }
         }
+
+
 
         private void LoadDataAndMiniWorkers()
         {
@@ -64,6 +65,7 @@ namespace KursCode.MVVM.View.Pages
             worker.ShowDialog();
             _viewModel.UpdateMiniWorkers();
         }
+
         private void LoadMiniWorkers()
         {
             miniWorkers.Children.Clear();
@@ -75,9 +77,22 @@ namespace KursCode.MVVM.View.Pages
                     var parentPanel = (Panel)userControlMini.Parent;
                     parentPanel.Children.Remove(userControlMini);
                 }
-
+                userControlMini.MouseDown += (sender, e) => ShowMaxWorkerControl(userControlMini);
                 miniWorkers.Children.Add(userControlMini);
             }
+        }
+
+        private void ShowMaxWorkerControl(ClientsUserControlMini selectedMiniWorker)
+        {
+            var userControlMax = _viewModel._ClientsUserControlMax;
+            maxWorker.Visibility = Visibility.Visible;
+
+            var currentParent = (Panel)userControlMax.Parent;
+            if (currentParent != null)
+                currentParent.Children.Remove(userControlMax);
+
+            maxWorker.Children.Clear();
+            maxWorker.Children.Add(userControlMax);
         }
     }
 }

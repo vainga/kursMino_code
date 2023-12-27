@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KursCode.MVVM.View.Windows.Dialog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,13 @@ namespace KursCode.MVVM.View.Pages
         {
             InitializeComponent();
             _UserId = userId;
+        }
+
+        private void add_Button(object sender, RoutedEventArgs e)
+        {
+            AddWorker worker = new AddWorker(_UserId);
+            worker.ShowDialog();
+           // _viewModel.UpdateMiniWorkers();
         }
     }
 }

@@ -67,3 +67,5 @@ C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\refint\KursCode
 C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\KursCode.pdb
 C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\KursCode.genruntimeconfig.cache
 C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\ref\KursCode.dll
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\Windows\Dialog\AddVacancy.g.cs
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\Windows\Dialog\AddVacancy.baml
