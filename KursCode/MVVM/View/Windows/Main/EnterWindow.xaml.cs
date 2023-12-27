@@ -92,5 +92,8 @@ public partial class EnterWindow : Window
                 viewModel.ExecuteTextBlockClick();
             }
         }
+
+  
+
     }
 }

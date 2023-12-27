@@ -9,7 +9,7 @@
         Height="1000" Width="1500"
         ResizeMode="CanResize" Title="meet" WindowStyle="None" Foreground="#75CFFA" BorderBrush="#FF00EDFF" OpacityMask="#FF00EDFF" AllowsTransparency="True" Background="Transparent" MouseLeftButtonDown="drugWindow_LeftButtonDrag" WindowStartupLocation="CenterScreen">
     <Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
-        <Grid>
+        <Grid x:Name="mainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.04*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -89,10 +89,10 @@
                 </Grid>
             </Grid>
             <Button Background="White" Style="{StaticResource MaterialDesignFlatButton}" Width="370" Height="70" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="30" Click="worker_ButtonClick">
-                <materialDesign:PackIcon Kind="PersonOutline" Foreground="DarkBlue" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <materialDesign:PackIcon x:Name="workerIcon" Kind="PersonOutline" Foreground="DarkBlue" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
             <Button Style="{StaticResource MaterialDesignFlatButton}"  materialDesign:ButtonAssist.CornerRadius="30" Background="White"  HorizontalAlignment="Center" VerticalAlignment="Center"  Width="370" Height="70" Grid.Row="3" Click="corp_ButtonClick">
-                <materialDesign:PackIcon Kind="BriefcaseOutline" Width="40" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <materialDesign:PackIcon x:Name="corpIcon" Kind="BriefcaseOutline" Width="40" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
             <Button Style="{StaticResource MaterialDesignFlatButton}"  materialDesign:ButtonAssist.CornerRadius="30" Background="White"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="370" Height="70" Grid.Column="2" Grid.Row="3">
                 <materialDesign:PackIcon Kind="HandshakeOutline" Width="55" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using KursCode.MVVM.View.Pages;
+using MaterialDesignThemes.Wpf;
 
 namespace KursCode.MVVM.View.Windows.Main
 {
@@ -21,6 +22,7 @@ namespace KursCode.MVVM.View.Windows.Main
     public partial class MainWindow : Window
     {
         private int _UserId { get; }
+
         public MainWindow(int userId)
         {
             InitializeComponent();
@@ -86,6 +88,7 @@ namespace KursCode.MVVM.View.Windows.Main
 
         private void worker_ButtonClick(object sender, RoutedEventArgs e)
         {
+            SetIconColor(workerIcon, Colors.DeepSkyBlue);
             if (!(mainFrame.Content is WorkersPage))
             {
                 currentPage = new WorkersPage(_UserId);
@@ -95,11 +98,30 @@ namespace KursCode.MVVM.View.Windows.Main
 
         private void corp_ButtonClick(object sender, RoutedEventArgs e)
         {
+            SetIconColor(corpIcon, Colors.DeepSkyBlue);
             if (!(mainFrame.Content is VacancyPage))
             {
                 currentPage = new VacancyPage(_UserId);
                 mainFrame.Navigate(currentPage);
+
             }
+        }
+
+        private void SetIconColor(PackIcon icon, Color color)
+        {
+            icon.Foreground = new SolidColorBrush(color);
+
+            ResetIconColors(icon);
+        }
+
+        private void ResetIconColors(PackIcon currentIcon)
+        {
+            if (currentIcon != workerIcon)
+                workerIcon.Foreground = new SolidColorBrush(Colors.DarkBlue);
+
+            if (currentIcon != corpIcon)
+                corpIcon.Foreground = new SolidColorBrush(Colors.DarkBlue);
+
         }
     }
 }

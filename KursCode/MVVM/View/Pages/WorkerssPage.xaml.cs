@@ -24,8 +24,12 @@ namespace KursCode.MVVM.View.Pages
     /// </summary>
     public partial class WorkersPage : Page
     {
+
+        private ClientsUserControlMini currentSelectedControl;
         private int _UserId { get; }
         private DatabaseHelper dbHelper;
+        private WorkersPage workersPage;
+
         public WorkersPage(int userId)
         {
             InitializeComponent();
@@ -59,24 +63,49 @@ namespace KursCode.MVVM.View.Pages
             string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
             List<workerClass> dataList = dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
 
-
             foreach (var data in dataList)
             {
                 ClientsUserControlMini userControlMini = new ClientsUserControlMini();
                 userControlMini.SetData(data);
 
-                userControlMini.VerticalAlignment = VerticalAlignment.Center;
-                Thickness margin = new Thickness(0, 0, 0, 15);
+                userControlMini.VerticalAlignment = VerticalAlignment.Top;
+                Thickness margin = new Thickness(10, 0, 10, 15);
                 userControlMini.Margin = margin;
+
+                userControlMini.MouseEnter += DynamicUserControl_MouseEnter;
+                userControlMini.MouseLeave += DynamicUserControl_MouseLeave;
+                userControlMini.MouseDown += DynamicUserControl_MouseDown;
 
                 miniWorkers.Children.Add(userControlMini);
             }
         }
 
+        private void DynamicUserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ClientsUserControlMini clickedControl = (ClientsUserControlMini)sender;
+
+            if (currentSelectedControl != null && currentSelectedControl != clickedControl)
+            {
+                currentSelectedControl.mainBorder.BorderBrush = Brushes.Black;
+            }
+
+            currentSelectedControl = clickedControl;
+            currentSelectedControl.mainBorder.BorderBrush = Brushes.Blue;
+        }
+
+        private void DynamicUserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ((ClientsUserControlMini)sender).SetDarkBackground();
+        }
+
+        private void DynamicUserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((ClientsUserControlMini)sender).RestoreBackground();
+        }
+
         private void WorkerClosed(object sender, EventArgs e)
         {
-
-
         }
+
     }
 }

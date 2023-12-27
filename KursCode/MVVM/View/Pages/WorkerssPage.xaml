@@ -8,20 +8,20 @@
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1500"
       Title="ClientsPage">
-    <Grid Background="#90e0ef">
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="3.8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="0.15*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="0.12*"></RowDefinition>
             </Grid.RowDefinitions>
             <Border BorderBrush="Gray" Grid.Column="0" Grid.Row="0"  Grid.RowSpan="3" HorizontalAlignment="Right" BorderThickness="2" Width="2"/>
-            <TextBlock x:Name="textBoxMain" Text="Кандитаты" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,40,100,0" Foreground="DarkBlue" FontSize="36" FontFamily="Corbel" FontWeight="Light"/>
-            <ScrollViewer Grid.Row="1" Grid.RowSpan="2">
+            <TextBlock x:Name="textBoxMain" Text="Кандитаты:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,40,100,0" Foreground="DarkBlue" FontSize="36" FontFamily="Corbel" FontWeight="Normal"/>
+            <ScrollViewer Grid.Row="1" Grid.RowSpan="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel x:Name="miniWorkers" Orientation="Vertical">
                     <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,10,0"/>
                 </StackPanel>
