@@ -4,29 +4,26 @@ using KursCode.MVVM.View.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows;
-using System.IO.IsolatedStorage;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.IO;
+using System.Windows.Input;
 using System.Windows.Media;
-
 namespace KursCode.MVVM.ViewModel
 {
-    public class WorkersPageViewModel : baseViewModel
+    public class VacansyPageViewModel : baseViewModel
     {
-
-        private List<workerClass> workerDataList = new List<workerClass>();
+        private List<corporationClass> corporationsList = new List<corporationClass>();
         private ObservableCollection<ClientsUserControlMini> _miniWorkers;
         private DatabaseHelper _dbHelper;
 
-        public WorkersPageViewModel()
+        public VacansyPageViewModel()
         {
-            _dbHelper = new DatabaseHelper(GetWorkerDBPath(_userId));
+            _dbHelper = new DatabaseHelper(GetCorporationDBPath(_userId));
             _clientsUserControlMax = new ClientsUserControlMax();
             LoadDataFromJson();
         }
@@ -35,7 +32,9 @@ namespace KursCode.MVVM.ViewModel
         public int UserId
         {
             get { return _userId; }
-            set { if (_userId != value)
+            set
+            {
+                if (_userId != value)
                 {
                     _userId = value;
                     OnPropertyChanged(nameof(UserId));
@@ -68,22 +67,21 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
-        private static string GetWorkerDBPath(int userId)
+        private static string GetCorporationDBPath(int userid)
         {
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
             string parentPath = Directory.GetParent(executablePath).FullName;
             string dataFolderPath = Path.Combine(parentPath, "Data");
             string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string workerDbPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            Directory.CreateDirectory(workerDbPath);
-            return workerDbPath;
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userid}_ID_User");
+            return userSpecificFolderPath;
         }
 
         public void LoadDataFromJson()
         {
-            string workerFolderPath = GetWorkerDBPath(_userId);
-            string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
-            var dataList = _dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
+            string corpFolderPath = GetCorporationDBPath(_userId);
+            string corpDataFilePath = Path.Combine(corpFolderPath, "corporation.json");
+            var dataList = _dbHelper.GetAllEntities<corporationClass>(corpDataFilePath);
 
             MiniWorkers = new ObservableCollection<ClientsUserControlMini>();
 
@@ -99,8 +97,8 @@ namespace KursCode.MVVM.ViewModel
                 userControlMini.MouseEnter += DynamicUserControl_MouseEnter;
                 userControlMini.MouseLeave += DynamicUserControl_MouseLeave;
                 userControlMini.MouseDown += DynamicUserControl_MouseDown;
-                
-                workerDataList.Add(data);
+
+                corporationsList.Add(data);
                 MiniWorkers.Add(userControlMini);
             }
         }
@@ -146,10 +144,8 @@ namespace KursCode.MVVM.ViewModel
 
             _clientsUserControlMax.ClearData();
 
-            var matchingWorkerData = workerDataList.FirstOrDefault(data =>
-            data._Surname == _selectedMiniWorker.Surname.Text &&
-            data._WorkerName == _selectedMiniWorker.Name.Text &&
-            data._Post == _selectedMiniWorker.Post.Text);
+            var matchingWorkerData = corporationsList.FirstOrDefault(data =>
+            data._CorporationName == _selectedMiniWorker.Surname.Text && data._Post == _selectedMiniWorker.Post.Text);
 
             _clientsUserControlMax.SetData(matchingWorkerData);
         }
@@ -170,7 +166,7 @@ namespace KursCode.MVVM.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-        
+
         public void UpdateMiniWorkers()
         {
             LoadDataFromJson();

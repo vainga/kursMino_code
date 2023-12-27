@@ -19,10 +19,8 @@ namespace Clients
         public string _CorporationName { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Work_experience_min")]
-        public string _Work_experience_min { get; private set; }
-        [JsonInclude]
-        [JsonPropertyName("_Work_experience_max")]
-        public string _Work_experience_max { get; private set; }
+        public string _Work_experience { get; private set; }
+
         
         [JsonInclude]
         [JsonPropertyName("_Salary")]
@@ -54,17 +52,15 @@ namespace Clients
 
         public IUser user { get; set; }
 
-        DatabaseHelper dbHelper = new DatabaseHelper(GetCorporationDBPath());
+        DatabaseHelper dbHelper = new DatabaseHelper(GetCorporationDBPath(_UserId));
 
 
         public corporationClass() : base("", "", "", "", new ObservableCollection<string>(), new ObservableCollection<string>(), "", "", "", "")
         {
             _CorporationName = "";
-            _Work_experience_min = "";
-            _Work_experience_max = "";
+            _Work_experience = "";
             _Salary_min = "";
             _Salary_max = "";
-            _UserId = user.userId;
             _Phone_number = "";
             _Education = "";
             _Age = "";
@@ -72,30 +68,27 @@ namespace Clients
         }
 
         [JsonConstructor]
-        public corporationClass(string corporationName, string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status, string work_experience_min, string work_experience_max,
-            bool work_experience_need, string salary_min, string salary_max, string phone_number, string education, string age, string pdf)
+        public corporationClass(string corporationName, string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status, string work_experience_max
+            , string salary_min, string salary_max, string phone_number, string education, string age, string pdf)
             : base(post, email, city, description, personal_qualities, skills, citizenship, employment, shedule, status)
         {
             _CorporationName = corporationName;
-            _Work_experience_max = work_experience_max;
-            _Work_experience_min = work_experience_min;
+            _Work_experience = work_experience_max;
             _Salary_min = salary_min;
             _Salary_max = salary_max;
-            _UserId = user.userId;
             _Phone_number = phone_number;
             _Education = education;
             _Age = age;
             _PDF = pdf;
         }
 
-        private static string GetCorporationDBPath()
+        private static string GetCorporationDBPath(int userid)
         {
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
             string parentPath = Directory.GetParent(executablePath).FullName;
             string dataFolderPath = Path.Combine(parentPath, "Data");
             string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{_UserId}_ID_User");
-            string corporationDbPath = Path.Combine(userSpecificFolderPath, $"{_UserId}_ID_corporationsdata.db");
+            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userid}_ID_User");
             return userSpecificFolderPath;
         }
 
@@ -109,34 +102,42 @@ namespace Clients
             return JsonSerializer.Deserialize<corporationClass>(json);
         }
 
-        public void AddData()
+        public void AddData(int userid)
         {
-            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetCorporationDBPath());
+            string workerFolderPath = GetCorporationDBPath(userid);
+            string workerDataFilePath = Path.Combine(workerFolderPath, "corporation.json");
+            DatabaseHelper dbHelper = new DatabaseHelper(workerDataFilePath);
 
-            int nextId = dbHelper.GetNextEntityId((string jsonString) => 0, jsonStrings);
+            if (!File.Exists(workerDataFilePath))
+            {
+                File.WriteAllText(workerDataFilePath, "[]");
+            }
 
-            dbHelper.SaveEntityToFile(ToJson(), jsonStrings);
+            List<corporationClass> jsonObjects = dbHelper.GetAllEntities<corporationClass>(workerDataFilePath);
+
+
+            dbHelper.SaveEntityToFile<corporationClass>(this, jsonObjects);
         }
 
-        public List<string> ReadAllJsonFromDatabase()
+        public List<string> ReadAllJsonFromDatabase(int userId)
         {
-            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetCorporationDBPath());
+            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetCorporationDBPath(userId));
 
             return jsonStrings;
         }
 
-        public int GetId(string workerJson)
-        {
-            return dbHelper.GetNextEntityId((string jsonString) => 0, dbHelper.GetAllEntities<string>(GetCorporationDBPath()));
-        }
+        //public int GetId(string corpJson,int userId)
+        //{
+        //    return dbHelper.GetNextEntityId((string jsonString) => 0, dbHelper.GetAllEntities<string>(GetCorporationDBPath(userId)));
+        //}
 
-        public void RemoveData(int itemIdToDelete)
-        {
-            using (dbHelper)
-            {
-                dbHelper.RemoveEntity((string jsonString) => GetId(jsonString) == itemIdToDelete, dbHelper.GetAllEntities<string>(GetCorporationDBPath()));
-            }
-        }
+        //public void RemoveData(int itemIdToDelete)
+        //{
+        //    using (dbHelper)
+        //    {
+        //        dbHelper.RemoveEntity((string jsonString) => GetId(jsonString) == itemIdToDelete, dbHelper.GetAllEntities<string>(GetCorporationDBPath()));
+        //    }
+        //}
 
 
     }

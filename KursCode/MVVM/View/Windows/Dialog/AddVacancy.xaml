@@ -5,8 +5,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KursCode.MVVM.View.Windows.Dialog"
+        xmlns:vm="clr-namespace:KursCode.MVVM.ViewModel"
         mc:Ignorable="d"
         ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" BorderBrush="#FF00EDFF" OpacityMask="#FF00EDFF" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:addVacansyViewModel/>
+    </Window.DataContext>
     <Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
         <Grid>
             <Grid.RowDefinitions>

@@ -1,4 +1,5 @@
 ﻿using KursCode.MVVM.View.Windows.Dialog;
+using KursCode.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace KursCode.MVVM.View.Pages
     public partial class VacancyPage : Page
     {
         private int _UserId { get; }
+
         public VacancyPage(int userId)
         {
             InitializeComponent();
@@ -30,9 +32,9 @@ namespace KursCode.MVVM.View.Pages
 
         private void add_Button(object sender, RoutedEventArgs e)
         {
-            AddWorker worker = new AddWorker(_UserId);
-            worker.ShowDialog();
-           // _viewModel.UpdateMiniWorkers();
+            AddVacancy vacancy = new AddVacancy(_UserId);
+            vacancy.ShowDialog();
+            //_viewModel.UpdateMiniWorkers();
         }
     }
 }

@@ -24,9 +24,18 @@ namespace KursCode.MVVM.View.Windows.Dialog
         private addWorkerViewModel viewModel;
         private int _UserId { get; }
 
-        public AddVacancy()
+        public AddVacancy(int userID)
         {
             InitializeComponent();
+
+            userInputValues = new List<string>();
+            textBoxList = new List<TextBox>();
+            viewModel = new addWorkerViewModel();
+
+            _UserId = userID;
+
+            viewModel.UserId = _UserId;
+            viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
         }
         private List<ClientSkiil> userControls = new List<ClientSkiil>();
 
@@ -64,7 +73,7 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
 
             (QualitiesWrapPanel.Children[QualitiesWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
-            if (DataContext is addWorkerViewModel viewModel)
+            if (DataContext is addVacansyViewModel viewModel)
             {
                 viewModel.TextBoxListQualities.Add(userControl.itemText);
             }
@@ -88,24 +97,21 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
 
             (SkillsWrapPanel.Children[SkillsWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
-            if (DataContext is addWorkerViewModel viewModel)
+            if (DataContext is addVacansyViewModel viewModel)
             {
                 viewModel.TextBoxListSkills.Add(userControl.itemText);
             }
 
         }
 
-        private void ImageBorder_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void ViewModel_SaveSuccessful(object sender, EventArgs e)
         {
-            if (DataContext is addWorkerViewModel viewModel)
-            {
-                viewModel.SelectImage();
-            }
+            Close();
         }
 
         private void last_button_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+
         }
     }
 }
