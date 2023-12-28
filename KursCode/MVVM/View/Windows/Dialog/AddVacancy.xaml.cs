@@ -31,13 +31,11 @@ namespace KursCode.MVVM.View.Windows.Dialog
             userInputValues = new List<string>();
             textBoxList = new List<TextBox>();
             viewModel = new addVacansyViewModel();
-
+            DataContext = viewModel;
             _UserId = userID;
-            if (DataContext is addVacansyViewModel)
-            {
-                viewModel.UserId = _UserId;
-                viewModel.SaveSuccessfulVavancy += ViewModel_SaveSuccessful;
-            }
+
+            viewModel.UserId = _UserId;
+            viewModel.SaveSuccessfulVavancy += ViewModel_SaveSuccessful;
         }
         private List<ClientSkiil> userControls = new List<ClientSkiil>();
 
