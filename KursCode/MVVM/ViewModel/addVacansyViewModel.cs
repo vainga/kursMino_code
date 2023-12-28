@@ -362,7 +362,7 @@ namespace KursCode.MVVM.ViewModel
         {
             try
             {
-                pdfManager.SelectPDF(SelectedPDFFilePath, corporation._PDF);
+                pdfManager.SelectPDF();
             }
             catch (Exception ex)
             {

@@ -16,11 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
-    <Folder Include="Themes\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Include="App.xaml" />
   </ItemGroup>
 

@@ -141,13 +141,5 @@ namespace Clients
         //    return dbHelper.GetNextEntityId((string jsonString) => 0, dbHelper.GetAllEntities<string>(GetWorkerDBPath(userid)));
         //}
 
-        //public void RemoveData(int itemIdToDelete,int userid)
-        //{
-        //    using (dbHelper)
-        //    {
-        //        dbHelper.RemoveEntity((string jsonString) => GetId(jsonString, userid) == itemIdToDelete, dbHelper.GetAllEntities<string>(GetWorkerDBPath(userid)));
-        //    }
-        //}
-
     }
 }

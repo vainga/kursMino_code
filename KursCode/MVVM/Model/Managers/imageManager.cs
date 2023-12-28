@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Windows.Media;
 
 namespace KursCode.MVVM.Model.Managers
 {
@@ -36,7 +38,7 @@ namespace KursCode.MVVM.Model.Managers
             return null;
         }
 
-        public void SelectImage(BitmapImage image,string workImage)
+        public BitmapImage SelectImage()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -49,21 +51,65 @@ namespace KursCode.MVVM.Model.Managers
                 try
                 {
                     BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
-                    image = bitmap;
-
-
-                    workImage = ConvertImageToBase64(bitmap);
-
+                    return bitmap;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error loading image: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            return null;
         }
 
 
+            public Bitmap ConvertImage(string base64String)
+        {
+            try
+            {
+                byte[] imageBytes = Convert.FromBase64String(base64String);
 
+                using (MemoryStream ms = new MemoryStream(imageBytes))
+                {
+                    using (Bitmap bitmap = new Bitmap(ms))
+                    {
+                        return new Bitmap(ms);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public ImageBrush ConvertBitmapToImageBrush(Bitmap bitmap)
+        {
+            if (bitmap == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = new MemoryStream(memoryStream.ToArray());
+                bitmapImage.EndInit();
+
+                ImageBrush imageBrush = new ImageBrush();
+                imageBrush.ImageSource = bitmapImage;
+
+                return imageBrush;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error converting bitmap to ImageBrush: {ex.Message}");
+                return null;
+            }
+        }
 
 
     }

@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace KursCode
 {
-    class User : IUser
+    public class User : IUser
     {
         [JsonInclude]
         [JsonPropertyName("UserId")]

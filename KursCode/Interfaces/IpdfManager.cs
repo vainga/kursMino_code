@@ -8,6 +8,8 @@ namespace KursCode.Interfaces
 {
     public interface IpdfManager
     {
-        public void SelectPDF(string PDF_fileName, string pdfBase64);
+        byte[] SelectPDF();
+        byte[] fromBase64toPdf(string pdfBase64);
+        string toBase64(byte[] pdfBytes);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Clients;
+using KursCode.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,6 +16,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using KursCode.MVVM.Model.Managers;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace KursCode.MVVM.View.UserControls
 {
@@ -30,60 +34,54 @@ namespace KursCode.MVVM.View.UserControls
             InitializeComponent();
         }
 
-
-        private Bitmap ConvertImage(string base64String)
-        {
-            try
-            {
-                byte[] imageBytes = Convert.FromBase64String(base64String);
-
-                using (MemoryStream ms = new MemoryStream(imageBytes))
-                {
-                    using (Bitmap bitmap = new Bitmap(ms))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        private ImageBrush ConvertBitmapToImageBrush(Bitmap bitmap)
-        {
-            if (bitmap == null)
-            {
-                // Handle the case where the bitmap is null (return a default ImageBrush, log an error, etc.)
-                return null;
-            }
-
-            try
-            {
-                MemoryStream memoryStream = new MemoryStream();
-                bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = new MemoryStream(memoryStream.ToArray());
-                bitmapImage.EndInit();
-
-                ImageBrush imageBrush = new ImageBrush();
-                imageBrush.ImageSource = bitmapImage;
-
-                return imageBrush;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error converting bitmap to ImageBrush: {ex.Message}");
-                return null;
-            }
-        }
+        IimageManager imageManager = new imageManager();
+        IpdfManager pdfManager = new pdfManager();
+        private byte[] pdfData {get; set; }
 
         public void SetData(corporationClass corpData)
         {
             Surname.Text = corpData._CorporationName;
+            Name.Visibility = Visibility.Collapsed;
+            TextAge.Text = "Возраст от: ";
+            imageBorder.Visibility = Visibility.Collapsed;
+            Age.Text = corpData._Age;
+            Location.Text = corpData._City;
+            Education.Text = corpData._Education;
+            Citizenship.Text = corpData._Citizenship;
+            Work_experience.Text = corpData._Work_experience;
+            Empoyment.Text = corpData._Empoyment;
+            Shedule.Text = corpData._Shedule;
+            salaryText.Text = "Зарплата";
+            StringBuilder skillsBuilder = new StringBuilder();
+            foreach (var skill in corpData._Skills)
+            {
+                if (skillsBuilder.Length > 0)
+                {
+                    skillsBuilder.Append(", ");
+                }
+                skillsBuilder.Append(skill);
+            }
+            Skills.Text = skillsBuilder.ToString();
+
+            StringBuilder qualitiesBuilder = new StringBuilder();
+            foreach (var quality in corpData._Personal_qualities)
+            {
+                if (qualitiesBuilder.Length > 0)
+                {
+                    qualitiesBuilder.Append(", ");
+                }
+                qualitiesBuilder.Append(quality);
+            }
+            Qualities.Text = qualitiesBuilder.ToString();
+
+            Description.Text = corpData._Description;
+            Post.Text = corpData._Post;
+            Salary.Text = "от: " + corpData._Salary_min + " до: " + corpData._Salary_max;
+            Phone_number.Text = corpData._Phone_number;
+            Email.Text = corpData._Email;
+            
+            if(corpData._PDF != "")
+                pdfData = pdfManager.fromBase64toPdf(corpData._PDF);
         }
 
         public void SetData(workerClass workerData)
@@ -127,9 +125,14 @@ namespace KursCode.MVVM.View.UserControls
             Email.Text = workerData._Email;
             if (workerData._WorkerPhoto!="")
             {
-                selectedImage.Source = ConvertBitmapToImageBrush(ConvertImage(workerData._WorkerPhoto)).ImageSource;
+                selectedImage.Source = imageManager.ConvertBitmapToImageBrush(imageManager.ConvertImage(workerData._WorkerPhoto)).ImageSource;
             }
-        } 
+            if(workerData._PdfFile != "")
+                pdfData = pdfManager.fromBase64toPdf(workerData._PdfFile);
+
+        }
+
+
 
         public void ClearData()
         {
@@ -150,6 +153,32 @@ namespace KursCode.MVVM.View.UserControls
             Phone_number.Text = "";
             Email.Text = "";
             selectedImage.Source = null;
+        }
+
+        private void PDF_button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (pdfData == null || pdfData.Length == 0)
+                {
+                    MessageBox.Show("Нет данных PDF для открытия.", "Ошибка");
+                    return;
+                }
+
+                string tempPdfPath = System.IO.Path.GetTempFileName();
+
+                File.WriteAllBytes(tempPdfPath, pdfData);
+
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = tempPdfPath,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка при открытии PDF:");
+            }
         }
     }
 }

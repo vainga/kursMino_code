@@ -1,7 +1,6 @@
 ﻿using Clients;
 using KursCode.MVVM.View.Windows.Main;
 using KursCode.View;
-using KursCode.WindowServices;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

@@ -11,7 +11,7 @@ namespace KursCode.MVVM.Model.Managers
 {
     public class pdfManager : IpdfManager
     {
-        public void SelectPDF(string PDF_fileName,string pdfBase64)
+        public byte[] SelectPDF()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -26,17 +26,33 @@ namespace KursCode.MVVM.Model.Managers
                 try
                 {
                     byte[] pdfBytes = File.ReadAllBytes(fileName);
-                    string base64String = Convert.ToBase64String(pdfBytes);
 
-                    fileName = Path.GetFileName(openFileDialog.FileName);
-                    PDF_fileName = fileName;
-                    pdfBase64 = base64String;
+                    return pdfBytes;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка при чтении файла: {ex.Message}");
                 }
             }
+            return null;
+        }
+
+        public byte[] fromBase64toPdf(string pdfBase64)
+        {
+            try
+            {
+                byte[] pdfBytes = Convert.FromBase64String(pdfBase64);
+                return pdfBytes;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public string toBase64(byte[] pdfBytes)
+        {
+            return Convert.ToBase64String(pdfBytes);
         }
 
     }

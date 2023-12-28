@@ -21,6 +21,7 @@ using Clients;
 using KursCode.Interfaces;
 using System.Xml.Linq;
 using KursCode.MVVM.Model.Managers;
+using System.Drawing;
 
 namespace KursCode.MVVM.ViewModel
 {
@@ -403,17 +404,12 @@ namespace KursCode.MVVM.ViewModel
 
         public void SelectImage()
         {
-            try
-            {
-                    imageManager.SelectImage(WorkerPhoto,worker._WorkerPhoto);
-                    SelectedImageVisibility = Visibility.Visible;
-                    PhotoIconVisibility = Visibility.Collapsed;
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Ошибка IMAGE!");
-            }
+            WorkerPhoto = imageManager.SelectImage();
+            SelectedImageVisibility = Visibility.Visible;
+            PhotoIconVisibility = Visibility.Collapsed;
+            worker._WorkerPhoto = imageManager.ConvertImageToBase64(WorkerPhoto);
         }
+
 
 
         private ICommand _selectPDFCommand;
@@ -432,20 +428,8 @@ namespace KursCode.MVVM.ViewModel
 
         public void SelectPDF()
         {
-            try
-            {
-                pdfManager.SelectPDF(SelectedPDFFilePath, worker._PdfFile);
-            }
-            catch(Exception ex ) 
-            {
-                MessageBox.Show("Ошибка PDF!");
-            }
+            worker._PdfFile = pdfManager.toBase64(pdfManager.SelectPDF());
         }
-
-        //                SelectedPDFFilePath = fileName;
-        //worker._PdfFile = base64String;
-        //            SelectedPDFFilePath = fileName;
-        //string fileName = Path.GetFileName(openFileDialog.FileName);
 
 
         public string Base64String
