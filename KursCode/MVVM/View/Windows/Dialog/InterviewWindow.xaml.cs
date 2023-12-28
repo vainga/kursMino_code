@@ -23,5 +23,17 @@ namespace KursCode.MVVM.View.Windows.Dialog
         {
             InitializeComponent();
         }
+
+        private void closeApp_MauseLeftButtonDrag(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KursCode.MVVM.View.Windows.Dialog"
         mc:Ignorable="d"
-        Height="500" Width="300"
+        Height="700" Width="500"
 ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" BorderBrush="#FF00EDFF" OpacityMask="#FF00EDFF" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
     <Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
         <Grid>
@@ -42,12 +42,26 @@ ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" Bor
                     <Rectangle Width="2" Height="8" Fill="White" RadiusX="1" RadiusY="1" HorizontalAlignment="Center"/>
                 </Grid>
             </Grid>
+            <TextBlock VerticalAlignment="Top" Grid.Row="1" Text="Выберите вакансию" Foreground="DarkBlue" FontSize="15" HorizontalAlignment="Center"></TextBlock>
             <ComboBox Grid.Row="1" Margin="30,0,30,0" VerticalAlignment="Center" Text="Выберите вакансию"></ComboBox>
-            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5" Padding="3" Margin="30,0,30,0" Grid.Row="2" Height="200">
-                <xctk:DateTimePicker  Name="datePicker" Height="200"/>
+            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5" Padding="3" Margin="30,0,30,0" Grid.Row="2" Height="Auto">
+                <Calendar Name="calendar" Height="Auto" VerticalAlignment="Bottom" />
             </Border>
-            <TextBlock Grid.Row="3" Text="Продолжительность" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <xctk:MaskedTextBox Name="durationMaskedTextBox" Mask="00:00:00" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Время час:мин" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,20,0,0" FontSize="15"/>
+                <xctk:MaskedTextBox Grid.Column="1" Name="durationMaskedTextBox" Mask="00:00"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0"  FontSize="15"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Продолжительность час:мин" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"  FontSize="15"/>
+                <xctk:MaskedTextBox Grid.Column="1" Grid.Row="1" Mask="00:00"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0"  FontSize="15"/>
+            </Grid>
             <Button Content="OK" Background="DarkBlue" Style="{StaticResource MaterialDesignRaisedButton}"  Width="100" Height="40" materialDesign:ButtonAssist.CornerRadius="15" Grid.Row="4" Margin="10"/>
         </Grid>
     </Border>

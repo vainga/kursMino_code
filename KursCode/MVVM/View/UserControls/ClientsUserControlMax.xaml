@@ -143,7 +143,7 @@
                 <Button Grid.Column="4" Background="Red" Style="{StaticResource MaterialDesignFlatButton}" Width="45" Height="45" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,10" materialDesign:ButtonAssist.CornerRadius="5" Command="{Binding SelectPDFCommand}">
                     <materialDesign:PackIcon Grid.Column="0" Kind="TrashOutline" Foreground="White" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
-                <Button Grid.Column="5" Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="45" Height="45" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,10" materialDesign:ButtonAssist.CornerRadius="5" Command="{Binding SelectPDFCommand}">
+                <Button Grid.Column="5" Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="45" Height="45" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,10" materialDesign:ButtonAssist.CornerRadius="5" Command="{Binding SelectPDFCommand}" Click="interview_Button_Click" ToolTip="Назначить собеседование">
                     <materialDesign:PackIcon Grid.Column="0" Kind="Calendar" Foreground="White" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
                 <Button Grid.Column="1" Background="Red" Style="{StaticResource MaterialDesignFlatButton}" Width="45" Height="45" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,10" materialDesign:ButtonAssist.CornerRadius="5" Command="{Binding SelectPDFCommand}">

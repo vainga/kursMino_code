@@ -1,5 +1,6 @@
 ﻿using Clients;
 using KursCode.Interfaces;
+using KursCode.MVVM.View.Windows.Dialog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -179,6 +180,12 @@ namespace KursCode.MVVM.View.UserControls
             {
                 MessageBox.Show($"Произошла ошибка при открытии PDF:");
             }
+        }
+
+        private void interview_Button_Click(object sender, RoutedEventArgs e)
+        {
+            InterviewWindow interviewWindow = new InterviewWindow();
+            interviewWindow.ShowDialog();
         }
     }
 }
