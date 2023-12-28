@@ -92,16 +92,6 @@ namespace Clients
             return userSpecificFolderPath;
         }
 
-        private string ToJson()
-        {
-            return JsonSerializer.Serialize(this);
-        }
-
-        private corporationClass FromJson(string json)
-        {
-            return JsonSerializer.Deserialize<corporationClass>(json);
-        }
-
         public void AddData(int userid)
         {
             string corporationFolderPath = GetCorporationDBPath(userid);
