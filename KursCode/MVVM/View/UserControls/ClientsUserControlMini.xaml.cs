@@ -1,4 +1,4 @@
-﻿using Clients;
+﻿  using Clients;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -125,6 +125,14 @@ namespace KursCode.MVVM.View.UserControls
             {
                 Console.WriteLine("Image conversion failed or resulted in a null ImageBrush.");
             }
+        }
+
+        public void SetData(corporationClass data)
+        {
+            this.Surname.Text = data._CorporationName;
+            this.Name.Visibility = Visibility.Collapsed;
+            this.Post.Text = data._Post;
+            photoEllips.Visibility = Visibility.Collapsed;
         }
 
         public workerClass GetData()

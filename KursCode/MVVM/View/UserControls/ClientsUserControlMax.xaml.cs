@@ -81,6 +81,11 @@ namespace KursCode.MVVM.View.UserControls
             }
         }
 
+        public void SetData(corporationClass corpData)
+        {
+            Surname.Text = corpData._CorporationName;
+        }
+
         public void SetData(workerClass workerData)
         {
             Surname.Text = workerData._Surname;
@@ -124,12 +129,7 @@ namespace KursCode.MVVM.View.UserControls
             {
                 selectedImage.Source = ConvertBitmapToImageBrush(ConvertImage(workerData._WorkerPhoto)).ImageSource;
             }
-        }
-
-        public void SetData(corporationClass corpData)
-        {
-            Surname.Text = corpData._CorporationName;
-        }
+        } 
 
         public void ClearData()
         {

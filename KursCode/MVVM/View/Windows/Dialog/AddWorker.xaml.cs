@@ -29,18 +29,17 @@ namespace KursCode.MVVM.View.Windows.Dialog
         public AddWorker(int userId)
         {
             InitializeComponent();
-            //DataContext = viewModel;
-
             userInputValues = new List<string>();
             textBoxList = new List<TextBox>();
             viewModel = new addWorkerViewModel();
-
+            DataContext = viewModel;
             _UserId = userId;
 
             viewModel.UserId = _UserId;
             viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
-
         }
+
+
 
         private List<ClientSkiil> userControls = new List<ClientSkiil>();
 
@@ -117,14 +116,16 @@ namespace KursCode.MVVM.View.Windows.Dialog
             }
         }
 
+
+
         private void ViewModel_SaveSuccessful(object sender, EventArgs e)
         {
-            Close(); 
+            Close();
         }
 
         private void last_button_Click(object sender, RoutedEventArgs e)
         {
-   
+
         }
     }
 }

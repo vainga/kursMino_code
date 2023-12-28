@@ -147,6 +147,7 @@ namespace KursCode.MVVM.ViewModel
         {
             SaveSuccessful?.Invoke(this, EventArgs.Empty);
         }
+
         private string _errorMessageContent = "Ошибка!";
         public ICommand SaveCommand { get; private set; }
         private void Save()
@@ -180,8 +181,8 @@ namespace KursCode.MVVM.ViewModel
                 }
                 else
                 {
-                    OnSaveSuccessful();
                     worker.AddData(_userId);
+                    OnSaveSuccessful();
                 }
             }
             catch (Exception ex)

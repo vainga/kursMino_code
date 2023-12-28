@@ -23,10 +23,10 @@ namespace Clients
 
         
         [JsonInclude]
-        [JsonPropertyName("_Salary")]
+        [JsonPropertyName("_Salary_min")]
         public string _Salary_min { get; private set; }
         [JsonInclude]
-        [JsonPropertyName("_Salary")]
+        [JsonPropertyName("_Salary_max")]
         public string _Salary_max { get; private set; }
 
 

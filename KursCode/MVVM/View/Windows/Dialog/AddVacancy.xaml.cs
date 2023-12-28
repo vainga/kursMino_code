@@ -21,7 +21,7 @@ namespace KursCode.MVVM.View.Windows.Dialog
     /// </summary>
     public partial class AddVacancy : Window
     {
-        private addWorkerViewModel viewModel;
+        private addVacansyViewModel viewModel;
         private int _UserId { get; }
 
         public AddVacancy(int userID)
@@ -30,12 +30,14 @@ namespace KursCode.MVVM.View.Windows.Dialog
 
             userInputValues = new List<string>();
             textBoxList = new List<TextBox>();
-            viewModel = new addWorkerViewModel();
+            viewModel = new addVacansyViewModel();
 
             _UserId = userID;
-
-            viewModel.UserId = _UserId;
-            viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
+            if (DataContext is addVacansyViewModel)
+            {
+                viewModel.UserId = _UserId;
+                viewModel.SaveSuccessfulVavancy += ViewModel_SaveSuccessful;
+            }
         }
         private List<ClientSkiil> userControls = new List<ClientSkiil>();
 
@@ -106,7 +108,7 @@ namespace KursCode.MVVM.View.Windows.Dialog
 
         private void ViewModel_SaveSuccessful(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void last_button_Click(object sender, RoutedEventArgs e)

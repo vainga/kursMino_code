@@ -24,7 +24,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="Surname" Grid.Column="1" Foreground="DarkBlue" Text="Фамилия" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="DemiBold" Margin="10,0,0,0"></TextBlock>
                 <TextBlock x:Name="Name" Grid.Column="2" Foreground="DarkBlue" Text="Имя" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="DemiBold" Margin="3,0,0,0"></TextBlock>
-                <Ellipse Width="35" Height="35" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,0,5">
+                <Ellipse x:Name="photoEllips" Width="35" Height="35" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,0,5">
                     <Ellipse.Fill>
                         <ImageBrush x:Name="Photo"/>
                     </Ellipse.Fill>

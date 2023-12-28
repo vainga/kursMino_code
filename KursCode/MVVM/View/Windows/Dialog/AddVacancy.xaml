@@ -171,14 +171,14 @@
                             <TextBlock Grid.Column="0" Text="Зарплата: от" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,7,9,0"/>
                             <Border Grid.Column="1" Background="#FFF4FFFF" Height="40" VerticalAlignment="Top" CornerRadius="15">
                                 <Grid>
-                                    <TextBox materialDesign:HintAssist.Hint="30000" Text="{Binding Salary, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
+                                    <TextBox materialDesign:HintAssist.Hint="30000" Text="{Binding SalaryMIn, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
                                     <Border Height="1" Background="Gray" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                                 </Grid>
                             </Border>
                             <TextBlock Grid.Column="2" Text="до" FontSize="14" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="9,7,0,0"/>
                             <Border Grid.Column="2" Background="#FFF4FFFF" Height="40" VerticalAlignment="Top" CornerRadius="15" Margin="30,0,0,0">
                                 <Grid>
-                                    <TextBox materialDesign:HintAssist.Hint="50000" Text="{Binding Salary, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
+                                    <TextBox materialDesign:HintAssist.Hint="50000" Text="{Binding SalaryMax, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Padding="10" Background="{x:Null}" Foreground="Black" VerticalAlignment="Center" Margin="5,0,5,5" BorderBrush="DarkGray"/>
                                     <Border Height="1" Background="Gray" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                                 </Grid>
                             </Border>

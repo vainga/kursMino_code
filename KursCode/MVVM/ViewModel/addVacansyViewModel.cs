@@ -132,17 +132,17 @@ namespace KursCode.MVVM.ViewModel
             }
         }
 
-        public event EventHandler SaveSuccessful;
-        protected virtual void OnSaveSuccessful()
+        public event EventHandler SaveSuccessfulVavancy;
+        protected virtual void OnSaveSuccessfulVacansy()
         {
-            SaveSuccessful?.Invoke(this, EventArgs.Empty);
+            SaveSuccessfulVavancy?.Invoke(this, EventArgs.Empty);
         }
 
         public ICommand SaveCommand { get; private set; }
         private void Save()
         {
-            try
-            {
+            //try
+            //{
                 foreach (var textBox in textBoxListSkills)
                 {
                     Skills.Add(textBox.Text);
@@ -151,42 +151,43 @@ namespace KursCode.MVVM.ViewModel
                 {
                     Qualities.Add(textBox.Text);
                 }
-                if (!string.IsNullOrEmpty(corporation._CorporationName) &&
-                !string.IsNullOrEmpty(corporation._Post) &&
-                !string.IsNullOrEmpty(corporation._Email) &&
-                !string.IsNullOrEmpty(corporation._City) &&
-                !string.IsNullOrEmpty(corporation._Description) &&
-                 corporation._Personal_qualities.Count!=0 &&
-                 corporation._Skills.Count != 0 &&
-                !string.IsNullOrEmpty(corporation._Citizenship) &&
-                !string.IsNullOrEmpty(corporation._Empoyment) &&
-                !string.IsNullOrEmpty(corporation._Shedule) &&
-                !string.IsNullOrEmpty(corporation._Status) &&
-                !string.IsNullOrEmpty(corporation._Work_experience) &&
-                !string.IsNullOrEmpty(corporation._Salary_min) &&
-                !string.IsNullOrEmpty(corporation._Salary_max) &&
-                !string.IsNullOrEmpty(corporation._Phone_number) &&
-                !string.IsNullOrEmpty(corporation._Education) &&
-                !string.IsNullOrEmpty(corporation._Age))
-                {
-                    _errorMessageVisibility = Visibility.Visible;
-                    _errorMessageContent = "Все поля(кроме pdf) должны быть заполнены!";
-                    OnPropertyChanged(nameof(ErrorMessageContent));
-                    OnPropertyChanged(nameof(ErrorMessageVisibility));
-                }
-                else
-                {
-                    OnSaveSuccessful();
+            //if (!string.IsNullOrEmpty(corporation._CorporationName) &&
+            //!string.IsNullOrEmpty(corporation._Post) &&
+            //!string.IsNullOrEmpty(corporation._Email) &&
+            //!string.IsNullOrEmpty(corporation._City) &&
+            //!string.IsNullOrEmpty(corporation._Description) &&
+            // corporation._Personal_qualities.Count!=0 &&
+            // corporation._Skills.Count != 0 &&
+            //!string.IsNullOrEmpty(corporation._Citizenship) &&
+            //!string.IsNullOrEmpty(corporation._Empoyment) &&
+            //!string.IsNullOrEmpty(corporation._Shedule) &&
+            //!string.IsNullOrEmpty(corporation._Status) &&
+            //!string.IsNullOrEmpty(corporation._Work_experience) &&
+            //!string.IsNullOrEmpty(corporation._Salary_min) &&
+            //!string.IsNullOrEmpty(corporation._Salary_max) &&
+            //!string.IsNullOrEmpty(corporation._Phone_number) &&
+            //!string.IsNullOrEmpty(corporation._Education) &&
+            //!string.IsNullOrEmpty(corporation._Age))
+            //{
+            //    _errorMessageVisibility = Visibility.Visible;
+            //    _errorMessageContent = "Все поля(кроме pdf) должны быть заполнены!";
+            //    OnPropertyChanged(nameof(ErrorMessageContent));
+            //    OnPropertyChanged(nameof(ErrorMessageVisibility));
+            //}
+            //else
+            //{
                     corporation.AddData(_userId);
-                }
-            }
-            catch (Exception ex)
-            {
-                _errorMessageVisibility = Visibility.Visible;
-                _errorMessageContent = ex.Message;
-                OnPropertyChanged(nameof(ErrorMessageContent));
-                OnPropertyChanged(nameof(ErrorMessageVisibility));
-            }
+                    OnSaveSuccessfulVacansy();
+                    //corporation.AddData(_userId);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _errorMessageVisibility = Visibility.Visible;
+            //    _errorMessageContent = ex.Message;
+            //    OnPropertyChanged(nameof(ErrorMessageContent));
+            //    OnPropertyChanged(nameof(ErrorMessageVisibility));
+            //}
         }
 
         public string CorporationName
@@ -242,7 +243,7 @@ namespace KursCode.MVVM.ViewModel
         }
 
         public string _salary_min;
-        public string Salary
+        public string SalaryMIn
         {
             get { return corporation._Salary_min; }
             set
@@ -251,7 +252,7 @@ namespace KursCode.MVVM.ViewModel
                 {
                     _salary_min = formatManager.FormatNumeric(value);
                     corporation = new corporationClass(corporation._CorporationName, corporation._Post, corporation._Email, corporation._City, corporation._Description, corporation._Personal_qualities, corporation._Skills, corporation._Citizenship, corporation._Empoyment, corporation._Shedule, corporation._Status, corporation._Work_experience, _salary_min, corporation._Salary_max, corporation._Phone_number, corporation._Education, corporation._Age, corporation._PDF);
-                    OnPropertyChanged(nameof(Salary));
+                    OnPropertyChanged(nameof(SalaryMIn));
                 }
             }
         }
@@ -265,8 +266,8 @@ namespace KursCode.MVVM.ViewModel
                 if (corporation._Salary_max != value)
                 {
                     _salary_max = formatManager.FormatNumeric(value);
-                    corporation = new corporationClass(corporation._CorporationName, corporation._Post, corporation._Email, corporation._City, corporation._Description, corporation._Personal_qualities, corporation._Skills, corporation._Citizenship, corporation._Empoyment, corporation._Shedule, corporation._Status, corporation._Work_experience, corporation._Salary_min, _salary_min, corporation._Phone_number, corporation._Education, corporation._Age, corporation._PDF);
-                    OnPropertyChanged(nameof(Salary));
+                    corporation = new corporationClass(corporation._CorporationName, corporation._Post, corporation._Email, corporation._City, corporation._Description, corporation._Personal_qualities, corporation._Skills, corporation._Citizenship, corporation._Empoyment, corporation._Shedule, corporation._Status, corporation._Work_experience, corporation._Salary_min, _salary_max, corporation._Phone_number, corporation._Education, corporation._Age, corporation._PDF);
+                    OnPropertyChanged(nameof(SalaryMax));
                 }
             }
         }
