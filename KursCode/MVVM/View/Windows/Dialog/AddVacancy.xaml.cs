@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace KursCode.MVVM.View.Windows.Dialog
 {
-    /// <summary>
-    /// Логика взаимодействия для AddVacancy.xaml
-    /// </summary>
     public partial class AddVacancy : Window
     {
         private addVacansyViewModel viewModel;

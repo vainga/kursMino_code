@@ -32,7 +32,7 @@ namespace KursCode.MVVM.View.Pages
             _UserId = userId;
             _viewModel = new VacansyPageViewModel();
             _viewModel.UserId = userId;
-            _viewModel.PropertyChanged += ViewModel_PropertyChanged; // Подписка на событие изменения свойства
+            _viewModel.PropertyChanged += ViewModel_PropertyChanged;
             LoadDataAndMiniWorkers();
             LoadMiniWorkers();
             maxWorker.Visibility = Visibility.Collapsed;

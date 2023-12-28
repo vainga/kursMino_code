@@ -60,9 +60,9 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Имя" Grid.Row="0" FontSize="18" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,7,0,0"></TextBlock>
+                            <TextBlock Text="Название компании" Grid.Row="0" FontSize="18" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,7,0,0"></TextBlock>
                             <materialDesign:Card Padding="6" Margin="0,30,15,0" Background="White" UniformCornerRadius="6" VerticalAlignment="Bottom" HorizontalContentAlignment="Left">
-                                <TextBox materialDesign:HintAssist.Hint="Иван" Text="{Binding WorkerName}" BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Bottom" BorderBrush="DarkGray"/>
+                                <TextBox materialDesign:HintAssist.Hint="Иван" Text="{Binding CorporationName}" BorderThickness="0" Padding="6" Background="{x:Null}" Foreground="Black" VerticalAlignment="Bottom" BorderBrush="DarkGray"/>
                             </materialDesign:Card>
 
                             <TextBlock Grid.Row="2" Text="Должность" FontSize="16" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,5,0,0"></TextBlock>
@@ -93,7 +93,7 @@
                             <RowDefinition Height="0*"></RowDefinition>
                             <RowDefinition Height="0*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Личные навыки:" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,0,0,0"></TextBlock>
+                        <TextBlock Text="Требуемые навыки:" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,0,0,0"></TextBlock>
 
                         <WrapPanel x:Name="SkillsWrapPanel" Grid.Row="1" VerticalAlignment="Top">
                             <Button CommandParameter="QualityButton" Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="42" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,15,0,0" materialDesign:ButtonAssist.CornerRadius="90" Click="addSkillButton_Click">
@@ -101,7 +101,7 @@
                             </Button>
                         </WrapPanel>
 
-                        <TextBlock Text="Личные качества:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,20,0,0"></TextBlock>
+                        <TextBlock Text="Требуемые качества:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="DemiBold" Foreground="DarkBlue" Margin="40,20,0,0"></TextBlock>
 
                         <WrapPanel x:Name="QualitiesWrapPanel"  Grid.Row="3" VerticalAlignment="Top" >
                             <Button Background="DarkBlue" Style="{StaticResource MaterialDesignFlatButton}" Width="42" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,15,0,0" materialDesign:ButtonAssist.CornerRadius="90"  Click="addQualityButton_Click">

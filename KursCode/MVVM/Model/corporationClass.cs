@@ -67,7 +67,6 @@ namespace Clients
             _PDF="";
         }
 
-        [JsonConstructor]
         public corporationClass(string corporationName, string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status, string work_experience_max
             , string salary_min, string salary_max, string phone_number, string education, string age, string pdf)
             : base(post, email, city, description, personal_qualities, skills, citizenship, employment, shedule, status)
@@ -89,6 +88,7 @@ namespace Clients
             string dataFolderPath = Path.Combine(parentPath, "Data");
             string userFolderPath = Path.Combine(dataFolderPath, "UserData");
             string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userid}_ID_User");
+            Directory.CreateDirectory(userSpecificFolderPath);
             return userSpecificFolderPath;
         }
 
@@ -104,16 +104,16 @@ namespace Clients
 
         public void AddData(int userid)
         {
-            string workerFolderPath = GetCorporationDBPath(userid);
-            string workerDataFilePath = Path.Combine(workerFolderPath, "corporation.json");
-            DatabaseHelper dbHelper = new DatabaseHelper(workerDataFilePath);
+            string corporationFolderPath = GetCorporationDBPath(userid);
+            string corporationDataFilePath = Path.Combine(corporationFolderPath, "corporation.json");
+            DatabaseHelper dbHelper = new DatabaseHelper(corporationDataFilePath);
 
-            if (!File.Exists(workerDataFilePath))
+            if (!File.Exists(corporationDataFilePath))
             {
-                File.WriteAllText(workerDataFilePath, "[]");
+                File.WriteAllText(corporationDataFilePath, "[]");
             }
 
-            List<corporationClass> jsonObjects = dbHelper.GetAllEntities<corporationClass>(workerDataFilePath);
+            List<corporationClass> jsonObjects = dbHelper.GetAllEntities<corporationClass>(corporationDataFilePath);
 
 
             dbHelper.SaveEntityToFile<corporationClass>(this, jsonObjects);

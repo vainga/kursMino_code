@@ -112,13 +112,6 @@ namespace Clients
             return JsonSerializer.Deserialize<workerClass>(json);
         }
 
-        public string ImageToBase64(string imagePath)
-        {
-            byte[] imageBytes = File.ReadAllBytes(imagePath);
-            string base64String = Convert.ToBase64String(imageBytes);
-            return base64String;
-        }
-
         public void AddData(int userid)
         {
             string workerFolderPath = GetWorkerDBPath(userid);

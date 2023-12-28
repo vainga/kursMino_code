@@ -57,7 +57,6 @@ namespace KursCode.Data
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error during deserialization: {ex.Message}");
                 }
             }
 
@@ -100,6 +99,7 @@ namespace KursCode.Data
                 File.WriteAllText(connectionString, updatedJsonData);
             }
         }
+
 
         public void SaveEntitiesToFile<T>(List<T> objectsList)
         {
