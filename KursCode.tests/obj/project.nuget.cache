@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "qJN8ICKwX+flx6+uEyToQIRVzkiyrT+ggaOuauQPnfNB+3stGCIH1fHBvgXlEppH1FoLL6GfnRuTPOCk/DBj6g==",
+  "dgSpecHash": "qM5hwIo/KFOL8Y9wG4bSuJY+dvsGKgKaE3UBlHfCxNO4YdcjgC4a30uOFE/g+LjgRMAPKKpZZkBpqjxvCeTopA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Vain\\Desktop\\KursCode\\KursCode.tests\\KursCode.tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Vain\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\coverlet.collector\\3.2.0\\coverlet.collector.3.2.0.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\extended.wpf.toolkit\\4.5.1\\extended.wpf.toolkit.4.5.1.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\materialdesigncolors\\2.1.4\\materialdesigncolors.2.1.4.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\microsoft.codecoverage\\17.7.1\\microsoft.codecoverage.17.7.1.nupkg.sha512",

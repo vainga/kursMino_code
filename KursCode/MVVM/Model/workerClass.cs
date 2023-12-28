@@ -101,17 +101,6 @@ namespace Clients
             return workerDbPath;
         }
 
-
-        private string ToJson()
-        {
-            return JsonSerializer.Serialize(this);
-        }
-
-        private workerClass FromJson(string json)
-        {
-            return JsonSerializer.Deserialize<workerClass>(json);
-        }
-
         public void AddData(int userid)
         {
             string workerFolderPath = GetWorkerDBPath(userid);

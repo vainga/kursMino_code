@@ -1,0 +1,54 @@
+﻿<Window x:Class="KursCode.MVVM.View.Windows.Dialog.InterviewWindow"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KursCode.MVVM.View.Windows.Dialog"
+        mc:Ignorable="d"
+        Height="500" Width="300"
+ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" BorderBrush="#FF00EDFF" OpacityMask="#FF00EDFF" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+    <Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,3,10,0" MouseLeftButtonDown="closeApp_MauseLeftButtonDrag" ToolTip="Закрыть" x:Name="gridContainer">
+                <Ellipse x:Name="closeEllipse" Height="17" Width="17">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Fill" Value="Red"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=gridContainer}" Value="True">
+                                    <Setter Property="Fill" Value="LightCoral"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=gridContainer}" Value="False">
+                                    <Setter Property="Fill" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
+                <Grid Width="8" Height="8" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="45"/>
+                    </Grid.RenderTransform>
+                    <Rectangle Width="8" Height="2" Fill="White" RadiusX="1" RadiusY="1" VerticalAlignment="Center"/>
+                    <Rectangle Width="2" Height="8" Fill="White" RadiusX="1" RadiusY="1" HorizontalAlignment="Center"/>
+                </Grid>
+            </Grid>
+            <ComboBox Grid.Row="1" Margin="30,0,30,0" VerticalAlignment="Center" Text="Выберите вакансию"></ComboBox>
+            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5" Padding="3" Margin="30,0,30,0" Grid.Row="2" Height="200">
+                <xctk:DateTimePicker  Name="datePicker" Height="200"/>
+            </Border>
+            <TextBlock Grid.Row="3" Text="Продолжительность" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <xctk:MaskedTextBox Name="durationMaskedTextBox" Mask="00:00:00" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Content="OK" Background="DarkBlue" Style="{StaticResource MaterialDesignRaisedButton}"  Width="100" Height="40" materialDesign:ButtonAssist.CornerRadius="15" Grid.Row="4" Margin="10"/>
+        </Grid>
+    </Border>
+</Window>

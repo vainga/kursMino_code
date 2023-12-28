@@ -20,16 +20,13 @@ namespace KursCode.MVVM.Model.Managers
         {
             if (image != null)
             {
-                // Преобразовать BitmapImage в MemoryStream
                 MemoryStream memoryStream = new MemoryStream();
-                BitmapEncoder encoder = new PngBitmapEncoder(); // Используйте другой энкодер, если формат изображения отличается
+                BitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(image));
                 encoder.Save(memoryStream);
 
-                // Преобразовать MemoryStream в массив байт
                 byte[] imageBytes = memoryStream.ToArray();
 
-                // Преобразовать массив байт в строку Base64
                 string base64String = Convert.ToBase64String(imageBytes);
 
                 return base64String;
@@ -60,7 +57,6 @@ namespace KursCode.MVVM.Model.Managers
             }
             return null;
         }
-
 
             public Bitmap ConvertImage(string base64String)
         {

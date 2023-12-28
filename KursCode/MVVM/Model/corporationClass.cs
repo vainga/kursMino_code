@@ -116,19 +116,6 @@ namespace Clients
             return jsonStrings;
         }
 
-        //public int GetId(string corpJson,int userId)
-        //{
-        //    return dbHelper.GetNextEntityId((string jsonString) => 0, dbHelper.GetAllEntities<string>(GetCorporationDBPath(userId)));
-        //}
-
-        //public void RemoveData(int itemIdToDelete)
-        //{
-        //    using (dbHelper)
-        //    {
-        //        dbHelper.RemoveEntity((string jsonString) => GetId(jsonString) == itemIdToDelete, dbHelper.GetAllEntities<string>(GetCorporationDBPath()));
-        //    }
-        //}
-
 
     }
 }

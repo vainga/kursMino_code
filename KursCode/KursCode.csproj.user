@@ -11,6 +11,9 @@
     <Compile Update="MVVM\View\Windows\Dialog\AddWorker.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="MVVM\View\Windows\Dialog\InterviewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MVVM\View\Windows\Main\EnterWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -38,6 +41,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MVVM\View\Windows\Dialog\AddWorker.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MVVM\View\Windows\Dialog\InterviewWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MVVM\View\Windows\Main\EnterWindow.xaml">

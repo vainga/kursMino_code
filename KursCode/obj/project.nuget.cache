@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "GhYfR1Jd66KHGbC5ZU2oEKC0jx5G1vfOCfZZ7FQ3syw7pP31n2LiB8eMIgd5m3JRHpKBl0bUcoYbFfv4Z599Ng==",
+  "dgSpecHash": "Qiecd9d0g6RTMQYzmNYLiwsIeEXd3LOCwcB08FhwPiEOGLtLQHohWfWPMw3oNp6AujAPV7zt3wabR1F1S0nXuQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Vain\\Desktop\\KursCode\\KursCode\\KursCode.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Vain\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\extended.wpf.toolkit\\4.5.1\\extended.wpf.toolkit.4.5.1.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\materialdesigncolors\\2.1.4\\materialdesigncolors.2.1.4.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\microsoft.data.sqlite\\8.0.0\\microsoft.data.sqlite.8.0.0.nupkg.sha512",
