@@ -11,11 +11,11 @@ using System.Text.Json.Nodes;
 
 namespace KursCode.Data
 {
-    public class DatabaseHelper : IDisposable
+    public class DatabaseHelper : IDisposable, IDatabaseHelper
     {
         private bool disposed = false;
 
-        private string connectionString;
+        private string connectionString { get;  set; }
 
         public DatabaseHelper(string filePath)
         {
@@ -49,7 +49,6 @@ namespace KursCode.Data
                 try
                 {
                     string existingJsonData = File.ReadAllText(filePath);
-                    Console.WriteLine($"Debug: Existing JSON Data - {existingJsonData}");
                     if (!string.IsNullOrEmpty(existingJsonData))
                     {
                         existingEntities = JsonSerializer.Deserialize<List<T>>(existingJsonData);
@@ -99,21 +98,5 @@ namespace KursCode.Data
                 File.WriteAllText(connectionString, updatedJsonData);
             }
         }
-
-
-        public void SaveEntitiesToFile<T>(List<T> objectsList)
-        {
-            // Преобразуйте список в JSON
-            string json = JsonSerializer.Serialize(objectsList, new JsonSerializerOptions { WriteIndented = true });
-
-            // Откройте файл в режиме добавления (append) и добавьте новые данные в конец файла
-            using (StreamWriter sw = File.AppendText(connectionString))
-            {
-                sw.WriteLine(json);
-            }
-        }
-
-
-
     }
 }

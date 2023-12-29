@@ -33,7 +33,6 @@ namespace KursCode.MVVM.ViewModel
         public event EventHandler SuccessfulLogin;
 
         private IUser _user;
-
         public IUser Users
         {
             get { return _user; }

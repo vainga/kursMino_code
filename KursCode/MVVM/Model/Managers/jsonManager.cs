@@ -16,7 +16,7 @@ namespace KursCode.MVVM.Model.Managers
             return JsonSerializer.Serialize(obj);
         }
 
-        public corporationClass FromJson(string json)
+        public object FromJson(string json)
         {
             return JsonSerializer.Deserialize<corporationClass>(json);
         }

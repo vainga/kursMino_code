@@ -27,7 +27,7 @@ namespace KursCode.MVVM.View.Pages
         private ClientsUserControlMini currentSelectedControl;
         private ClientsUserControlMax clientsUserControlMax;
 
-        private int _UserId { get; }
+        private static int _UserId { get; set; }
         private WorkersPageViewModel _viewModel;
 
         public WorkersPage(int userId)
@@ -35,12 +35,13 @@ namespace KursCode.MVVM.View.Pages
             InitializeComponent();
             _UserId = userId;
             _viewModel = new WorkersPageViewModel();
+            DataContext = _viewModel;
             _viewModel.UserId = userId;
             _viewModel.PropertyChanged += ViewModel_PropertyChanged; // Подписка на событие изменения свойства
             LoadDataAndMiniWorkers();
             LoadMiniWorkers();
             maxWorker.Visibility = Visibility.Collapsed;
-            clientsUserControlMax = new ClientsUserControlMax();
+            clientsUserControlMax = new ClientsUserControlMax(_UserId);
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -50,8 +51,6 @@ namespace KursCode.MVVM.View.Pages
                 LoadMiniWorkers();
             }
         }
-
-
 
         private void LoadDataAndMiniWorkers()
         {

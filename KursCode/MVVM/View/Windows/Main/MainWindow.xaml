@@ -18,7 +18,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Border Background="White"  Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" CornerRadius="0,0,15,15">
@@ -97,7 +97,7 @@
             <Button Style="{StaticResource MaterialDesignFlatButton}"  materialDesign:ButtonAssist.CornerRadius="30" Background="White"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="370" Height="70" Grid.Column="2" Grid.Row="3">
                 <materialDesign:PackIcon Kind="HandshakeOutline" Width="55" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
-            <Button Style="{StaticResource MaterialDesignFlatButton}"  materialDesign:ButtonAssist.CornerRadius="30" Background="White"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="370" Height="70" Grid.Column="3" Grid.Row="3">
+            <Button Style="{StaticResource MaterialDesignFlatButton}"  materialDesign:ButtonAssist.CornerRadius="30" Background="White"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="370" Height="70" Grid.Column="3" Grid.Row="3" Click="inter_Button_Click">
                 <materialDesign:PackIcon Kind="Calendar" Width="40" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
 

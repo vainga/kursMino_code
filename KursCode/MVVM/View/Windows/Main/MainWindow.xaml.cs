@@ -123,5 +123,16 @@ namespace KursCode.MVVM.View.Windows.Main
                 corpIcon.Foreground = new SolidColorBrush(Colors.DarkBlue);
 
         }
+
+        private void inter_Button_Click(object sender, RoutedEventArgs e)
+        {
+            SetIconColor(corpIcon, Colors.DeepSkyBlue);
+            if (!(mainFrame.Content is InterviewPage))
+            {
+                currentPage = new InterviewPage(_UserId);
+                mainFrame.Navigate(currentPage);
+
+            }
+        }
     }
 }

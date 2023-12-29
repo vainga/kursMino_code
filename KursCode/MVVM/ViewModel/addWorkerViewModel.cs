@@ -52,6 +52,7 @@ namespace KursCode.MVVM.ViewModel
             { if (_userId != value) 
                 {
                     _userId = value;
+                    worker.UserId = _userId;
                 } 
             }
         }

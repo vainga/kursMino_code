@@ -32,7 +32,7 @@ namespace Clients
 
         [JsonInclude]
         [JsonPropertyName("_UserId")]
-        public static int _UserId { get; private set; }
+        private static int userid { get; set; }
 
         [JsonInclude]
         [JsonPropertyName("_PDF")]
@@ -55,18 +55,28 @@ namespace Clients
         [JsonPropertyName("Age")]
         public string _Age { get; set; }
 
-        public IUser user { get; set; }
 
-        DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath(_UserId));
+        public int UserId
+        {
+            get { return userid; }
+            set
+            {
+                if (userid != value)
+                {
+                    userid = value;
+                }
+            }
+        }
+
+        DatabaseHelper dbHelper = new DatabaseHelper(GetWorkerDBPath(userid));
 
         public workerClass() : base("", "", "", "", new ObservableCollection<string>(), new ObservableCollection<string>(), "", "","", "")
         {
-            user = new User();
             _WorkerName = "";
             _Surname = "";
             _Work_experience = "";
             _Salary_need ="";
-            _UserId = -1;
+             userid = -1;
             _PdfFile = "";
             _WorkerPhoto = "";
             _PhoneNumber = "";
@@ -82,7 +92,7 @@ namespace Clients
             _Surname = surname;
             _Work_experience = work_experience;
             _Salary_need = salary_need;
-            _UserId = userID;
+             userid = userID;
             _PdfFile = pdfFile;
             _WorkerPhoto = workerPhoto;
             _PhoneNumber = phoneNumber;

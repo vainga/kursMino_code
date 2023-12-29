@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Clients.corporationClass">
+    <Position X="12" Y="9.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAACYKAASAIAAAAQAAAAAAAIAAAAAAAAAAAAVA=</HashCode>
+      <FileName>MVVM\Model\corporationClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Clients.clientsClass">
+    <Position X="15" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAgQAAAAAAAAAAAEgACAEBAAAAAAABEA=</HashCode>
+      <FileName>MVVM\Model\clientsClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.703" />
+  </Class>
+  <Class Name="Clients.workerClass">
+    <Position X="17.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAaKABAEABAAAQAgAAAAAIAAAAAgAAIAAAAA=</HashCode>
+      <FileName>MVVM\Model\workerClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KursCode.User">
+    <Position X="8.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAACgMAEAACAAAAAAEAAAEAAAAIAAAEABEgAA=</HashCode>
+      <FileName>MVVM\Model\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KursCode.MVVM.Model.InterviewClass">
+    <Position X="20" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABAAAIACAAAACAAAAAAAAAAAAAABAABAAAAAAQA=</HashCode>
+      <FileName>MVVM\Model\InterviewClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KursCode.Data.DatabaseHelper">
+    <Position X="22.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAgAACAAAAgAAAABAAAAAAAAAAAAAAAgAEAAAAA=</HashCode>
+      <FileName>Data\DatabaseHelper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="KursCode.Interfaces.IClients" Collapsed="true">
+    <Position X="15" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IClients.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KursCode.Interfaces.IClientStatusInfo">
+    <Position X="12.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAQAAAAAAAAAAAAgACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IClientStatusInfo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KursCode.Interfaces.IClientDetails">
+    <Position X="15" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAEA=</HashCode>
+      <FileName>Interfaces\IClientDetails.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KursCode.Interfaces.IClientContactInfo" Collapsed="true">
+    <Position X="17.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Interfaces\IClientContactInfo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KursCode.IUser">
+    <Position X="8.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAEAACAAAAAAAAAAEAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interfaces\IUser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KursCode.Interfaces.Iinterview" Collapsed="true">
+    <Position X="20" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABAAAIACAAAACAAAAAAAAAAAAAABAABAAAAAAQA=</HashCode>
+      <FileName>Interfaces\Iinterview.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KursCode.Data.IDatabaseHelper" Collapsed="true">
+    <Position X="22.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAgAAAAAAAAAAAABAAAAAAAAAAAAAAAgAEAAAAA=</HashCode>
+      <FileName>Data\IDatabaseHelper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

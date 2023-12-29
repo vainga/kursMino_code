@@ -24,7 +24,7 @@ namespace KursCode.MVVM.ViewModel
         public VacansyPageViewModel()
         {
             _dbHelper = new DatabaseHelper(GetCorporationDBPath(_userId));
-            _clientsUserControlMax = new ClientsUserControlMax();
+            _clientsUserControlMax = new ClientsUserControlMax(_userId);
             LoadDataFromJson();
         }
 

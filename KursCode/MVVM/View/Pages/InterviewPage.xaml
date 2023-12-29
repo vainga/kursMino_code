@@ -1,0 +1,33 @@
+﻿<Page x:Class="KursCode.MVVM.View.Pages.InterviewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KursCode.MVVM.View.Pages"
+      xmlns:vm="clr-namespace:KursCode.MVVM.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1500"
+      Title="InterviewPage">
+    <Page.DataContext>
+        <vm:interviewPageViewModel/>
+    </Page.DataContext>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Собеседования" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,10"/>
+
+        <DataGrid x:Name="interviewDataGrid" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding InterviewList}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Соискатель" Binding="{Binding Worker._WorkerName}" />
+                <DataGridTextColumn Header="Вакансия" Binding="{Binding Vacancy._Post}" />
+                <DataGridTextColumn Header="Компания" Binding="{Binding Vacancy._CorporationName}" />
+                <DataGridTextColumn Header="Дата" Binding="{Binding Date}" />
+                <DataGridTextColumn Header="Время" Binding="{Binding Time}" />
+                <DataGridTextColumn Header="Продолжительность" Binding="{Binding Duration}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

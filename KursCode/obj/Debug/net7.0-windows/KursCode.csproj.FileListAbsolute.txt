@@ -88,3 +88,5 @@ C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0-windows\ru\Xceed.Wpf.Av
 C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0-windows\sv\Xceed.Wpf.AvalonDock.NET5.resources.dll
 C:\Users\Vain\Desktop\KursCode\KursCode\bin\Debug\net7.0-windows\zh-Hans\Xceed.Wpf.AvalonDock.NET5.resources.dll
 C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\Windows\Dialog\InterviewWindow.baml
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\Pages\InterviewPage.g.cs
+C:\Users\Vain\Desktop\KursCode\KursCode\obj\Debug\net7.0-windows\MVVM\View\Pages\InterviewPage.baml

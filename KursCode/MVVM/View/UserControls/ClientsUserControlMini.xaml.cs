@@ -21,9 +21,6 @@ using System.Drawing;
 
 namespace KursCode.MVVM.View.UserControls
 {
-    /// <summary>
-    /// Логика взаимодействия для ClientsUserControlMini.xaml
-    /// </summary>
     public partial class ClientsUserControlMini : UserControl
     {
 
@@ -138,6 +135,12 @@ namespace KursCode.MVVM.View.UserControls
         public workerClass GetData()
         {
             return _workerData;
+        }
+
+        public event EventHandler<EventArgs> MiniControlClicked;
+        public void OnMiniControlClicked()
+        {
+            MiniControlClicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

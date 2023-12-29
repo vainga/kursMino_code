@@ -2,6 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="MVVM\View\Pages\InterviewPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MVVM\View\UserControls\ClientSkiil.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +37,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="MVVM\View\Pages\InterviewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MVVM\View\UserControls\ClientSkiil.xaml">
       <SubType>Designer</SubType>
     </Page>

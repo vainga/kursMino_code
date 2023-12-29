@@ -10,6 +10,6 @@ namespace KursCode.Interfaces
     public interface IjsonManager
     {
         string ToJson(object obj);
-        corporationClass FromJson(string json);
+        object FromJson(string json);
     }
 }

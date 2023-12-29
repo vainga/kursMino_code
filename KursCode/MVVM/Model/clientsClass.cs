@@ -62,7 +62,7 @@ namespace Clients
 
         }
 
-        public clientsClass(string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills,string citizenship, string employment, string shedule, string status)
+        public clientsClass(string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status)
         {
             _Post = post;
             _Email = email;
@@ -72,9 +72,9 @@ namespace Clients
             _Skills = skills;
             _Status = status;
             _Citizenship = citizenship;
-            _Shedule= shedule;
-            _Empoyment= employment;
+            _Shedule = shedule;
+            _Empoyment = employment;
         }
-       
+
     }
 }

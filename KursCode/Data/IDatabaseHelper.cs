@@ -8,11 +8,10 @@ namespace KursCode.Data
 {
     interface IDatabaseHelper : IDisposable
     {
-        void CreateDatabase(string dbPath, string tableName, string columns);
-        bool IsValueUnique(string tableName, string columnName, string value);
-        int InsertData(string tableName, string[] columns, object[] values);
-        List<Dictionary<string, object>> SearchData(string tableName, string[] columns, string condition);
-        void RemoveData(int itemIdToDelete);
-        void Dispose();
+        public List<T> GetAllEntities<T>(string filePath);
+        public bool IsValueUnique<T>(Func<T, bool> predicate, List<T> existingEntities);
+        public int GetNextEntityId<T>(Func<T, int> idSelector, List<T> existingEntities);
+        public void SaveEntityToFile<T>(T entity, List<T> existingEntities);
+        public void RemoveEntity<T>(Func<T, bool> predicate, List<T> existingEntities);
     }
 }

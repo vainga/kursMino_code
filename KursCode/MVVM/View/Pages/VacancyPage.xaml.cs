@@ -36,7 +36,7 @@ namespace KursCode.MVVM.View.Pages
             LoadDataAndMiniWorkers();
             LoadMiniWorkers();
             maxWorker.Visibility = Visibility.Collapsed;
-            clientsUserControlMax = new ClientsUserControlMax();
+            clientsUserControlMax = new ClientsUserControlMax(userId);
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

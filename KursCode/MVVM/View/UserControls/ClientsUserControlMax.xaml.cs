@@ -28,13 +28,25 @@ namespace KursCode.MVVM.View.UserControls
     /// </summary>
     public partial class ClientsUserControlMax : UserControl
     {
+        private static int _userId;
+        public int UserId
+        {
+            get { return _userId; }
+            set
+            {
+                if (_userId != value)
+                {
+                    _userId = value;
+                }
+            }
+        }
 
-
-        public ClientsUserControlMax()
+        public ClientsUserControlMax(int userId)
         {
             InitializeComponent();
         }
 
+        workerClass worker = new workerClass();
         IimageManager imageManager = new imageManager();
         IpdfManager pdfManager = new pdfManager();
         private byte[] pdfData {get; set; }
@@ -130,7 +142,8 @@ namespace KursCode.MVVM.View.UserControls
             }
             if(workerData._PdfFile != "")
                 pdfData = pdfManager.fromBase64toPdf(workerData._PdfFile);
-
+            _userId = workerData.UserId;
+            worker = workerData;
         }
 
 
@@ -184,7 +197,7 @@ namespace KursCode.MVVM.View.UserControls
 
         private void interview_Button_Click(object sender, RoutedEventArgs e)
         {
-            InterviewWindow interviewWindow = new InterviewWindow();
+            InterviewWindow interviewWindow = new InterviewWindow(_userId,worker);
             interviewWindow.ShowDialog();
         }
     }

@@ -27,21 +27,22 @@ namespace KursCode.MVVM.ViewModel
         public WorkersPageViewModel()
         {
             _dbHelper = new DatabaseHelper(GetWorkerDBPath(_userId));
-            _clientsUserControlMax = new ClientsUserControlMax();
+            _clientsUserControlMax = new ClientsUserControlMax(_userId);
             LoadDataFromJson();
         }
 
-        private static int _userId;
+        private int _userId;
         public int UserId
         {
             get { return _userId; }
-            set { if (_userId != value)
+            set
+            {
+                if (_userId != value)
                 {
                     _userId = value;
                     OnPropertyChanged(nameof(UserId));
                 }
             }
-
         }
 
         private Visibility _borderVisibility;
@@ -86,6 +87,7 @@ namespace KursCode.MVVM.ViewModel
             var dataList = _dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
 
             MiniWorkers = new ObservableCollection<ClientsUserControlMini>();
+            var userControlMax = new ClientsUserControlMax(_userId);
 
             foreach (var data in dataList)
             {
@@ -96,6 +98,11 @@ namespace KursCode.MVVM.ViewModel
                 Thickness margin = new Thickness(10, 0, 10, 15);
                 userControlMini.Margin = margin;
 
+                userControlMini.MiniControlClicked += (sender, e) =>
+                {
+                    userControlMax.UserId = _userId;
+
+                };
                 userControlMini.MouseEnter += DynamicUserControl_MouseEnter;
                 userControlMini.MouseLeave += DynamicUserControl_MouseLeave;
                 userControlMini.MouseDown += DynamicUserControl_MouseDown;
@@ -112,12 +119,12 @@ namespace KursCode.MVVM.ViewModel
             set
             {
                 _selectedMiniWorker = value;
+                _clientsUserControlMax.UserId = UserId;
                 OnPropertyChanged(nameof(SelectedMiniWorker));
             }
         }
 
-        private ClientsUserControlMax _clientsUserControlMax; // Direct reference to ClientsUserControlMax
-
+        private ClientsUserControlMax _clientsUserControlMax;
         public ClientsUserControlMax _ClientsUserControlMax
         {
             get { return _clientsUserControlMax; }
@@ -126,6 +133,7 @@ namespace KursCode.MVVM.ViewModel
                 if (_clientsUserControlMax != value)
                 {
                     _clientsUserControlMax = value;
+                    _clientsUserControlMax.UserId = UserId;
                     OnPropertyChanged(nameof(ClientsUserControlMax));
                 }
             }
@@ -152,6 +160,8 @@ namespace KursCode.MVVM.ViewModel
             data._Post == _selectedMiniWorker.Post.Text);
 
             _clientsUserControlMax.SetData(matchingWorkerData);
+
+            _selectedMiniWorker.OnMiniControlClicked();
         }
 
         private void DynamicUserControl_MouseEnter(object sender, MouseEventArgs e)
