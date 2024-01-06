@@ -98,7 +98,7 @@
                 <materialDesign:PackIcon Kind="HandshakeOutline" Width="55" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
             <Button Style="{StaticResource MaterialDesignFlatButton}"  materialDesign:ButtonAssist.CornerRadius="30" Background="White"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="370" Height="70" Grid.Column="3" Grid.Row="3" Click="inter_Button_Click">
-                <materialDesign:PackIcon Kind="Calendar" Width="40" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <materialDesign:PackIcon Kind="Calendar" x:Name="calendarIcon" Width="40" Height="40" Foreground="DarkBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Button>
 
             <Frame x:Name="mainFrame" Grid.Row="1" Grid.ColumnSpan="4"  NavigationUIVisibility="Hidden">

@@ -106,7 +106,7 @@ namespace KursCode.MVVM.View.Windows.Dialog {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/KursCode;component/mvvm/view/windows/dialog/interviewwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/KursCode;V1.0.0.0;component/mvvm/view/windows/dialog/interviewwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\MVVM\View\Windows\Dialog\InterviewWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -8,94 +8,78 @@ using System.IO;
 using System.Xml;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Relational;
+using System.Data;
 
 namespace KursCode.Data
 {
-    public class DatabaseHelper : IDisposable, IDatabaseHelper
+    public class DatabaseHelper : IDatabaseHelper
     {
-        private bool disposed = false;
-
-        private string connectionString { get;  set; }
-
-        public DatabaseHelper(string filePath)
+        private string dbName;
+        public string DBName
         {
-            connectionString = filePath;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
+            get
             {
-                if (disposing)
-                {
-                }
-
-                disposed = true;
+                return dbName;
+            }
+            set
+            {
+                dbName = value;
             }
         }
 
-        public List<T> GetAllEntities<T>(string filePath)
+        private string connectionString;
+        private readonly MySqlConnection _dbConnection;
+        public DatabaseHelper(string connectionString)
         {
-            List<T> existingEntities = new List<T>();
+            _dbConnection = new MySqlConnection(connectionString);
+        }
 
-            if (File.Exists(filePath))
-            {
-                try
+        public void OpenConnection()
+        {
+            _dbConnection.Open();
+        }
+
+        public void CloseConnection()
+        {
+            _dbConnection.Close();
+        }
+
+        public IDbCommand CreateCommand()
+        {
+            return _dbConnection.CreateCommand();
+        }
+
+        public void createDataBase()
+        {
+           using (MySqlConnection conn = new MySqlConnection(connectionString)) 
+            { 
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand())
                 {
-                    string existingJsonData = File.ReadAllText(filePath);
-                    if (!string.IsNullOrEmpty(existingJsonData))
-                    {
-                        existingEntities = JsonSerializer.Deserialize<List<T>>(existingJsonData);
-                    }
+                    cmd.Connection = conn;
+                    cmd.CommandText = $"CREATE DATABASE IF NOT EXISTS {DBName};";
+                    cmd.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                conn.Close();
+            }
+        }
+
+        public void createTable(string tableName, string[] columns)
+        {
+            createDataBase();
+            connectionString += $"Database={DBName};";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand())
                 {
+                    cmd.Connection = conn;
+                    cmd.CommandText = $"CREATE TABLE IF NOT EXISTS {tableName} ({string.Join(", ", columns)});";
+                    cmd.ExecuteNonQuery();
                 }
-            }
-
-            return existingEntities;
-        }
-
-        public bool IsValueUnique<T>(Func<T, bool> predicate, List<T> existingEntities)
-        {
-            return !existingEntities.Any(predicate);
-        }
-
-        public int GetNextEntityId<T>(Func<T, int> idSelector, List<T> existingEntities)
-        {
-            return existingEntities.Count > 0 ? existingEntities.Max(idSelector) + 1 : 1;
-        }
-
-        public void SaveEntityToFile<T>(T entity, List<T> existingEntities)
-        {
-
-            existingEntities.Add(entity);
-            string directoryPath = Path.GetDirectoryName(connectionString);
-
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            string updatedJsonData = JsonSerializer.Serialize(existingEntities);
-            File.WriteAllText(connectionString, updatedJsonData);
-        }
-
-        public void RemoveEntity<T>(Func<T, bool> predicate, List<T> existingEntities)
-        {
-            T entityToRemove = existingEntities.FirstOrDefault(predicate);
-
-            if (entityToRemove != null)
-            {
-                existingEntities.Remove(entityToRemove);
-                string updatedJsonData = JsonSerializer.Serialize(existingEntities);
-                File.WriteAllText(connectionString, updatedJsonData);
+                conn.Close();
             }
         }
     }

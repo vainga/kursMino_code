@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KursCode.MVVM.Model.Managers
+namespace KursCode.Data
 {
-    internal class converter
+    public interface IFileManager
     {
+        string GetLocalPath(string nameFile);
     }
 }

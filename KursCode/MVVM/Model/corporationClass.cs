@@ -12,27 +12,76 @@ using System.Collections.ObjectModel;
 namespace Clients
 {
     [Serializable]
-    public class corporationClass : clientsClass
+    public class corporationClass
     {
+        private int _workerId;
+        public int WorkerId
+        {
+            get { return _workerId; }
+            set { _workerId = value; }
+        }
+
+        private int _userId;
+        public int UserId
+        {
+            get { return _userId; }
+            set { _userId = value; }
+        }
+
+        [JsonInclude]
+        [JsonPropertyName("Post")]
+        public string _Post { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Email")]
+        public string _Email { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("City")]
+        public string _City { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Description")]
+        public string _Description { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Personal_qualities")]
+        public ObservableCollection<string> _Personal_qualities { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Skills")]
+        public ObservableCollection<string> _Skills { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Status")]
+        public string _Status { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Sitizenship")]
+        public string _Citizenship { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Shedule")]
+        public string _Shedule { get; private set; }
+
+        [JsonInclude]
+        [JsonPropertyName("Empoyment")]
+        public string _Empoyment { get; private set; }
+
         [JsonInclude]
         [JsonPropertyName("_CorporationName")]
         public string _CorporationName { get; private set; }
         [JsonInclude]
         [JsonPropertyName("_Work_experience_min")]
         public string _Work_experience { get; private set; }
-
         
         [JsonInclude]
         [JsonPropertyName("_Salary_min")]
         public string _Salary_min { get; private set; }
+
         [JsonInclude]
         [JsonPropertyName("_Salary_max")]
         public string _Salary_max { get; private set; }
-
-
-        [JsonInclude]
-        [JsonPropertyName("_UserId")]
-        public static int _UserId { get; private set; }
 
         [JsonInclude]
         [JsonPropertyName("_Phone_number")]
@@ -50,71 +99,10 @@ namespace Clients
         [JsonPropertyName("_PDF")]
         public string _PDF { get; private set; }
 
-        public IUser user { get; set; }
+        [JsonInclude]
+        [JsonPropertyName("_Sex")]
+        public string _sex { get; private set;}
 
-        DatabaseHelper dbHelper = new DatabaseHelper(GetCorporationDBPath(_UserId));
-
-
-        public corporationClass() : base("", "", "", "", new ObservableCollection<string>(), new ObservableCollection<string>(), "", "", "", "")
-        {
-            _CorporationName = "";
-            _Work_experience = "";
-            _Salary_min = "";
-            _Salary_max = "";
-            _Phone_number = "";
-            _Education = "";
-            _Age = "";
-            _PDF="";
-        }
-
-        public corporationClass(string corporationName, string post, string email, string city, string description, ObservableCollection<string> personal_qualities, ObservableCollection<string> skills, string citizenship, string employment, string shedule, string status, string work_experience_max
-            , string salary_min, string salary_max, string phone_number, string education, string age, string pdf)
-            : base(post, email, city, description, personal_qualities, skills, citizenship, employment, shedule, status)
-        {
-            _CorporationName = corporationName;
-            _Work_experience = work_experience_max;
-            _Salary_min = salary_min;
-            _Salary_max = salary_max;
-            _Phone_number = phone_number;
-            _Education = education;
-            _Age = age;
-            _PDF = pdf;
-        }
-
-        private static string GetCorporationDBPath(int userid)
-        {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string userSpecificFolderPath = Path.Combine(userFolderPath, $"{userid}_ID_User");
-            Directory.CreateDirectory(userSpecificFolderPath);
-            return userSpecificFolderPath;
-        }
-
-        public void AddData(int userid)
-        {
-            string corporationFolderPath = GetCorporationDBPath(userid);
-            string corporationDataFilePath = Path.Combine(corporationFolderPath, "corporation.json");
-            DatabaseHelper dbHelper = new DatabaseHelper(corporationDataFilePath);
-
-            if (!File.Exists(corporationDataFilePath))
-            {
-                File.WriteAllText(corporationDataFilePath, "[]");
-            }
-
-            List<corporationClass> jsonObjects = dbHelper.GetAllEntities<corporationClass>(corporationDataFilePath);
-
-
-            dbHelper.SaveEntityToFile<corporationClass>(this, jsonObjects);
-        }
-
-        public List<string> ReadAllJsonFromDatabase(int userId)
-        {
-            List<string> jsonStrings = dbHelper.GetAllEntities<string>(GetCorporationDBPath(userId));
-
-            return jsonStrings;
-        }
 
 
     }

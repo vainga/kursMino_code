@@ -81,7 +81,7 @@ namespace KursCode.MVVM.View.Pages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/KursCode;component/mvvm/view/pages/workersspage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/KursCode;V1.0.0.0;component/mvvm/view/pages/workersspage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\MVVM\View\Pages\WorkerssPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

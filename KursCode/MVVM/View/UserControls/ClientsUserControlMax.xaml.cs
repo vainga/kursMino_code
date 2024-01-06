@@ -92,8 +92,8 @@ namespace KursCode.MVVM.View.UserControls
             Salary.Text = "от: " + corpData._Salary_min + " до: " + corpData._Salary_max;
             Phone_number.Text = corpData._Phone_number;
             Email.Text = corpData._Email;
-            
-            if(corpData._PDF != "")
+            interViewButton.Visibility = Visibility.Collapsed;
+            if (corpData._PDF != "")
                 pdfData = pdfManager.fromBase64toPdf(corpData._PDF);
         }
 
