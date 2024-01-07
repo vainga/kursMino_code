@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 namespace Clients
 {
     [Serializable]
-    public class workerClass
+    public class workerClass : IWorker
     {
         private int _workerId;
         public int WorkerId
@@ -28,85 +28,183 @@ namespace Clients
             set { _userId = value; }
         }
 
+        private string status;
+        public string _Status
+        {
+            get { return status; }
+            set { status = value; }
+        }
+
         [JsonInclude]
         [JsonPropertyName("Post")]
-        public string _Post { get; private set; }
+        private string post;
+        public string _Post
+        {
+            get { return post; }
+            set {  post = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Email")]
-        public string _Email { get; private set; }
+        private string email;
+        public string _Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("City")]
-        public string _City { get; private set; }
+        private string city;
+        public string _City
+        {
+            get { return city; }
+            set { city = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Description")]
-        public string _Description { get; private set; }
+        private string description;
+        public string _Description
+        {
+            get { return description;}
+            set { description = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Personal_qualities")]
-        public ObservableCollection<string> _Personal_qualities { get; private set; }
+        private ObservableCollection<string> personal_qualities;
+        public ObservableCollection<string> _Personal_qualities
+        {
+            get { return personal_qualities; }
+            set {  personal_qualities = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Skills")]
-        public ObservableCollection<string> _Skills { get; private set; }
+        private ObservableCollection<string> skills;
+        public ObservableCollection<string> _Skills
+        {
+            get { return skills; }
+            set { skills = value; }
+        }
 
         [JsonInclude]
-        [JsonPropertyName("Status")]
-        public string _Status { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Sitizenship")]
-        public string _Citizenship { get; private set; }
+        [JsonPropertyName("Citizenship")]
+        private string citizenship;
+        public string _Citizenship
+        {
+            get { return  citizenship; }
+            set { citizenship = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Shedule")]
-        public string _Shedule { get; private set; }
+        private string shedule;
+        public string _Shedule
+        {
+            get { return shedule; }
+            set { shedule = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Empoyment")]
-        public string _Empoyment { get; private set; }
+        private string employment;
+        public string _Empoyment
+        {
+            get { return employment; }
+            set { employment = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("_WorkerName")]
-        public string _WorkerName { get; private set; }
-        
+        private string workerName;
+        public string _WorkerName
+        {
+            get { return workerName; }
+            set { workerName = value; }
+        }
+
         [JsonInclude]
         [JsonPropertyName("_Surname")]
-        public string _Surname { get; private set; }
+        private string surname;
+        public string _Surname
+        {
+            get { return surname; }
+            set { surname = value; }
+        }
         
         [JsonInclude]
         [JsonPropertyName("_Work_experience")]
-        public string _Work_experience { get;  private set; }
-        
+        private string work_experience;
+        public string _Work_experience
+        {
+            get { return work_experience; }
+            set { work_experience = value; }
+        }
+
         [JsonInclude]
         [JsonPropertyName("_Salary_need")]
-        public string _Salary_need { get;  private set; }
+        private string salary_need;
+        public string _Salary_need
+        {
+            get { return salary_need; }
+            set { salary_need = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("_PDF")]
-        public string _PdfFile { get; set; }
-        
+        private string[] pdf;
+        public string[] _PdfFiles
+        {
+            get { return pdf; }
+            set { pdf = value; }
+        }
+
         [JsonInclude]
         [JsonPropertyName("_Photo")]
-        public string _WorkerPhoto { get; set; }
+        private string workerPhoto;
+        public string _WorkerPhoto
+        {
+            get { return workerPhoto; }
+            set { workerPhoto = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("PhoneNumber")]
-        public string _PhoneNumber { get; set; }
+        private string phoneNumber;
+        public string _PhoneNumber
+        {
+            get { return phoneNumber; }
+            set { phoneNumber = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Education")]
-        public string _Education { get; set; }
+        private string education;
+        public string _Education
+        {
+            get { return education; }
+            set { education = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("Age")]
-        public string _Age { get; set; }
+        private string age;
+        public string _Age
+        {
+            get { return age; }
+            set { age = value; }
+        }
 
         [JsonInclude]
         [JsonPropertyName("_Sex")]
-        public string _sex { get; private set; }
+        private string sex;
+        public string _sex
+        {
+            get { return sex; }
+            set { sex = value; }
+        }
 
 
 
