@@ -39,9 +39,10 @@ namespace KursCode.Data
             _Repository.Delete<string>("Users", user.userId);
         }
 
-        public void Update(IUser user, string newValue)
+        public void Update(IUser user, IUser newValue)
         {
-            _Repository.Change<string>("Users", user.userId, "user", newValue);
+            string newStringUser = _JsonManager.ToJson(newValue);
+            _Repository.Change<string>("Users", user.userId, "user", newStringUser);
         }
 
         public void Search(IUser user)

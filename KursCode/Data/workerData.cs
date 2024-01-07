@@ -10,7 +10,7 @@ namespace KursCode.Data
 {
     public class workerData
     {
-        string userString;
+        string workerString;
 
         IFileManager _FileManager;
         IRepository _Repository;
@@ -27,26 +27,27 @@ namespace KursCode.Data
             _Repository = new Repository(_DBHelper);
         }
 
-        public void Add()
+        public void Add(IWorker worker)
         {
-            userString = _JsonManager.ToJson(user);
-            _DBHelper.createTable("Workers", new[] { "id INT AUTO_INCREMENT PRIMARY KEY", "worker TEXT", "userId INT" });
-            _Repository.Add<string>("Workers", userString);
+            workerString = _JsonManager.ToJson(worker);
+            _DBHelper.createTable("Workers", new[] { "id INT AUTO_INCREMENT PRIMARY KEY", "worker TEXT","status TEXT","userId INT"});
+            _Repository.Add<string>("Workers", workerString,worker._Status,worker.UserId);
         }
 
-        public void Delete()
+        public void Delete(IWorker worker)
         {
-            _Repository.Delete<string>("Workers",);
+            _Repository.Delete<string>("Workers",worker.WorkerId);
         }
 
-        public void Update(, string newValue)
+        public void Update(IWorker worker, IWorker newValue)
         {
-            _Repository.Change<string>("Workers", user.userId, "worker", newValue);
+            string newStringWorker = _JsonManager.ToJson(newValue);
+            _Repository.Change<string>("Workers", worker.WorkerId, "worker", newStringWorker);
         }
 
-        public void Search()
+        public void Search(IWorker worker)
         {
-            _Repository.Search<string>("worker", user.userId);
+            _Repository.Search<string>("worker", worker.WorkerId);
         }
     }
 }

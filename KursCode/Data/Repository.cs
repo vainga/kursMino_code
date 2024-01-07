@@ -16,8 +16,13 @@ namespace KursCode.Data
             _databaseHelper = databaseHelper;
         }
 
-        public void Add<T>(string tableName, T entity)
+        public void Add<T>(string tableName, params object[] values)
         {
+            if (values.Length == 0 || values.Length % 2 != 0)
+            {
+                throw new ArgumentException("Invalid number of parameters.");
+            }
+
             var properties = typeof(T).GetProperties();
 
             using (var command = _databaseHelper.CreateCommand())
@@ -27,9 +32,9 @@ namespace KursCode.Data
 
                 command.CommandText = $"INSERT INTO {tableName} ({columns}) VALUES ({parameters})";
 
-                foreach (var property in properties)
+                for (int i = 0; i < properties.Length; i++)
                 {
-                    command.Parameters.AddWithValue("@" + property.Name, property.GetValue(entity));
+                    command.Parameters.AddWithValue("@" + properties[i].Name, values[i]);
                 }
 
                 try
