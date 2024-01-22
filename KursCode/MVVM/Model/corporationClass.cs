@@ -14,95 +14,51 @@ namespace Clients
     [Serializable]
     public class corporationClass
     {
-        private int _workerId;
-        public int WorkerId
+        [JsonInclude]
+        [JsonPropertyName("CorporationID")]
+        private int _corporationId;
+        public int CorporationId
         {
-            get { return _workerId; }
-            set { _workerId = value; }
+            get { return _corporationId; }
         }
 
+        [JsonInclude]
+        [JsonPropertyName("UserId")]
         private int _userId;
         public int UserId
         {
             get { return _userId; }
-            set { _userId = value; }
         }
 
         [JsonInclude]
-        [JsonPropertyName("Post")]
-        public string _Post { get; private set; }
+        [JsonPropertyName("CorporationName")]
+        private string _corporationName;
+        public string _CorporationName
+        {
+            get 
+            {
+                return _corporationName;
+            }
+        }
 
         [JsonInclude]
-        [JsonPropertyName("Email")]
-        public string _Email { get; private set; }
+        [JsonPropertyName("Vacancies")]
+        private List<vacancyClass> _vacancies;
+        public List<vacancyClass> Vacancies
+        {
+            get
+            {
+                return _vacancies;
+            }
+        }
 
-        [JsonInclude]
-        [JsonPropertyName("City")]
-        public string _City { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Description")]
-        public string _Description { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Personal_qualities")]
-        public ObservableCollection<string> _Personal_qualities { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Skills")]
-        public ObservableCollection<string> _Skills { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Status")]
-        public string _Status { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Sitizenship")]
-        public string _Citizenship { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Shedule")]
-        public string _Shedule { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("Empoyment")]
-        public string _Empoyment { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("_CorporationName")]
-        public string _CorporationName { get; private set; }
-        [JsonInclude]
-        [JsonPropertyName("_Work_experience_min")]
-        public string _Work_experience { get; private set; }
-        
-        [JsonInclude]
-        [JsonPropertyName("_Salary_min")]
-        public string _Salary_min { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("_Salary_max")]
-        public string _Salary_max { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("_Phone_number")]
-        public string _Phone_number { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("_Education")]
-        public string _Education { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("_Age")]
-        public string _Age { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("_PDF")]
-        public string _PDF { get; private set; }
-
-        [JsonInclude]
-        [JsonPropertyName("_Sex")]
-        public string _sex { get; private set;}
-
+        public corporationClass(int corporationId, int userId, string corporationName, List<vacancyClass> vacancies)
+        {
+            _corporationId = corporationId;
+            _userId = userId;
+            _corporationName = corporationName;
+            _vacancies = vacancies;
+        }
 
 
     }

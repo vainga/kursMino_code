@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace KursCode.Interfaces
 {
-    internal class ICorporation
+    public interface ICorporation
     {
+
     }
 }

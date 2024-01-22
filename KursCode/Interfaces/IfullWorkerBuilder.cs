@@ -11,7 +11,7 @@ namespace KursCode.Interfaces
 {
     public interface IfullWorkerBuilder
     {
-        workerBuilder set_Work_experience(string _Work_experience);
+        workerBuilder set_Work_experience(int _Work_experience);
         workerBuilder set_workerId(int workerId);
         workerBuilder set_userId(int userId);
         workerBuilder set_status(string status);
@@ -26,13 +26,12 @@ namespace KursCode.Interfaces
         workerBuilder set_employment(string employment);
         workerBuilder set_workerName(string workerName);
         workerBuilder set_surname(string surname);
-        workerBuilder set_work_experience(string work_experience);
-        workerBuilder set_salary_need(string salary_need);
+        workerBuilder set_salary_need(int salary_need);
         workerBuilder set_pdf(string[] pdf);
         workerBuilder set_workerPhoto(string workerPhoto);
         workerBuilder set_phoneNumber(string phoneNumber);
         workerBuilder set_education(string education);
-        workerBuilder set_age(string age);
+        workerBuilder set_age(int age);
         workerBuilder set_sex(string sex);
         workerClass fullWorker();
     }

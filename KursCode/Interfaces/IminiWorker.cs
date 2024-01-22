@@ -9,6 +9,6 @@ namespace KursCode.Interfaces
 {
     public interface IminiWorker : InanoWorker
     {
-        ObservableCollection<string> _Skills { get; }
+        ObservableCollection<string> Skills { get; }
     }
 }

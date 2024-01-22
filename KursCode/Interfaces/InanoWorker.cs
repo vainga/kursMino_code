@@ -10,9 +10,9 @@ namespace KursCode.Interfaces
     {
         int WorkerId { get; set; }
         int UserId { get; set; }
-        string _WorkerName { get; }
-        string _Surname { get; }
-        string _Post { get; }
-        string _WorkerPhoto { get; }
+        string WorkerName { get; }
+        string Surname { get; }
+        string Post { get; }
+        string WorkerPhoto { get; }
     }
 }

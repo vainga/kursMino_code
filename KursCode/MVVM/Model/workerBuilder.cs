@@ -6,154 +6,155 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace KursCode.MVVM.Model
 {
     public class workerBuilder : IfullWorkerBuilder
     {
-        private workerClass worker = new workerClass();
+        private workerClass _worker = new workerClass();
         
-        public workerBuilder set_Work_experience(string _Work_experience)
+        public workerBuilder set_Work_experience(int _Work_experience)
         {
-            worker._Work_experience = _Work_experience;
+            _worker.Work_experience = _Work_experience;
             return this;
         }
 
         public workerBuilder set_workerId(int workerId)
         {
-            worker.WorkerId = workerId;
+            _worker.WorkerId = workerId;
             return this;
         }
 
         public workerBuilder set_userId(int userId)
         {
-            worker.UserId = userId;
+            _worker.UserId = userId;
             return this;
         }
 
         public workerBuilder set_status(string status)
         {
-            worker._Status = status;
+            _worker.Status = status;
             return this;
         }
 
         public workerBuilder set_post(string post)
         {
-            worker._Post = post;
+            _worker.Post = post;
             return this;
         }
 
         public workerBuilder set_email(string email)
         {
-            worker._Email = email;
+            _worker.Email = email;
             return this;
         }
 
         public workerBuilder set_city(string city) 
         {
-            worker._City = city;
+            _worker.City = city;
             return this;
         }
 
         public workerBuilder set_description(string description)
         {
-            worker._Description = description;
+            _worker.Description = description;
             return this;
         }
 
         public workerBuilder set_personal_qualities(ObservableCollection<string> personal_qualities)
         {
-            worker._Personal_qualities = personal_qualities;
+            _worker.Personal_qualities = personal_qualities;
             return this;
         }
 
         public workerBuilder set_skills(ObservableCollection<string> skills)
         {
-            worker._Skills = skills;
+            _worker.Skills = skills;
             return this;
         }
 
         public workerBuilder set_citizenship(string citizenship)
         {
-            worker._Citizenship = citizenship;
+            _worker.Citizenship = citizenship;
             return this;
         }
 
         public workerBuilder set_shedule(string shedule)
         {
-            worker._Shedule = shedule;
+            _worker.Shedule = shedule;
             return this;
         }
 
         public workerBuilder set_employment(string employment)
         {
-            worker._Empoyment = employment;
+            _worker.Empoyment = employment;
             return this;
         }
 
         public workerBuilder set_workerName(string workerName)
         {
-            worker._WorkerName = workerName;
+            _worker.WorkerName = workerName;
             return this;
         }
 
         public workerBuilder set_surname(string  surname)
         {
-            worker._Surname = surname;
+            _worker.Surname = surname;
             return this;
         }
         
-        public workerBuilder set_work_experience(string work_experience)
+        public workerBuilder set_work_experience(int work_experience)
         {
-            worker._Work_experience = work_experience;
+            _worker.Work_experience = work_experience;
             return this;
         }
 
-        public workerBuilder set_salary_need(string salary_need) 
+        public workerBuilder set_salary_need(int salary_need) 
         {
-            worker._Salary_need = salary_need;
+            _worker.Salary_need = salary_need;
             return this;
         }
 
         public workerBuilder set_pdf(string[] pdf)
         {
-            worker._PdfFiles = pdf;
+            _worker.PdfFiles = pdf;
             return this;
         }
 
         public workerBuilder set_workerPhoto(string workerPhoto)
-        { 
-            worker._WorkerPhoto = workerPhoto;
+        {
+            _worker.WorkerPhoto = workerPhoto;
             return this;
         }
 
         public workerBuilder set_phoneNumber(string phoneNumber)
-        { 
-            worker._PhoneNumber = phoneNumber;
+        {
+            _worker.PhoneNumber = phoneNumber;
             return this;
         }
 
         public workerBuilder set_education(string education)
         {
-            worker._Education = education;
+            _worker.Education = education;
             return this;
         }
 
-        public workerBuilder set_age(string age)
+        public workerBuilder set_age(int age)
         {
-            worker._Age = age;
+            _worker.Age = age;
             return this;
         }
 
         public workerBuilder set_sex(string sex)
         {
-            worker._sex = sex;
+            _worker.Sex = sex;
             return this;
         }
 
         public workerClass fullWorker()
         {
-            return worker;
+            return _worker;
         }
     }
 }

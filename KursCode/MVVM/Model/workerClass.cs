@@ -14,6 +14,8 @@ namespace Clients
     [Serializable]
     public class workerClass : IWorker
     {
+        [JsonInclude]
+        [JsonPropertyName("WorkerId")]
         private int _workerId;
         public int WorkerId
         {
@@ -21,6 +23,8 @@ namespace Clients
             set { _workerId = value; }
         }
 
+        [JsonInclude]
+        [JsonPropertyName("UserId")]
         private int _userId;
         public int UserId
         {
@@ -28,182 +32,196 @@ namespace Clients
             set { _userId = value; }
         }
 
-        private string status;
-        public string _Status
+        [JsonInclude]
+        [JsonPropertyName("_Status")]
+        private string _status;
+        public string Status
         {
-            get { return status; }
-            set { status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Post")]
-        private string post;
-        public string _Post
+        private string _post;
+        public string Post
         {
-            get { return post; }
-            set {  post = value; }
+            get { return _post; }
+            set { _post = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Email")]
-        private string email;
-        public string _Email
+        private string _email;
+        public string Email
         {
-            get { return email; }
-            set { email = value; }
+            get { return _email; }
+            set { _email = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("City")]
-        private string city;
-        public string _City
+        private string _city;
+        public string City
         {
-            get { return city; }
-            set { city = value; }
+            get { return _city; }
+            set { _city = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Description")]
-        private string description;
-        public string _Description
+        private string _description;
+        public string Description
         {
-            get { return description;}
-            set { description = value; }
+            get { return _description; }
+            set { _description = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Personal_qualities")]
-        private ObservableCollection<string> personal_qualities;
-        public ObservableCollection<string> _Personal_qualities
+        private ObservableCollection<string> _personal_qualities;
+        public ObservableCollection<string> Personal_qualities
         {
-            get { return personal_qualities; }
-            set {  personal_qualities = value; }
+            get { return _personal_qualities; }
+            set { _personal_qualities = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Skills")]
-        private ObservableCollection<string> skills;
-        public ObservableCollection<string> _Skills
+        private ObservableCollection<string> _skills;
+        public ObservableCollection<string> Skills
         {
-            get { return skills; }
-            set { skills = value; }
+            get { return _skills; }
+            set { _skills = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Citizenship")]
-        private string citizenship;
-        public string _Citizenship
+        private string _citizenship;
+        public string Citizenship
         {
-            get { return  citizenship; }
-            set { citizenship = value; }
+            get { return _citizenship; }
+            set { _citizenship = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Shedule")]
-        private string shedule;
-        public string _Shedule
+        private string _shedule;
+        public string Shedule
         {
-            get { return shedule; }
-            set { shedule = value; }
+            get { return _shedule; }
+            set { _shedule = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Empoyment")]
-        private string employment;
-        public string _Empoyment
+        private string _employment;
+        public string Empoyment
         {
-            get { return employment; }
-            set { employment = value; }
+            get { return _employment; }
+            set { _employment = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("_WorkerName")]
-        private string workerName;
-        public string _WorkerName
+        private string _workerName;
+        public string WorkerName
         {
-            get { return workerName; }
-            set { workerName = value; }
+            get { return _workerName; }
+            set { _workerName = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("_Surname")]
-        private string surname;
-        public string _Surname
+        private string _surname;
+        public string Surname
         {
-            get { return surname; }
-            set { surname = value; }
+            get { return _surname; }
+            set { _surname = value; }
         }
         
         [JsonInclude]
         [JsonPropertyName("_Work_experience")]
-        private string work_experience;
-        public string _Work_experience
+        private int _work_experience;
+        public int Work_experience
         {
-            get { return work_experience; }
-            set { work_experience = value; }
+            get { return _work_experience; }
+            set {
+                if (_work_experience >= 0)
+                    _work_experience = value;
+                throw new ArgumentException("work_experience cannot be less than zero");
+            }
         }
 
         [JsonInclude]
         [JsonPropertyName("_Salary_need")]
-        private string salary_need;
-        public string _Salary_need
+        private int _salary_need;
+        public int Salary_need
         {
-            get { return salary_need; }
-            set { salary_need = value; }
+            get { return _salary_need; }
+            set {
+                if (_salary_need >= 0)
+                    _salary_need = value;
+                throw new ArgumentException("salary_need cannot be less than zero");
+            }
         }
 
         [JsonInclude]
         [JsonPropertyName("_PDF")]
-        private string[] pdf;
-        public string[] _PdfFiles
+        private string[] _pdf;
+        public string[] PdfFiles
         {
-            get { return pdf; }
-            set { pdf = value; }
+            get { return _pdf; }
+            set { _pdf = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("_Photo")]
-        private string workerPhoto;
-        public string _WorkerPhoto
+        private string _workerPhoto;
+        public string WorkerPhoto
         {
-            get { return workerPhoto; }
-            set { workerPhoto = value; }
+            get { return _workerPhoto; }
+            set { _workerPhoto = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("PhoneNumber")]
-        private string phoneNumber;
-        public string _PhoneNumber
+        private string _phoneNumber;
+        public string PhoneNumber
         {
-            get { return phoneNumber; }
-            set { phoneNumber = value; }
+            get { return _phoneNumber; }
+            set { _phoneNumber = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Education")]
-        private string education;
-        public string _Education
+        private string _education;
+        public string Education
         {
-            get { return education; }
-            set { education = value; }
+            get { return _education; }
+            set { _education = value; }
         }
 
         [JsonInclude]
         [JsonPropertyName("Age")]
-        private string age;
-        public string _Age
+        private int _age;
+        public int Age
         {
-            get { return age; }
-            set { age = value; }
+            get { return _age; }
+            set {
+                if (_age >= 0)
+                        _age = value;
+                throw new ArgumentException("age cannot be less than zero");
+            }
         }
 
         [JsonInclude]
         [JsonPropertyName("_Sex")]
-        private string sex;
-        public string _sex
+        private string _sex;
+        public string Sex
         {
-            get { return sex; }
-            set { sex = value; }
+            get { return _sex; }
+            set { _sex = value; }
         }
 
 
