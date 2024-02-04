@@ -22,71 +22,71 @@ namespace KursCode.MVVM.View.Pages
 
     public partial class VacancyPage : Page
     {
-        private int _UserId { get; }
-        private VacansyPageViewModel _viewModel;
-        private ClientsUserControlMax clientsUserControlMax;
+        //    private int _UserId { get; }
+        //    private VacansyPageViewModel _viewModel;
+        //    private ClientsUserControlMax clientsUserControlMax;
 
-        public VacancyPage(int userId)
-        {
-            InitializeComponent();
-            _UserId = userId;
-            _viewModel = new VacansyPageViewModel();
-            _viewModel.UserId = userId;
-            _viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            LoadDataAndMiniWorkers();
-            LoadMiniWorkers();
-            maxWorker.Visibility = Visibility.Collapsed;
-            clientsUserControlMax = new ClientsUserControlMax(userId);
-        }
+        //    public VacancyPage(int userId)
+        //    {
+        //        InitializeComponent();
+        //        _UserId = userId;
+        //        _viewModel = new VacansyPageViewModel();
+        //        _viewModel.UserId = userId;
+        //        _viewModel.PropertyChanged += ViewModel_PropertyChanged;
+        //        LoadDataAndMiniWorkers();
+        //        LoadMiniWorkers();
+        //        maxWorker.Visibility = Visibility.Collapsed;
+        //        clientsUserControlMax = new ClientsUserControlMax(userId);
+        //    }
 
-        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(_viewModel.MiniWorkers))
-            {
-                LoadMiniWorkers();
-            }
-        }
+        //    private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //    {
+        //        if (e.PropertyName == nameof(_viewModel.MiniWorkers))
+        //        {
+        //            LoadMiniWorkers();
+        //        }
+        //    }
 
-        private void LoadDataAndMiniWorkers()
-        {
-            _viewModel.LoadDataFromJson();
-            LoadMiniWorkers();
-        }
+        //    private void LoadDataAndMiniWorkers()
+        //    {
+        //        _viewModel.LoadDataFromJson();
+        //        LoadMiniWorkers();
+        //    }
 
-        private void LoadMiniWorkers()
-        {
-            miniWorkers.Children.Clear();
+        //    private void LoadMiniWorkers()
+        //    {
+        //        miniWorkers.Children.Clear();
 
-            foreach (var userControlMini in _viewModel.MiniWorkers)
-            {
-                if (userControlMini.Parent != null)
-                {
-                    var parentPanel = (Panel)userControlMini.Parent;
-                    parentPanel.Children.Remove(userControlMini);
-                }
-                userControlMini.MouseDown += (sender, e) => ShowMaxWorkerControl(userControlMini);
-                miniWorkers.Children.Add(userControlMini);
-            }
-        }
+        //        foreach (var userControlMini in _viewModel.MiniWorkers)
+        //        {
+        //            if (userControlMini.Parent != null)
+        //            {
+        //                var parentPanel = (Panel)userControlMini.Parent;
+        //                parentPanel.Children.Remove(userControlMini);
+        //            }
+        //            userControlMini.MouseDown += (sender, e) => ShowMaxWorkerControl(userControlMini);
+        //            miniWorkers.Children.Add(userControlMini);
+        //        }
+        //    }
 
-        private void ShowMaxWorkerControl(ClientsUserControlMini selectedMiniWorker)
-        {
-            var userControlMax = _viewModel._ClientsUserControlMax;
-            maxWorker.Visibility = Visibility.Visible;
+        //    private void ShowMaxWorkerControl(ClientsUserControlMini selectedMiniWorker)
+        //    {
+        //        var userControlMax = _viewModel._ClientsUserControlMax;
+        //        maxWorker.Visibility = Visibility.Visible;
 
-            var currentParent = (Panel)userControlMax.Parent;
-            if (currentParent != null)
-                currentParent.Children.Remove(userControlMax);
+        //        var currentParent = (Panel)userControlMax.Parent;
+        //        if (currentParent != null)
+        //            currentParent.Children.Remove(userControlMax);
 
-            maxWorker.Children.Clear();
-            maxWorker.Children.Add(userControlMax);
-        }
+        //        maxWorker.Children.Clear();
+        //        maxWorker.Children.Add(userControlMax);
+        //    }
 
-        private void add_Button(object sender, RoutedEventArgs e)
-        {
-            AddVacancy vacancy = new AddVacancy(_UserId);
-            vacancy.ShowDialog();
-            _viewModel.UpdateMiniWorkers();
-        }
+        //    private void add_Button(object sender, RoutedEventArgs e)
+        //    {
+        //        AddVacancy vacancy = new AddVacancy(_UserId);
+        //        vacancy.ShowDialog();
+        //        _viewModel.UpdateMiniWorkers();
+        //    }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KursCode.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KursCode.MVVM.Model
 {
-    public class vacancyClass
+    public class vacancyClass : Ivacancy
     {
         [JsonInclude]
         [JsonPropertyName("Post")]

@@ -20,171 +20,171 @@ namespace KursCode.MVVM.ViewModel
     public class WorkersPageViewModel : baseViewModel
     {
 
-        private List<workerClass> workerDataList = new List<workerClass>();
-        private ObservableCollection<ClientsUserControlMini> _miniWorkers;
-        private DatabaseHelper _dbHelper;
+        //private List<workerClass> workerDataList = new List<workerClass>();
+        //private ObservableCollection<ClientsUserControlMini> _miniWorkers;
+        //private DatabaseHelper _dbHelper;
 
-        public WorkersPageViewModel()
-        {
-            _dbHelper = new DatabaseHelper(GetWorkerDBPath(_userId));
-            _clientsUserControlMax = new ClientsUserControlMax(_userId);
-            LoadDataFromJson();
-        }
+        //public WorkersPageViewModel()
+        //{
+        //    _dbHelper = new DatabaseHelper(GetWorkerDBPath(_userId));
+        //    _clientsUserControlMax = new ClientsUserControlMax(_userId);
+        //    LoadDataFromJson();
+        //}
 
-        private int _userId;
-        public int UserId
-        {
-            get { return _userId; }
-            set
-            {
-                if (_userId != value)
-                {
-                    _userId = value;
-                    OnPropertyChanged(nameof(UserId));
-                }
-            }
-        }
+        //private int _userId;
+        //public int UserId
+        //{
+        //    get { return _userId; }
+        //    set
+        //    {
+        //        if (_userId != value)
+        //        {
+        //            _userId = value;
+        //            OnPropertyChanged(nameof(UserId));
+        //        }
+        //    }
+        //}
 
-        private Visibility _borderVisibility;
-        public Visibility BorderVisibility
-        {
-            get { return _borderVisibility; }
-            set
-            {
-                if (_borderVisibility != value)
-                {
-                    _borderVisibility = value;
-                    OnPropertyChanged(nameof(BorderVisibility));
-                }
-            }
-        }
+        //private Visibility _borderVisibility;
+        //public Visibility BorderVisibility
+        //{
+        //    get { return _borderVisibility; }
+        //    set
+        //    {
+        //        if (_borderVisibility != value)
+        //        {
+        //            _borderVisibility = value;
+        //            OnPropertyChanged(nameof(BorderVisibility));
+        //        }
+        //    }
+        //}
 
-        public ObservableCollection<ClientsUserControlMini> MiniWorkers
-        {
-            get { return _miniWorkers; }
-            set
-            {
-                _miniWorkers = value;
-                OnPropertyChanged(nameof(MiniWorkers));
-            }
-        }
+        //public ObservableCollection<ClientsUserControlMini> MiniWorkers
+        //{
+        //    get { return _miniWorkers; }
+        //    set
+        //    {
+        //        _miniWorkers = value;
+        //        OnPropertyChanged(nameof(MiniWorkers));
+        //    }
+        //}
 
-        private static string GetWorkerDBPath(int userId)
-        {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            string workerDbPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
-            Directory.CreateDirectory(workerDbPath);
-            return workerDbPath;
-        }
+        //private static string GetWorkerDBPath(int userId)
+        //{
+        //    string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+        //    string parentPath = Directory.GetParent(executablePath).FullName;
+        //    string dataFolderPath = Path.Combine(parentPath, "Data");
+        //    string userFolderPath = Path.Combine(dataFolderPath, "UserData");
+        //    string workerDbPath = Path.Combine(userFolderPath, $"{userId}_ID_User");
+        //    Directory.CreateDirectory(workerDbPath);
+        //    return workerDbPath;
+        //}
 
-        public void LoadDataFromJson()
-        {
-            string workerFolderPath = GetWorkerDBPath(_userId);
-            string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
-            var dataList = _dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
+        //public void LoadDataFromJson()
+        //{
+        //    string workerFolderPath = GetWorkerDBPath(_userId);
+        //    string workerDataFilePath = Path.Combine(workerFolderPath, "worker.json");
+        //    var dataList = _dbHelper.GetAllEntities<workerClass>(workerDataFilePath);
 
-            MiniWorkers = new ObservableCollection<ClientsUserControlMini>();
-            var userControlMax = new ClientsUserControlMax(_userId);
+        //    MiniWorkers = new ObservableCollection<ClientsUserControlMini>();
+        //    var userControlMax = new ClientsUserControlMax(_userId);
 
-            foreach (var data in dataList)
-            {
-                var userControlMini = new ClientsUserControlMini();
-                userControlMini.SetData(data);
+        //    foreach (var data in dataList)
+        //    {
+        //        var userControlMini = new ClientsUserControlMini();
+        //        userControlMini.SetData(data);
 
-                userControlMini.VerticalAlignment = VerticalAlignment.Top;
-                Thickness margin = new Thickness(10, 0, 10, 15);
-                userControlMini.Margin = margin;
+        //        userControlMini.VerticalAlignment = VerticalAlignment.Top;
+        //        Thickness margin = new Thickness(10, 0, 10, 15);
+        //        userControlMini.Margin = margin;
 
-                userControlMini.MiniControlClicked += (sender, e) =>
-                {
-                    userControlMax.UserId = _userId;
+        //        userControlMini.MiniControlClicked += (sender, e) =>
+        //        {
+        //            userControlMax.UserId = _userId;
 
-                };
-                userControlMini.MouseEnter += DynamicUserControl_MouseEnter;
-                userControlMini.MouseLeave += DynamicUserControl_MouseLeave;
-                userControlMini.MouseDown += DynamicUserControl_MouseDown;
+        //        };
+        //        userControlMini.MouseEnter += DynamicUserControl_MouseEnter;
+        //        userControlMini.MouseLeave += DynamicUserControl_MouseLeave;
+        //        userControlMini.MouseDown += DynamicUserControl_MouseDown;
                 
-                workerDataList.Add(data);
-                MiniWorkers.Add(userControlMini);
-            }
-        }
+        //        workerDataList.Add(data);
+        //        MiniWorkers.Add(userControlMini);
+        //    }
+        //}
 
-        private ClientsUserControlMini _selectedMiniWorker;
-        public ClientsUserControlMini SelectedMiniWorker
-        {
-            get { return _selectedMiniWorker; }
-            set
-            {
-                _selectedMiniWorker = value;
-                _clientsUserControlMax.UserId = UserId;
-                OnPropertyChanged(nameof(SelectedMiniWorker));
-            }
-        }
+        //private ClientsUserControlMini _selectedMiniWorker;
+        //public ClientsUserControlMini SelectedMiniWorker
+        //{
+        //    get { return _selectedMiniWorker; }
+        //    set
+        //    {
+        //        _selectedMiniWorker = value;
+        //        _clientsUserControlMax.UserId = UserId;
+        //        OnPropertyChanged(nameof(SelectedMiniWorker));
+        //    }
+        //}
 
-        private ClientsUserControlMax _clientsUserControlMax;
-        public ClientsUserControlMax _ClientsUserControlMax
-        {
-            get { return _clientsUserControlMax; }
-            set
-            {
-                if (_clientsUserControlMax != value)
-                {
-                    _clientsUserControlMax = value;
-                    _clientsUserControlMax.UserId = UserId;
-                    OnPropertyChanged(nameof(ClientsUserControlMax));
-                }
-            }
-        }
+        //private ClientsUserControlMax _clientsUserControlMax;
+        //public ClientsUserControlMax _ClientsUserControlMax
+        //{
+        //    get { return _clientsUserControlMax; }
+        //    set
+        //    {
+        //        if (_clientsUserControlMax != value)
+        //        {
+        //            _clientsUserControlMax = value;
+        //            _clientsUserControlMax.UserId = UserId;
+        //            OnPropertyChanged(nameof(ClientsUserControlMax));
+        //        }
+        //    }
+        //}
 
-        private void DynamicUserControl_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var clickedControl = (ClientsUserControlMini)sender;
+        //private void DynamicUserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    var clickedControl = (ClientsUserControlMini)sender;
 
-            if (_selectedMiniWorker != null && _selectedMiniWorker != clickedControl)
-            {
-                _selectedMiniWorker.mainBorder.BorderBrush = Brushes.Black;
-            }
+        //    if (_selectedMiniWorker != null && _selectedMiniWorker != clickedControl)
+        //    {
+        //        _selectedMiniWorker.mainBorder.BorderBrush = Brushes.Black;
+        //    }
 
-            _selectedMiniWorker = clickedControl;
-            _selectedMiniWorker.mainBorder.BorderBrush = Brushes.Blue;
+        //    _selectedMiniWorker = clickedControl;
+        //    _selectedMiniWorker.mainBorder.BorderBrush = Brushes.Blue;
 
 
-            _clientsUserControlMax.ClearData();
+        //    _clientsUserControlMax.ClearData();
 
-            var matchingWorkerData = workerDataList.FirstOrDefault(data =>
-            data._Surname == _selectedMiniWorker.Surname.Text &&
-            data._WorkerName == _selectedMiniWorker.Name.Text &&
-            data._Post == _selectedMiniWorker.Post.Text);
+        //    var matchingWorkerData = workerDataList.FirstOrDefault(data =>
+        //    data._Surname == _selectedMiniWorker.Surname.Text &&
+        //    data._WorkerName == _selectedMiniWorker.Name.Text &&
+        //    data._Post == _selectedMiniWorker.Post.Text);
 
-            _clientsUserControlMax.SetData(matchingWorkerData);
+        //    _clientsUserControlMax.SetData(matchingWorkerData);
 
-            _selectedMiniWorker.OnMiniControlClicked();
-        }
+        //    _selectedMiniWorker.OnMiniControlClicked();
+        //}
 
-        private void DynamicUserControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ((ClientsUserControlMini)sender).SetDarkBackground();
-        }
+        //private void DynamicUserControl_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    ((ClientsUserControlMini)sender).SetDarkBackground();
+        //}
 
-        private void DynamicUserControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ((ClientsUserControlMini)sender).RestoreBackground();
-        }
+        //private void DynamicUserControl_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    ((ClientsUserControlMini)sender).RestoreBackground();
+        //}
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
+        //public void OnPropertyChanged([CallerMemberName] string prop = "")
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        //}
         
-        public void UpdateMiniWorkers()
-        {
-            LoadDataFromJson();
-            OnPropertyChanged(nameof(MiniWorkers));
-        }
+        //public void UpdateMiniWorkers()
+        //{
+        //    LoadDataFromJson();
+        //    OnPropertyChanged(nameof(MiniWorkers));
+        //}
     }
 }

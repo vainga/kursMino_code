@@ -28,177 +28,177 @@ namespace KursCode.MVVM.View.UserControls
     /// </summary>
     public partial class ClientsUserControlMax : UserControl
     {
-        private static int _userId;
-        public int UserId
-        {
-            get { return _userId; }
-            set
-            {
-                if (_userId != value)
-                {
-                    _userId = value;
-                }
-            }
-        }
+        //private static int _userId;
+        //public int UserId
+        //{
+        //    get { return _userId; }
+        //    set
+        //    {
+        //        if (_userId != value)
+        //        {
+        //            _userId = value;
+        //        }
+        //    }
+        //}
 
-        public ClientsUserControlMax(int userId)
-        {
-            InitializeComponent();
-        }
+        //public ClientsUserControlMax(int userId)
+        //{
+        //    InitializeComponent();
+        //}
 
-        workerClass worker = new workerClass();
-        IimageManager imageManager = new imageManager();
-        IpdfManager pdfManager = new pdfManager();
-        private byte[] pdfData {get; set; }
+        //workerClass worker = new workerClass();
+        //IimageManager imageManager = new imageManager();
+        //IpdfManager pdfManager = new pdfManager();
+        //private byte[] pdfData {get; set; }
 
-        public void SetData(corporationClass corpData)
-        {
-            Surname.Text = corpData._CorporationName;
-            Name.Visibility = Visibility.Collapsed;
-            TextAge.Text = "Возраст от: ";
-            imageBorder.Visibility = Visibility.Collapsed;
-            Age.Text = corpData._Age;
-            Location.Text = corpData._City;
-            Education.Text = corpData._Education;
-            Citizenship.Text = corpData._Citizenship;
-            Work_experience.Text = corpData._Work_experience;
-            Empoyment.Text = corpData._Empoyment;
-            Shedule.Text = corpData._Shedule;
-            salaryText.Text = "Зарплата";
-            StringBuilder skillsBuilder = new StringBuilder();
-            foreach (var skill in corpData._Skills)
-            {
-                if (skillsBuilder.Length > 0)
-                {
-                    skillsBuilder.Append(", ");
-                }
-                skillsBuilder.Append(skill);
-            }
-            Skills.Text = skillsBuilder.ToString();
+        //public void SetData(corporationClass corpData)
+        //{
+        //    Surname.Text = corpData._CorporationName;
+        //    Name.Visibility = Visibility.Collapsed;
+        //    TextAge.Text = "Возраст от: ";
+        //    imageBorder.Visibility = Visibility.Collapsed;
+        //    Age.Text = corpData._Age;
+        //    Location.Text = corpData._City;
+        //    Education.Text = corpData._Education;
+        //    Citizenship.Text = corpData._Citizenship;
+        //    Work_experience.Text = corpData._Work_experience;
+        //    Empoyment.Text = corpData._Empoyment;
+        //    Shedule.Text = corpData._Shedule;
+        //    salaryText.Text = "Зарплата";
+        //    StringBuilder skillsBuilder = new StringBuilder();
+        //    foreach (var skill in corpData._Skills)
+        //    {
+        //        if (skillsBuilder.Length > 0)
+        //        {
+        //            skillsBuilder.Append(", ");
+        //        }
+        //        skillsBuilder.Append(skill);
+        //    }
+        //    Skills.Text = skillsBuilder.ToString();
 
-            StringBuilder qualitiesBuilder = new StringBuilder();
-            foreach (var quality in corpData._Personal_qualities)
-            {
-                if (qualitiesBuilder.Length > 0)
-                {
-                    qualitiesBuilder.Append(", ");
-                }
-                qualitiesBuilder.Append(quality);
-            }
-            Qualities.Text = qualitiesBuilder.ToString();
+        //    StringBuilder qualitiesBuilder = new StringBuilder();
+        //    foreach (var quality in corpData._Personal_qualities)
+        //    {
+        //        if (qualitiesBuilder.Length > 0)
+        //        {
+        //            qualitiesBuilder.Append(", ");
+        //        }
+        //        qualitiesBuilder.Append(quality);
+        //    }
+        //    Qualities.Text = qualitiesBuilder.ToString();
 
-            Description.Text = corpData._Description;
-            Post.Text = corpData._Post;
-            Salary.Text = "от: " + corpData._Salary_min + " до: " + corpData._Salary_max;
-            Phone_number.Text = corpData._Phone_number;
-            Email.Text = corpData._Email;
-            interViewButton.Visibility = Visibility.Collapsed;
-            if (corpData._PDF != "")
-                pdfData = pdfManager.fromBase64toPdf(corpData._PDF);
-        }
+        //    Description.Text = corpData._Description;
+        //    Post.Text = corpData._Post;
+        //    Salary.Text = "от: " + corpData._Salary_min + " до: " + corpData._Salary_max;
+        //    Phone_number.Text = corpData._Phone_number;
+        //    Email.Text = corpData._Email;
+        //    interViewButton.Visibility = Visibility.Collapsed;
+        //    if (corpData._PDF != "")
+        //        pdfData = pdfManager.fromBase64toPdf(corpData._PDF);
+        //}
 
-        public void SetData(workerClass workerData)
-        {
-            Surname.Text = workerData._Surname;
-            Name.Text = workerData._WorkerName;
-            Age.Text = workerData._Age;
-            Location.Text = workerData._City;
-            Education.Text = workerData._Education;
-            Citizenship.Text = workerData._Citizenship;
-            Work_experience.Text = workerData._Work_experience;
-            Empoyment.Text = workerData._Empoyment;
-            Shedule.Text = workerData._Shedule;
+        //public void SetData(workerClass workerData)
+        //{
+        //    Surname.Text = workerData._Surname;
+        //    Name.Text = workerData._WorkerName;
+        //    Age.Text = workerData._Age;
+        //    Location.Text = workerData._City;
+        //    Education.Text = workerData._Education;
+        //    Citizenship.Text = workerData._Citizenship;
+        //    Work_experience.Text = workerData._Work_experience;
+        //    Empoyment.Text = workerData._Empoyment;
+        //    Shedule.Text = workerData._Shedule;
 
-            StringBuilder skillsBuilder = new StringBuilder();
-            foreach (var skill in workerData._Skills)
-            {
-                if (skillsBuilder.Length > 0)
-                {
-                    skillsBuilder.Append(", ");
-                }
-                skillsBuilder.Append(skill);
-            }
-            Skills.Text = skillsBuilder.ToString();
+        //    StringBuilder skillsBuilder = new StringBuilder();
+        //    foreach (var skill in workerData._Skills)
+        //    {
+        //        if (skillsBuilder.Length > 0)
+        //        {
+        //            skillsBuilder.Append(", ");
+        //        }
+        //        skillsBuilder.Append(skill);
+        //    }
+        //    Skills.Text = skillsBuilder.ToString();
 
-            StringBuilder qualitiesBuilder = new StringBuilder();
-            foreach (var quality in workerData._Personal_qualities)
-            {
-                if (qualitiesBuilder.Length > 0)
-                {
-                    qualitiesBuilder.Append(", ");
-                }
-                qualitiesBuilder.Append(quality);
-            }
-            Qualities.Text = qualitiesBuilder.ToString();
+        //    StringBuilder qualitiesBuilder = new StringBuilder();
+        //    foreach (var quality in workerData._Personal_qualities)
+        //    {
+        //        if (qualitiesBuilder.Length > 0)
+        //        {
+        //            qualitiesBuilder.Append(", ");
+        //        }
+        //        qualitiesBuilder.Append(quality);
+        //    }
+        //    Qualities.Text = qualitiesBuilder.ToString();
 
-            Description.Text = workerData._Description;
-            Post.Text = workerData._Post;
-            Salary.Text = workerData._Salary_need;
-            Phone_number.Text = workerData._PhoneNumber;
-            Email.Text = workerData._Email;
-            if (workerData._WorkerPhoto!="")
-            {
-                selectedImage.Source = imageManager.ConvertBitmapToImageBrush(imageManager.ConvertImage(workerData._WorkerPhoto)).ImageSource;
-            }
-            if(workerData._PdfFile != "")
-                pdfData = pdfManager.fromBase64toPdf(workerData._PdfFile);
-            _userId = workerData.UserId;
-            worker = workerData;
-        }
+        //    Description.Text = workerData._Description;
+        //    Post.Text = workerData._Post;
+        //    Salary.Text = workerData._Salary_need;
+        //    Phone_number.Text = workerData._PhoneNumber;
+        //    Email.Text = workerData._Email;
+        //    if (workerData._WorkerPhoto!="")
+        //    {
+        //        selectedImage.Source = imageManager.ConvertBitmapToImageBrush(imageManager.ConvertImage(workerData._WorkerPhoto)).ImageSource;
+        //    }
+        //    if(workerData._PdfFile != "")
+        //        pdfData = pdfManager.fromBase64toPdf(workerData._PdfFile);
+        //    _userId = workerData.UserId;
+        //    worker = workerData;
+        //}
 
 
 
-        public void ClearData()
-        {
-            Surname.Text = "";
-            Name.Text = "";
-            Age.Text = "";
-            Location.Text = "";
-            Education.Text = "";
-            Citizenship.Text = "";
-            Work_experience.Text = "";
-            Empoyment.Text = "";
-            Shedule.Text = "";
-            Skills.Text = "";
-            Qualities.Text = "";
-            Description.Text = "";
-            Post.Text = "";
-            Salary.Text = "";
-            Phone_number.Text = "";
-            Email.Text = "";
-            selectedImage.Source = null;
-        }
+        //public void ClearData()
+        //{
+        //    Surname.Text = "";
+        //    Name.Text = "";
+        //    Age.Text = "";
+        //    Location.Text = "";
+        //    Education.Text = "";
+        //    Citizenship.Text = "";
+        //    Work_experience.Text = "";
+        //    Empoyment.Text = "";
+        //    Shedule.Text = "";
+        //    Skills.Text = "";
+        //    Qualities.Text = "";
+        //    Description.Text = "";
+        //    Post.Text = "";
+        //    Salary.Text = "";
+        //    Phone_number.Text = "";
+        //    Email.Text = "";
+        //    selectedImage.Source = null;
+        //}
 
-        private void PDF_button_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (pdfData == null || pdfData.Length == 0)
-                {
-                    MessageBox.Show("Нет данных PDF для открытия.", "Ошибка");
-                    return;
-                }
+        //private void PDF_button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (pdfData == null || pdfData.Length == 0)
+        //        {
+        //            MessageBox.Show("Нет данных PDF для открытия.", "Ошибка");
+        //            return;
+        //        }
 
-                string tempPdfPath = System.IO.Path.GetTempFileName();
+        //        string tempPdfPath = System.IO.Path.GetTempFileName();
 
-                File.WriteAllBytes(tempPdfPath, pdfData);
+        //        File.WriteAllBytes(tempPdfPath, pdfData);
 
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = tempPdfPath,
-                    UseShellExecute = true
-                });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Произошла ошибка при открытии PDF:");
-            }
-        }
+        //        Process.Start(new ProcessStartInfo
+        //        {
+        //            FileName = tempPdfPath,
+        //            UseShellExecute = true
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Произошла ошибка при открытии PDF:");
+        //    }
+        //}
 
-        private void interview_Button_Click(object sender, RoutedEventArgs e)
-        {
-            InterviewWindow interviewWindow = new InterviewWindow(_userId,worker);
-            interviewWindow.ShowDialog();
-        }
+        //private void interview_Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    InterviewWindow interviewWindow = new InterviewWindow(_userId,worker);
+        //    interviewWindow.ShowDialog();
+        //}
     }
 }

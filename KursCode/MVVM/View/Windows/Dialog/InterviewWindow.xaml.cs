@@ -21,32 +21,32 @@ namespace KursCode.MVVM.View.Windows.Dialog
     /// </summary>
     public partial class InterviewWindow : Window
     {
-        interviewWindowViewModel _viewModel;
-        public InterviewWindow(int userId, workerClass worker)
-        {
-            _viewModel = new interviewWindowViewModel();
-            _viewModel.UserId = userId;
-            _viewModel.Worker = worker;
-            DataContext = _viewModel;
-            InitializeComponent();
-            _viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
-        }
+        //interviewWindowViewModel _viewModel;
+        //public InterviewWindow(int userId, workerClass worker)
+        //{
+        //    _viewModel = new interviewWindowViewModel();
+        //    _viewModel.UserId = userId;
+        //    _viewModel.Worker = worker;
+        //    DataContext = _viewModel;
+        //    InitializeComponent();
+        //    _viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
+        //}
 
-        private void closeApp_MauseLeftButtonDrag(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                Close();
-            }
-            catch (Exception ex)
-            {
+        //private void closeApp_MauseLeftButtonDrag(object sender, MouseButtonEventArgs e)
+        //{
+        //    try
+        //    {
+        //        Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
-        private void ViewModel_SaveSuccessful(object sender, EventArgs e)
-        {
-            Close();
-        }
+        //private void ViewModel_SaveSuccessful(object sender, EventArgs e)
+        //{
+        //    Close();
+        //}
     }
 }

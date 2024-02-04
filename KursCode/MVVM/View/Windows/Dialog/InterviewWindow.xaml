@@ -14,7 +14,7 @@ ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" Bor
     <Window.DataContext>
         <vm:interviewWindowViewModel/>
     </Window.DataContext>
-    <Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
+    <!--<Border CornerRadius="15" Background="#FFF4FFFF" BorderBrush="Aqua" BorderThickness="0.5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*"></RowDefinition>
@@ -70,5 +70,5 @@ ResizeMode="NoResize" Title="meet" WindowStyle="None" Foreground="#FF00EDFF" Bor
             </Grid>
             <Button Content="OK" Background="DarkBlue" Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding commandSave}" Width="100" Height="40" materialDesign:ButtonAssist.CornerRadius="15" Grid.Row="4" Margin="10"/>
         </Grid>
-    </Border>
+    </Border>-->
 </Window>

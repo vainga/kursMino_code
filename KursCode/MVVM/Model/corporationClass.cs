@@ -8,11 +8,12 @@ using System.IO;
 using KursCode.Data;
 using KursCode.MVVM.Model;
 using System.Collections.ObjectModel;
+using KursCode.Interfaces;
 
 namespace Clients
 {
     [Serializable]
-    public class corporationClass
+    public class corporationClass : ICorporation
     {
         [JsonInclude]
         [JsonPropertyName("CorporationID")]
@@ -33,7 +34,7 @@ namespace Clients
         [JsonInclude]
         [JsonPropertyName("CorporationName")]
         private string _corporationName;
-        public string _CorporationName
+        public string CorporationName
         {
             get 
             {

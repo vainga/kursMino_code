@@ -30,24 +30,29 @@ namespace KursCode.Data
         public void Add(IUser user)
         {
             userString = _JsonManager.ToJson(user);
-            _DBHelper.createTable("Users", new [] { "id INT AUTO_INCREMENT PRIMARY KEY", "user TEXT"});
-            _Repository.Add<string>("Users",userString);
+            _DBHelper.createTable("Users.db", new [] { "id INT AUTO_INCREMENT PRIMARY KEY", "user TEXT"});
+            _Repository.Add<string>("Users.db", userString);
         }
 
         public void Delete(IUser user)
         {
-            _Repository.Delete<string>("Users", user.userId);
+            _Repository.Delete<string>("Users.db", user.userId);
         }
 
         public void Update(IUser user, IUser newValue)
         {
             string newStringUser = _JsonManager.ToJson(newValue);
-            _Repository.Change<string>("Users", user.userId, "user", newStringUser);
+            _Repository.Change<string>("Users.db", user.userId, "user", newStringUser);
         }
 
-        public void Search(IUser user)
+        public IUser Search(IUser user)
         {
-            _Repository.Search<string>("user", user.userId);
+           return _Repository.Search<IUser>("user", user.userId);
+        }
+
+        public int GetLastId()
+        {
+            return _Repository.GetLastId("user");
         }
     }
 }

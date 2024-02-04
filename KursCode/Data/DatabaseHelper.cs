@@ -29,11 +29,12 @@ namespace KursCode.Data
             }
         }
 
-        private string connectionString;
+        private string _connectionString;
         private readonly MySqlConnection _dbConnection;
         public DatabaseHelper(string connectionString)
         {
-            _dbConnection = new MySqlConnection(connectionString);
+            _connectionString = connectionString;
+            _dbConnection = new MySqlConnection(_connectionString);
         }
 
         public void OpenConnection()
@@ -53,7 +54,7 @@ namespace KursCode.Data
 
         public void createDataBase()
         {
-           using (MySqlConnection conn = new MySqlConnection(connectionString)) 
+           using (MySqlConnection conn = new MySqlConnection(_connectionString)) 
             { 
                 conn.Open();
                 using (MySqlCommand cmd = new MySqlCommand())
@@ -69,8 +70,8 @@ namespace KursCode.Data
         public void createTable(string tableName, string[] columns)
         {
             createDataBase();
-            connectionString += $"Database={DBName};";
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            _connectionString += $"Database={DBName};";
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
                 using (MySqlCommand cmd = new MySqlCommand())

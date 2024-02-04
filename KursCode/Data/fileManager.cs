@@ -14,8 +14,8 @@ namespace KursCode.Data
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
             string parentPath = Directory.GetParent(executablePath).FullName;
             string dataFolderPath = Path.Combine(parentPath, "Data");
-            string endFilePAth = Path.Combine(dataFolderPath, $"{nameFile}");
-            return endFilePAth;
+            string endFilePath = Path.Combine(dataFolderPath, nameFile);
+            return endFilePath;
         }
     }
 }

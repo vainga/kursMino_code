@@ -10,7 +10,7 @@ namespace KursCode.Data
 {
     public class corporationData
     {
-        string workerString;
+        string corporationString;
 
         IFileManager _FileManager;
         IRepository _Repository;
@@ -27,27 +27,27 @@ namespace KursCode.Data
             _Repository = new Repository(_DBHelper);
         }
 
-        public void Add(IWorker worker)
+        public void Add(ICorporation corporation)
         {
-            workerString = _JsonManager.ToJson(worker);
-            _DBHelper.createTable("Corporations", new[] { "id INT AUTO_INCREMENT PRIMARY KEY", "worker TEXT", "status TEXT", "userId INT" });
-            _Repository.Add<string>("Corporations", workerString, worker._Status, worker.UserId);
+            corporationString = _JsonManager.ToJson(corporation);
+            _DBHelper.createTable("Corporations", new[] { "id INT AUTO_INCREMENT PRIMARY KEY", "corporoation TEXT", "userId INT" });
+            _Repository.Add<string>("Corporations", corporationString, corporation.UserId);
         }
 
-        public void Delete(IWorker worker)
+        public void Delete(ICorporation corporation)
         {
-            _Repository.Delete<string>("Corporations", worker.WorkerId);
+            _Repository.Delete<string>("Corporations", corporation.CorporationId);
         }
 
-        public void Update(IWorker worker, IWorker newValue)
+        public void Update(ICorporation corporation, ICorporation newCorporation)
         {
-            string newStringWorker = _JsonManager.ToJson(newValue);
-            _Repository.Change<string>("Corporations", worker.WorkerId, "corporation", newStringWorker);
+            string newStringCorporation = _JsonManager.ToJson(newCorporation);
+            _Repository.Change<string>("Corporations", corporation.CorporationId, "corporation", newStringCorporation);
         }
 
-        public void Search(IWorker worker)
+        public void Search(ICorporation corporation)
         {
-            _Repository.Search<string>("corporation", worker.WorkerId);
+            _Repository.Search<string>("corporation", corporation.CorporationId);
         }
     }
 }

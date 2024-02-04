@@ -12,5 +12,6 @@ namespace KursCode.Data
         void Delete<T>(string tableName, int id);
         T Search<T>(string tableName, int id);
         void Change<T>(string tableName, int id, string columnName, object newValue);
+        int GetLastId(string tableName);
     }
 }

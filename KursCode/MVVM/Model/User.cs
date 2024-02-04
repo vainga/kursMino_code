@@ -19,18 +19,7 @@ namespace KursCode
         [JsonPropertyName("Password")]
         public string _Password { get; private set; }
 
-        static string databasePath = Path.Combine(GetUserFolderPath(), "userdata.db");
-        //DatabaseHelper dbHelper = new DatabaseHelper(databasePath);
-        private const string FileName = "users.json";
-
-        private workerClass _worker; 
-
-        public workerClass Worker
-        {
-            get { return _worker; }
-        }
-
-        public event EventHandler<int> AuthorizationCompleted;
+        private UserData dataManager = new UserData();
 
         public User()
         {
@@ -43,22 +32,6 @@ namespace KursCode
         {
             _Login = login;
             _Password = password;
-        }
-
-        private static string GetUserFolderPath()
-        {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string parentPath = Directory.GetParent(executablePath).FullName;
-            string dataFolderPath = Path.Combine(parentPath, "Data");
-            string userFolderPath = Path.Combine(dataFolderPath, "UserData");
-            Directory.CreateDirectory(userFolderPath);
-
-            return userFolderPath;
-        }
-
-        private string ToJson()
-        {
-            return JsonSerializer.Serialize(this);
         }
 
         private string HashPassword(string password)
@@ -91,24 +64,9 @@ namespace KursCode
                     throw new ArgumentException("Пароль не может содержать пробелы.");
                 }
 
-                string userFolderPath = GetUserFolderPath();
-                string userDataFilePath = Path.Combine(userFolderPath, "usersdata.json");
-
-                DatabaseHelper dbHelper = new DatabaseHelper(userDataFilePath);
-
-                List<User> existingUsers = dbHelper.GetAllEntities<User>(userDataFilePath);
-
-                if (!dbHelper.IsValueUnique<User>(u => u._Login == _Login, existingUsers))
-                {
-                    throw new ArgumentException("Пользователь с таким логином уже существует.");
-                }
-
-                int nextUserId = dbHelper.GetNextEntityId<User>(u => u.userId, existingUsers);
-
-                userId = nextUserId;
+               userId = dataManager.GetLastId()+1;
                 _Password = HashPassword(_Password);
-                OnAuthorizationCompleted(userId);
-                dbHelper.SaveEntityToFile<User>(this, existingUsers);
+                dataManager.Add(this);
 
                 return true;
             }
@@ -132,21 +90,13 @@ namespace KursCode
                     throw new ArgumentException("Пароль не может быть пустым.");
                 }
 
-                string userFolderPath = GetUserFolderPath();
-                string userDataFilePath = Path.Combine(userFolderPath, "usersdata.json");
-
-                DatabaseHelper dbHelper = new DatabaseHelper(userDataFilePath);
-
-                List<User> existingUsers = dbHelper.GetAllEntities<User>(userDataFilePath);
-
-                User user = existingUsers.FirstOrDefault(u => u._Login == _Login);
+                var user = dataManager.Search(this);
 
                 if (user != null)
                 {
                     if (BCrypt.Net.BCrypt.Verify(_Password, user._Password))
                     {
                         userId = user.userId;
-                        OnAuthorizationCompleted(userId);
                         return true;
                     }
                     else
@@ -165,11 +115,6 @@ namespace KursCode
             {
                 throw new ArgumentException(ex.Message, ex);
             }
-        }
-
-        protected virtual void OnAuthorizationCompleted(int userId)
-        {
-            AuthorizationCompleted?.Invoke(this, userId);
         }
     }
 }

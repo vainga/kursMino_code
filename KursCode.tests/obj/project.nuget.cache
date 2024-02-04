@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cQ72jBfB1rJvX85FC+181ubh1XKrVqMSnQlAtZsrZQX4MzwCrsR5bb0G67k0JY19Fuz6ieCcq4wJKtTEsS8gmQ==",
+  "dgSpecHash": "CBLnp8gIP9ls6vyP96w0N0o9QBkKZwP7vaYtOO4j/Z6jnvHUoLVA4NgBBrHyzjFMLaWTwiZ5sZkdvS21e5tevg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Vain\\Desktop\\KursCode\\KursCode.tests\\KursCode.tests.csproj",
   "expectedPackageFiles": [
@@ -16,7 +16,7 @@
     "C:\\Users\\Vain\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\microsoft.codecoverage\\17.7.1\\microsoft.codecoverage.17.7.1.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\microsoft.data.sqlite\\8.0.0\\microsoft.data.sqlite.8.0.0.nupkg.sha512",
-    "C:\\Users\\Vain\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.0\\microsoft.data.sqlite.core.8.0.0.nupkg.sha512",
+    "C:\\Users\\Vain\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.1\\microsoft.data.sqlite.core.8.0.1.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\microsoft.net.test.sdk\\17.7.1\\microsoft.net.test.sdk.17.7.1.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\Vain\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",

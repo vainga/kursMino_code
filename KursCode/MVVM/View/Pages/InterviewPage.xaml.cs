@@ -26,7 +26,7 @@ namespace KursCode.MVVM.View.Pages
         public InterviewPage(int userId)
         {
             interviewPageViewModel = new interviewPageViewModel();
-            interviewPageViewModel.UserId = userId;
+            //interviewPageViewModel.UserId = userId;
             InitializeComponent();
         }
     }

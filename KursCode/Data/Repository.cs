@@ -18,24 +18,34 @@ namespace KursCode.Data
 
         public void Add<T>(string tableName, params object[] values)
         {
-            if (values.Length == 0 || values.Length % 2 != 0)
-            {
-                throw new ArgumentException("Invalid number of parameters.");
-            }
-
             var properties = typeof(T).GetProperties();
 
             using (var command = _databaseHelper.CreateCommand())
             {
-                string columns = string.Join(", ", properties.Select(p => p.Name));
-                string parameters = string.Join(", ", properties.Select(p => "@" + p.Name));
-
-                command.CommandText = $"INSERT INTO {tableName} ({columns}) VALUES ({parameters})";
+                StringBuilder columnsBuilder = new StringBuilder();
+                StringBuilder parametersBuilder = new StringBuilder();
 
                 for (int i = 0; i < properties.Length; i++)
                 {
-                    command.Parameters.AddWithValue("@" + properties[i].Name, values[i]);
+                    var paramName = $"@{properties[i].Name}";
+                    if (i > 0)
+                    {
+                        columnsBuilder.Append(", ");
+                        parametersBuilder.Append(", ");
+                    }
+                    columnsBuilder.Append(properties[i].Name);
+                    parametersBuilder.Append(paramName);
+
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = paramName;
+                    parameter.Value = values[i];
+                    command.Parameters.Add(parameter);
                 }
+
+                string columns = columnsBuilder.ToString();
+                string parameters = parametersBuilder.ToString();
+
+                command.CommandText = $"INSERT INTO {tableName} ({columns}) VALUES ({parameters})";
 
                 try
                 {
@@ -57,7 +67,11 @@ namespace KursCode.Data
             using (var command = _databaseHelper.CreateCommand())
             {
                 command.CommandText = $"DELETE FROM {tableName} WHERE Id = @Id";
-                command.Parameters.AddWithValue("@Id", id);
+
+                var parameter = command.CreateParameter();
+                parameter.ParameterName = "@Id";
+                parameter.Value = id;
+                command.Parameters.Add(parameter);
 
                 try
                 {
@@ -81,7 +95,11 @@ namespace KursCode.Data
             using (var command = _databaseHelper.CreateCommand())
             {
                 command.CommandText = $"SELECT * FROM {tableName} WHERE Id = @Id";
-                command.Parameters.AddWithValue("@Id", id);
+
+                var parameter = command.CreateParameter();
+                parameter.ParameterName = "@Id";
+                parameter.Value = id;
+                command.Parameters.Add(parameter);
 
                 try
                 {
@@ -99,9 +117,10 @@ namespace KursCode.Data
                             {
                                 var columnName = property.Name;
 
-                                if (reader[columnName] != DBNull.Value)
+                                var value = reader[columnName];
+                                if (value != DBNull.Value)
                                 {
-                                    property.SetValue(entity, reader[columnName]);
+                                    property.SetValue(entity, value);
                                 }
                             }
                         }
@@ -123,8 +142,16 @@ namespace KursCode.Data
             using (var command = _databaseHelper.CreateCommand())
             {
                 command.CommandText = $"UPDATE {tableName} SET {columnName} = @NewValue WHERE Id = @Id";
-                command.Parameters.AddWithValue("@NewValue", newValue);
-                command.Parameters.AddWithValue("@Id", id);
+
+                var newValueParameter = command.CreateParameter();
+                newValueParameter.ParameterName = "@NewValue";
+                newValueParameter.Value = newValue;
+                command.Parameters.Add(newValueParameter);
+
+                var idParameter = command.CreateParameter();
+                idParameter.ParameterName = "@Id";
+                idParameter.Value = id;
+                command.Parameters.Add(idParameter);
 
                 try
                 {
@@ -139,6 +166,36 @@ namespace KursCode.Data
                     throw;
                 }
             }
+        }
+
+        public int GetLastId(string tableName)
+        {
+            int lastId = 0;
+
+            using (var command = _databaseHelper.CreateCommand())
+            {
+                command.CommandText = $"SELECT LAST_INSERT_ID() FROM {tableName}";
+
+                try
+                {
+                    _databaseHelper.OpenConnection();
+
+                    object result = command.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        lastId = Convert.ToInt32(result);
+                    }
+
+                    _databaseHelper.CloseConnection();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+
+            return lastId;
         }
     }
 

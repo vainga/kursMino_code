@@ -12,7 +12,7 @@
     <Page.DataContext>
         <vm:WorkersPageViewModel/>
     </Page.DataContext>
-    <Grid Background="White">
+    <!--<Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="3.8*"></ColumnDefinition>
@@ -40,5 +40,5 @@
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Column="1">
             <Grid x:Name="maxWorker"></Grid>
         </ScrollViewer>
-    </Grid>
+    </Grid>-->
 </Page>

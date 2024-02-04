@@ -15,6 +15,6 @@ namespace KursCode.Data
         void createTable(string tableName, string[] columns);
         void OpenConnection();
         void CloseConnection();
-        MySqlCommand CreateCommand();
+        IDbCommand CreateCommand();
     }
 }

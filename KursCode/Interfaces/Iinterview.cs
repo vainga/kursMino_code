@@ -16,7 +16,7 @@ namespace KursCode.Interfaces
         public TimeSpan Duration { get; }
         public workerClass Worker { get; }
         public corporationClass Vacancy { get; }
-        bool HasConflict(List<InterviewClass> existingInterviews);
+        //bool HasConflict(List<InterviewClass> existingInterviews);
         void AddData(int userid);
         string GetDBPath(int userid);
     }

@@ -23,109 +23,109 @@ namespace KursCode.MVVM.View.Windows.Dialog
     public partial class AddWorker : Window
     {
 
-        private addWorkerViewModel viewModel;
-        private int _UserId { get; }
+        //private addWorkerViewModel viewModel;
+        //private int _UserId { get; }
         
-        public AddWorker(int userId)
-        {
-            InitializeComponent();
-            userInputValues = new List<string>();
-            textBoxList = new List<TextBox>();
-            viewModel = new addWorkerViewModel();
-            DataContext = viewModel;
-            _UserId = userId;
+        //public AddWorker(int userId)
+        //{
+        //    InitializeComponent();
+        //    userInputValues = new List<string>();
+        //    textBoxList = new List<TextBox>();
+        //    viewModel = new addWorkerViewModel();
+        //    DataContext = viewModel;
+        //    _UserId = userId;
 
-            viewModel.UserId = _UserId;
-            viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
-        }
-
-
-
-        private List<ClientSkiil> userControls = new List<ClientSkiil>();
-
-        private void drugWindow_LeftButtonDrag(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ButtonState == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
-        }
-
-        private void closeApp_MauseLeftButtonDrag(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                Close();
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        private void addQualityButton_Click(object sender, RoutedEventArgs e)
-        {
-            ClientSkiil userControl = new ClientSkiil();
-            userControl.VerticalAlignment = VerticalAlignment.Top;
-            userControl.Margin = new Thickness(10, 15, 0, 0);
-            QualitiesWrapPanel.Children.Insert(QualitiesWrapPanel.Children.Count - 1, userControl);
-
-            double totalWidth = 0;
-            foreach (UIElement element in QualitiesWrapPanel.Children)
-            {
-                totalWidth += (element as FrameworkElement)?.ActualWidth ?? 0;
-            }
-
-            (QualitiesWrapPanel.Children[QualitiesWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
-            if(DataContext is addWorkerViewModel viewModel)
-            {
-                viewModel.TextBoxListQualities.Add(userControl.itemText);
-            }
-        }
+        //    viewModel.UserId = _UserId;
+        //    viewModel.SaveSuccessful += ViewModel_SaveSuccessful;
+        //}
 
 
-        private List<string> userInputValues;
-        private List<TextBox> textBoxList;
-        private void addSkillButton_Click(object sender, RoutedEventArgs e)
-        {
+
+        //private List<ClientSkiil> userControls = new List<ClientSkiil>();
+
+        //private void drugWindow_LeftButtonDrag(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ButtonState == MouseButtonState.Pressed)
+        //    {
+        //        DragMove();
+        //    }
+        //}
+
+        //private void closeApp_MauseLeftButtonDrag(object sender, MouseButtonEventArgs e)
+        //{
+        //    try
+        //    {
+        //        Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+
+        //private void addQualityButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ClientSkiil userControl = new ClientSkiil();
+        //    userControl.VerticalAlignment = VerticalAlignment.Top;
+        //    userControl.Margin = new Thickness(10, 15, 0, 0);
+        //    QualitiesWrapPanel.Children.Insert(QualitiesWrapPanel.Children.Count - 1, userControl);
+
+        //    double totalWidth = 0;
+        //    foreach (UIElement element in QualitiesWrapPanel.Children)
+        //    {
+        //        totalWidth += (element as FrameworkElement)?.ActualWidth ?? 0;
+        //    }
+
+        //    (QualitiesWrapPanel.Children[QualitiesWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
+        //    if(DataContext is addWorkerViewModel viewModel)
+        //    {
+        //        viewModel.TextBoxListQualities.Add(userControl.itemText);
+        //    }
+        //}
 
 
-            ClientSkiil userControl = new ClientSkiil();
-            userControl.VerticalAlignment = VerticalAlignment.Top;
-            userControl.Margin = new Thickness(10, 15, 0, 0);
-            SkillsWrapPanel.Children.Insert(SkillsWrapPanel.Children.Count - 1, userControl);
-            double totalWidth = 0;
-            foreach (UIElement element in SkillsWrapPanel.Children)
-            {
-                totalWidth += (element as FrameworkElement)?.ActualWidth ?? 0;
-            }
+        //private List<string> userInputValues;
+        //private List<TextBox> textBoxList;
+        //private void addSkillButton_Click(object sender, RoutedEventArgs e)
+        //{
 
-            (SkillsWrapPanel.Children[SkillsWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
-            if (DataContext is addWorkerViewModel viewModel)
-            {
-                viewModel.TextBoxListSkills.Add(userControl.itemText);
-            }
+
+        //    ClientSkiil userControl = new ClientSkiil();
+        //    userControl.VerticalAlignment = VerticalAlignment.Top;
+        //    userControl.Margin = new Thickness(10, 15, 0, 0);
+        //    SkillsWrapPanel.Children.Insert(SkillsWrapPanel.Children.Count - 1, userControl);
+        //    double totalWidth = 0;
+        //    foreach (UIElement element in SkillsWrapPanel.Children)
+        //    {
+        //        totalWidth += (element as FrameworkElement)?.ActualWidth ?? 0;
+        //    }
+
+        //    (SkillsWrapPanel.Children[SkillsWrapPanel.Children.Count - 1] as Button)?.SetValue(Canvas.LeftProperty, totalWidth);
+        //    if (DataContext is addWorkerViewModel viewModel)
+        //    {
+        //        viewModel.TextBoxListSkills.Add(userControl.itemText);
+        //    }
         
-        }
+        //}
 
-        private void ImageBorder_MouseLeftButtonDown(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is addWorkerViewModel viewModel)
-            {
-                viewModel.SelectImage();
-            }
-        }
+        //private void ImageBorder_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        //{
+        //    if (DataContext is addWorkerViewModel viewModel)
+        //    {
+        //        viewModel.SelectImage();
+        //    }
+        //}
 
 
 
-        private void ViewModel_SaveSuccessful(object sender, EventArgs e)
-        {
-            Close();
-        }
+        //private void ViewModel_SaveSuccessful(object sender, EventArgs e)
+        //{
+        //    Close();
+        //}
 
-        private void last_button_Click(object sender, RoutedEventArgs e)
-        {
+        //private void last_button_Click(object sender, RoutedEventArgs e)
+        //{
 
-        }
+        //}
     }
 }

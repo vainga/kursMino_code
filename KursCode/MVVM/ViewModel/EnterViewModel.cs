@@ -196,8 +196,6 @@ namespace KursCode.MVVM.ViewModel
                 bool registerResult = Users.Registration();
                 if (registerResult)
                 {
-                    MainWindow mainWindow = new MainWindow(_user.userId);
-                    mainWindow.Show();
                     OnSuccessfulLogin();
                 }
                 else
@@ -230,8 +228,6 @@ namespace KursCode.MVVM.ViewModel
                 bool EnterResult = Users.Enter();
                 if (EnterResult)
                 {
-                    MainWindow mainWindow = new MainWindow(_user.userId);
-                    mainWindow.Show();
                     OnSuccessfulLogin();
                 }
                 else

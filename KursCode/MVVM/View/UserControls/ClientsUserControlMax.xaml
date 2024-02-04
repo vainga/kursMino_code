@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:KursCode.MVVM.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="1200" d:DesignWidth="1100">
-    <Grid Background="White">
+    <!--<Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="0.35*"></ColumnDefinition>
@@ -15,7 +15,7 @@
         <Border x:Name="imageBorder" Background="LightGray" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="200" Height="200" CornerRadius="15" Margin="0,30,0,0">
             <Grid>
                 <Image x:Name="selectedImage" Source="{Binding WorkerPhoto}" Width="180" Height="180" Stretch="UniformToFill" Visibility="{Binding SelectedImageVisibility}" />
-                <!--<materialDesign:PackIcon x:Name="photoIcon" Kind="Photography" Foreground="Gray" Width="70" Height="70" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding PhotoIconVisibility}" />-->
+                --><!--<materialDesign:PackIcon x:Name="photoIcon" Kind="Photography" Foreground="Gray" Width="70" Height="70" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding PhotoIconVisibility}" />--><!--
             </Grid>
         </Border>
         <Grid Grid.Column="0">
@@ -210,5 +210,5 @@
                 </Grid>
             </Grid>
         </Grid>
-    </Grid>
+    </Grid>-->
 </UserControl>

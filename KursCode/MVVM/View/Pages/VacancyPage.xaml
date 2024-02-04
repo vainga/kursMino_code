@@ -9,10 +9,10 @@
       mc:Ignorable="d" 
             d:DesignHeight="800" d:DesignWidth="1500"
       Title="VacancyPage">
-    <Page.DataContext>
+    <!--<Page.DataContext>
         <vm:VacansyPageViewModel/>
-    </Page.DataContext>
-    <Grid Background="White">
+    </Page.DataContext>-->
+    <!--<Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="3.8*"></ColumnDefinition>
@@ -40,5 +40,5 @@
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Column="1">
             <Grid x:Name="maxWorker"></Grid>
         </ScrollViewer>
-    </Grid>
+    </Grid>-->
 </Page>

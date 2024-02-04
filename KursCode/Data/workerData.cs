@@ -31,7 +31,7 @@ namespace KursCode.Data
         {
             workerString = _JsonManager.ToJson(worker);
             _DBHelper.createTable("Workers", new[] { "id INT AUTO_INCREMENT PRIMARY KEY", "worker TEXT","status TEXT","userId INT"});
-            _Repository.Add<string>("Workers", workerString,worker._Status,worker.UserId);
+            //_Repository.Add<string>("Workers", workerString,worker._Status,worker.UserId); // добавить статус
         }
 
         public void Delete(IWorker worker)
