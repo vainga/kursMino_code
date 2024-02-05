@@ -23,7 +23,6 @@ namespace KursCode.Data
 
             _FileManager = new fileManager();
             _DBHelper = new DatabaseHelper(_FileManager.GetLocalPath("Workers"));
-            _DBHelper.DBName = "meet";
             _Repository = new Repository(_DBHelper);
         }
 

@@ -10,8 +10,6 @@ namespace KursCode.Data
 {
     public interface IDatabaseHelper
     {
-        string DBName { get; set; }
-        void createDataBase();
         void createTable(string tableName, string[] columns);
         void OpenConnection();
         void CloseConnection();

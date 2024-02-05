@@ -11,24 +11,12 @@ namespace KursCode.Data
 {
     public class DatabaseHelperSQLite : IDatabaseHelper
     {
-        private string dbName;
-        public string DBName
-        {
-            get
-            {
-                return dbName;
-            }
-            set
-            {
-                dbName = value;
-            }
-        }
-
         private string _connectionString;
         private readonly SqliteConnection _dbConnection;
-        public DatabaseHelperSQLite(string connectionString)
+
+        public DatabaseHelperSQLite(string databaseFilePath)
         {
-            _connectionString = connectionString;
+            _connectionString = $"Data Source={databaseFilePath}";
             _dbConnection = new SqliteConnection(_connectionString);
         }
 
@@ -47,25 +35,8 @@ namespace KursCode.Data
             return _dbConnection.CreateCommand();
         }
 
-        public void createDataBase()
-        {
-            using (SqliteConnection conn = new SqliteConnection(_connectionString))
-            {
-                conn.Open();
-                using (SqliteCommand cmd = new SqliteCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandText = $"CREATE DATABASE IF NOT EXISTS {DBName};";
-                    cmd.ExecuteNonQuery();
-                }
-                conn.Close();
-            }
-        }
-
         public void createTable(string tableName, string[] columns)
         {
-            createDataBase();
-            _connectionString += $"Database={DBName};";
             using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();

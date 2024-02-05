@@ -63,8 +63,8 @@ namespace KursCode
                 {
                     throw new ArgumentException("Пароль не может содержать пробелы.");
                 }
-
-               userId = dataManager.GetLastId()+1;
+                
+                userId = dataManager.GetLastId()+1;
                 _Password = HashPassword(_Password);
                 dataManager.Add(this);
 

@@ -55,7 +55,7 @@ namespace KursCode.MVVM.View.Windows.Main {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/KursCode;V1.0.0.0;component/mvvm/view/windows/main/mainwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/KursCode;component/mvvm/view/windows/main/mainwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\MVVM\View\Windows\Main\MainWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

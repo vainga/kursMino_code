@@ -23,7 +23,6 @@ namespace KursCode.Data
 
             _FileManager = new fileManager();
             _DBHelper = new DatabaseHelper(_FileManager.GetLocalPath("Workers"));
-            _DBHelper.DBName = "meet";
             _Repository = new Repository(_DBHelper);
         }
 
@@ -31,7 +30,7 @@ namespace KursCode.Data
         {
             corporationString = _JsonManager.ToJson(corporation);
             _DBHelper.createTable("Corporations", new[] { "id INT AUTO_INCREMENT PRIMARY KEY", "corporoation TEXT", "userId INT" });
-            _Repository.Add<string>("Corporations", corporationString, corporation.UserId);
+            _Repository.Add("Corporations", new[] { "corporoation", "userId" }, new object[] { corporationString, corporation.UserId });
         }
 
         public void Delete(ICorporation corporation)
