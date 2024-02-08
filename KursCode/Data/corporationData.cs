@@ -44,9 +44,9 @@ namespace KursCode.Data
             _Repository.Change<string>("Corporations", corporation.CorporationId, "corporation", newStringCorporation);
         }
 
-        public void Search(ICorporation corporation)
-        {
-            _Repository.Search<string>("corporation", corporation.CorporationId);
-        }
+        //public void Search(ICorporation corporation)
+        //{
+        //    _Repository.Search<string>("corporation", corporation.CorporationId);
+        //}
     }
 }

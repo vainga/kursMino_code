@@ -44,9 +44,9 @@ namespace KursCode.Data
             _Repository.Change<string>("Workers", worker.WorkerId, "worker", newStringWorker);
         }
 
-        public void Search(IWorker worker)
-        {
-            _Repository.Search<string>("worker", worker.WorkerId);
-        }
+        //public void Search(IWorker worker)
+        //{
+        //    _Repository.Search<string>("worker", worker.WorkerId);
+        //}
     }
 }

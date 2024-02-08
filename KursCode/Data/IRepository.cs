@@ -10,7 +10,8 @@ namespace KursCode.Data
     {
         void Add(string tableName, string[] columnNames, object[] values); 
         void Delete<T>(string tableName, int id);
-        T Search<T>(string tableName, int id);
+        public int SearchtoId(string tableName, string columnName, object searchValue);
+        object SearchbyId(string tableName, int id, string columnName);
         void Change<T>(string tableName, int id, string columnName, object newValue);
         int GetLastId(string tableName);
     }

@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace KursCode.Data
 {
     public class UserData
     {
-        string userString;
+        //string userString;
 
         IFileManager _FileManager;
         IRepository _Repository;
@@ -28,9 +29,9 @@ namespace KursCode.Data
 
         public void Add(IUser user)
         {
-            userString = _JsonManager.ToJson(user);
-            _DBHelper.createTable("users", new[] { "id INTEGER PRIMARY KEY", "user TEXT" });
-            _Repository.Add("users", new[] { "user" } , new object[] { userString });
+            //userString = _JsonManager.ToJson(user);
+            _DBHelper.createTable("users", new[] { "Id INTEGER PRIMARY KEY", "Login TEXT", "Password TEXT" });
+            _Repository.Add("users", new[] { "Login", "Password" } , new object[] { user._Login, user._Password});
         }
 
         public void Delete(IUser user)
@@ -38,15 +39,22 @@ namespace KursCode.Data
             _Repository.Delete<string>("users", user.userId);
         }
 
-        public void Update(IUser user, IUser newValue)
+        //public void Update(IUser user, IUser newValue)
+        //{
+        //    string newStringUser = _JsonManager.ToJson(newValue);
+        //    _Repository.Change<string>("users", user.userId, "user", newStringUser);
+        //} Потом добавить замену только пароля и email
+
+        public int SearchId(IUser user)
         {
-            string newStringUser = _JsonManager.ToJson(newValue);
-            _Repository.Change<string>("users", user.userId, "user", newStringUser);
+            int id = _Repository.SearchtoId("users","Login", user._Login);
+            return id;
         }
 
-        public IUser Search(IUser user)
+        public string SearchPassword(IUser user)
         {
-           return _Repository.Search<IUser>("users", user.userId);
+            var password = _Repository.SearchbyId("users", user.userId, "Password");
+            return password.ToString();
         }
 
         public int GetLastId()

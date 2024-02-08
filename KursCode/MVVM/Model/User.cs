@@ -90,13 +90,14 @@ namespace KursCode
                     throw new ArgumentException("Пароль не может быть пустым.");
                 }
 
-                var user = dataManager.Search(this);
+                var userId = dataManager.SearchId(this);
 
-                if (user != null)
+                if (userId != null)
                 {
-                    if (BCrypt.Net.BCrypt.Verify(_Password, user._Password))
+                    this.userId = userId;
+                    var password = dataManager.SearchPassword(this);
+                    if (BCrypt.Net.BCrypt.Verify(_Password, password))
                     {
-                        userId = user.userId;
                         return true;
                     }
                     else

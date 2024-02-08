@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -91,53 +92,72 @@ namespace KursCode.Data
             }
         }
 
-        public T Search<T>(string tableName, int id)
+        public int SearchtoId(string tableName, string columnName, object searchValue)
         {
-            T entity = default(T);
+            int foundId = -1; 
 
             using (var command = _databaseHelper.CreateCommand())
             {
-                command.CommandText = $"SELECT * FROM {tableName} WHERE Id = @Id";
-
-                var parameter = command.CreateParameter();
-                parameter.ParameterName = "@Id";
-                parameter.Value = id;
-                command.Parameters.Add(parameter);
-
                 try
                 {
                     _databaseHelper.OpenConnection();
 
-                    using (var reader = command.ExecuteReader())
+                    command.CommandText = $"SELECT id FROM {tableName} WHERE {columnName} = @searchValue";
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@searchValue";
+                    parameter.Value = searchValue;
+                    command.Parameters.Add(parameter);
+
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
                     {
-                        if (reader.Read())
-                        {
-                            entity = Activator.CreateInstance<T>();
-
-                            var properties = typeof(T).GetProperties();
-
-                            foreach (var property in properties)
-                            {
-                                var columnName = property.Name;
-
-                                var value = reader[columnName];
-                                if (value != DBNull.Value)
-                                {
-                                    property.SetValue(entity, value);
-                                }
-                            }
-                        }
+                        foundId = Convert.ToInt32(result);
                     }
-
-                    _databaseHelper.CloseConnection();
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    Console.WriteLine("Error: " + ex.Message);
+                    throw; 
+                }
+                finally
+                {
+                    _databaseHelper.CloseConnection();
                 }
             }
 
-            return entity;
+            return foundId;
+        }
+
+        public object SearchbyId(string tableName, int id, string columnName)
+        {
+            object resultValue = null;
+
+            using (var command = _databaseHelper.CreateCommand())
+            {
+                try
+                {
+                    _databaseHelper.OpenConnection();
+
+                    command.CommandText = $"SELECT {columnName} FROM {tableName} WHERE id = @id";
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@id";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    resultValue = command.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    throw; // Выбрасываем исключение, чтобы обработать ошибку в другом месте
+                }
+                finally
+                {
+                    _databaseHelper.CloseConnection();
+                }
+            }
+
+            return resultValue;
         }
 
         public void Change<T>(string tableName, int id, string columnName, object newValue)
